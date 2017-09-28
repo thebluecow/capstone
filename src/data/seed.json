@@ -1,0 +1,763 @@
+{
+	"actions": {
+		"_model" : "Action",
+		"1": {
+	        "_id": "59b3d655bb644f0c119e5f5f",
+	        "name": "What Could Go Wrong? Hire Zartan",
+	        "__v": 0,
+	        "value": 3,
+	         "bonuses": {
+	            "snow": -3,
+	            "rain": 5,
+	            "extreme": 5,
+	            "desert": 0
+	        }
+    	},
+	    "2": {
+	        "_id": "59b3d655bb644f0c119e5f4a",
+	        "name": "Weather Dominator Strike!",
+	        "__v": 0,
+	        "value": 18,
+	         "bonuses": {
+	            "snow": 5,
+	            "rain": 5,
+	            "extreme": 5,
+	            "desert": 0
+	        }
+	    },
+	    "3": {
+	        "_id": "59b3d655bb644f0c119e5f5b",
+	        "name": "Vance Wingfield Plots Overthrow",
+	        "__v": 0,
+	        "value": 16,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": -3,
+	            "desert": 0
+	        }
+	    },
+	    "4": {
+	        "_id": "59b3d655bb644f0c119e5f4d",
+	        "name": "Time for the Night Vision Goggles",
+	        "__v": 0,
+	        "value": 20,
+	         "bonuses": {
+	            "snow": -3,
+	            "rain": -5,
+	            "extreme": -2,
+	            "desert": 0
+	        }
+	    },
+	    "5": {
+	        "_id": "59b3d655bb644f0c119e5f53",
+	        "name": "T-11 Parachute",
+	        "__v": 0,
+	        "value": 17,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 2,
+	            "extreme": -5,
+	            "desert": 0
+	        }
+	    },
+	    "6": {
+	        "_id": "59b3d655bb644f0c119e5f38",
+	        "name": "Snake Eye's Uzi",
+	        "__v": 0,
+	        "value": 6,
+	         "bonuses": {
+	            "snow": 1,
+	            "rain": -2,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "7": {
+	        "_id": "59b3d655bb644f0c119e5f55",
+	        "name": "Smurfy Snake Eye's",
+	        "__v": 0,
+	        "value": 4,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": -3,
+	            "desert": 0
+	        }
+	    },
+	    "8": {
+	        "_id": "59b3d655bb644f0c119e5f39",
+	        "name": "Sidekick! Timber Joins",
+	        "__v": 0,
+	        "value": 13,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "9": {
+	        "_id": "59b3d655bb644f0c119e5f60",
+	        "name": "Safety of the Pit",
+	        "__v": 0,
+	        "value": 19,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "10": {
+	        "_id": "59b3d655bb644f0c119e5f57",
+	        "name": "Red Rocket Franchise",
+	        "__v": 0,
+	        "value": 5,
+	         "bonuses": {
+	            "snow": 2,
+	            "rain": 3,
+	            "extreme": 1,
+	            "desert": 0
+	        }
+	    },
+	    "11": {
+	        "_id": "59b3d655bb644f0c119e5f3b",
+	        "name": "Punch",
+	        "__v": 0,
+	        "value": 15,
+	         "bonuses": {
+	            "snow": -1,
+	            "rain": 2,
+	            "extreme": -3,
+	            "desert": 0
+	        }
+	    },
+	    "12": {
+	        "_id": "59b3d655bb644f0c119e5f4e",
+	        "name": "PRC-117 Radios HQ",
+	        "__v": 0,
+	        "value": 1,
+	         "bonuses": {
+	            "snow": 2,
+	            "rain": 1,
+	            "extreme": -3,
+	            "desert": 0
+	        }
+	    },
+	    "13": {
+	        "_id": "59b3d655bb644f0c119e5f5a",
+	        "name": "Oktober Guard Intervenes",
+	        "__v": 0,
+	        "value": 17,
+	         "bonuses": {
+	            "snow": 5,
+	            "rain": -2,
+	            "extreme": -1,
+	            "desert": 0
+	        }
+	    },
+	    "14": {
+	        "_id": "59b3d655bb644f0c119e5f47",
+	        "name": "MK19 Grenade Machine Gun",
+	        "__v": 0,
+	        "value": 12,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "15": {
+	        "_id": "59b3d655bb644f0c119e5f48",
+	        "name": "S.H.A.R.C. Attack!",
+	        "__v": 0,
+	        "value": 11,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": -3,
+	            "desert": -20
+	        }
+	    },
+	    "16": {
+	        "_id": "59b3d655bb644f0c119e5f4f",
+	        "name": "MK-54 Torpedo",
+	        "__v": 0,
+	        "value": 10,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "17": {
+	        "_id": "59b3d655bb644f0c119e5f49",
+	        "name": "M777 Howitzer",
+	        "__v": 0,
+	        "value": 13,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "18": {
+	        "_id": "59b3d655bb644f0c119e5f3a",
+	        "name": "M3 Bradley FIghting Vehicle",
+	        "__v": 0,
+	        "value": 2,
+	         "bonuses": {
+	            "snow": 3,
+	            "rain": 2,
+	            "extreme": -2,
+	            "desert": 0
+	        }
+	    },
+	    "19": {
+	        "_id": "59b3d655bb644f0c119e5f45",
+	        "name": "M224 60mm Mortar",
+	        "__v": 0,
+	        "value": 9,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "20": {
+	        "_id": "59b3d655bb644f0c119e5f43",
+	        "name": "M1911 Locked & Loaded",
+	        "__v": 0,
+	        "value": 18,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "21": {
+	        "_id": "59b3d655bb644f0c119e5f42",
+	        "name": "M-60",
+	        "__v": 0,
+	        "value": 3,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "22": {
+	        "_id": "59b3d655bb644f0c119e5f3e",
+	        "name": "LAV-25 Light Armored Vehicle",
+	        "__v": 0,
+	        "value": 21,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "23": {
+	        "_id": "59b3d655bb644f0c119e5f5c",
+	        "name": "Kwinn on the Scene",
+	        "__v": 0,
+	        "value": 9,
+	         "bonuses": {
+	            "snow": 5,
+	            "rain": -3,
+	            "extreme": 5,
+	            "desert": -3
+	        }
+	    },
+	    "24": {
+	        "_id": "59b3d655bb644f0c119e5f4c",
+	        "name": "Kastle FX95 HP Skis Found",
+	        "__v": 0,
+	        "value": 14,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": -10
+	        }
+	    },
+	    "25": {
+	        "_id": "59b3d655bb644f0c119e5f5d",
+	        "name": "Hard Master Trains",
+	        "__v": 0,
+	        "value": 16,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 5,
+	            "desert": 0
+	        }
+	    },
+	    "26": {
+	        "_id": "59b3d655bb644f0c119e5f3d",
+	        "name": "Grenade",
+	        "__v": 0,
+	        "value": 7,
+	         "bonuses": {
+	            "snow": -2,
+	            "rain": 5,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "27": {
+	        "_id": "59b3d655bb644f0c119e5f3c",
+	        "name": "Find Cover",
+	        "__v": 0,
+	        "value": 2,
+	         "bonuses": {
+	            "snow": 5,
+	            "rain": 5,
+	            "extreme": 5,
+	            "desert": -5
+	        }
+	    },
+	    "28": {
+	        "_id": "59b3d655bb644f0c119e5f46",
+	        "name": "FGM-148 Javelin",
+	        "__v": 0,
+	        "value": 1,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "29": {
+	        "_id": "59b3d655bb644f0c119e5f59",
+	        "name": "Excalibur Found",
+	        "__v": 0,
+	        "value": 15,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "30": {
+	        "_id": "59b3d655bb644f0c119e5f44",
+	        "name": "Dodge, Dip, Dive, Duck, & Dodge",
+	        "__v": 0,
+	        "value": 5,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "31": {
+	        "_id": "59b3d655bb644f0c119e5f40",
+	        "name": "Dig a Trench",
+	        "__v": 0,
+	        "value": 14,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": -5
+	        }
+	    },
+	    "32": {
+	        "_id": "59b3d655bb644f0c119e5f56",
+	        "name": "Cobra!!!!",
+	        "__v": 0,
+	        "value": 7,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "33": {
+	        "_id": "59b3d655bb644f0c119e5f52",
+	        "name": "Buffalo MPRC Mine Sweep",
+	        "__v": 0,
+	        "value": 4,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "34": {
+	        "_id": "59b3d655bb644f0c119e5f50",
+	        "name": "Bivouac Break",
+	        "__v": 0,
+	        "value": 11,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "35": {
+	        "_id": "59b3d655bb644f0c119e5f54",
+	        "name": "Beretta M9",
+	        "__v": 0,
+	        "value": 12,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "36": {
+	        "_id": "59b3d655bb644f0c119e5f5e",
+	        "name": "Alternate Reality: World Without End",
+	        "__v": 0,
+	        "value": 19,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "37": {
+	        "_id": "59b3d655bb644f0c119e5f58",
+	        "name": "Alpine's Yodel",
+	        "__v": 0,
+	        "value": 8,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "38": {
+	        "_id": "59b3d655bb644f0c119e5f41",
+	        "name": "Airstrike!",
+	        "__v": 0,
+	        "value": 20,
+	         "bonuses": {
+	            "snow": -2,
+	            "rain": 2,
+	            "extreme": -5,
+	            "desert": 10
+	        }
+	    },
+	    "39": {
+	        "_id": "59b3d655bb644f0c119e5f4b",
+	        "name": "AN/ALQ-144 Infrared Jammer",
+	        "__v": 0,
+	        "value": 6,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "40": {
+	        "_id": "59b3d655bb644f0c119e5f51",
+	        "name": "AGM-114 Hellfire Missile",
+	        "__v": 0,
+	        "value": 10,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    },
+	    "41": {
+	        "_id": "59b3d655bb644f0c119e5f3f",
+	        "name": "AAV7 Amphibious Assault",
+	        "__v": 0,
+	        "value": 8,
+	         "bonuses": {
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
+	        }
+	    }
+	},
+	"users": {
+		"_model" : "User",
+		"scottb": {
+	        "_id": "59b3d92a026d930c39bd9ed8",
+	        "email": "scottb@test.com",
+	        "password": "password",
+	        "name": "Scott B",
+	        "__v": 0,
+	        "results": {
+	            "wins": 65,
+	            "losses": 4
+	        }
+	    },
+	    "mistert": {
+	        "_id": "59b3d92a026d930c39bd9ed5",
+	        "email": "mistert@eighties.com",
+	        "name": "Mr. T",
+	        "achievements": ["World Champion"],
+	        "__v": 0,
+	        "results": {
+	            "wins": 15,
+	            "losses": 4
+	        }
+	    },
+	    "destro": {
+	    	"_id": "59bd040511a3892ac5ba27b8",
+	        "email": "destrosdepot@destro.com",
+	        "name": "Destro (W4-0)",
+	        "__v": 0,
+	        "results": {
+	            "wins": 0,
+	            "losses": 0
+	        }
+	    },
+	    "recondo": {
+	    	"_id": "59bd0502d9aad92ad30220fc",
+	    	"email": "recondosrentals@gijoe.com",
+	        "name": "Recondo",
+	        "achievements": ["Intercontinental Champion"],
+	        "__v": 0,
+	        "results": {
+	            "wins": 75,
+	            "losses": 0
+	        }
+	    },
+	    "martinblank": {
+	        "_id": "59b3d92a026d930c39bd9ed7",
+	        "email": "martinblank@grossepoinths.edu",
+	        "name": "Martin Blank",
+	        "achievements": ["Storm Shadow Assassin of the Year"],
+	        "__v": 0,
+	        "results": {
+	            "wins": 24,
+	            "losses": 10
+	        }
+	    },
+	    "macgyver": {
+	        "_id": "59b3d92a026d930c39bd9ed6",
+	        "email": "macgyver@eighties.com",
+	        "name": "Angus MacGyver",
+	        "__v": 0,
+	        "results": {
+	            "wins": 32,
+	            "losses": 2
+	        }
+	    },
+	    "beachhead": {
+	    	"_id": "59be7d0b2f7a32313c80d72b",
+	        "email": "lifeisabeach@eighties.com",
+	        "name": "Beachhead (All Tie)",
+	        "__v": 0,
+	        "results": {
+	            "wins": 5,
+	            "losses": 72
+	        }
+	    },
+	    "cobracommander": {
+	    	"_id": "59be88927ba0ef31664ef284",
+	        "email": "retreat@eighties.com",
+	        "name": "Cobra Commander (W3-L2-W2-L1-W1-L1 6-4)",
+	        "__v": 0,
+	        "results": {
+	            "wins": 1,
+	            "losses": 43
+	        }
+	    },
+	    "flint": {
+	    	"_id": "59be89e5108ac13175e506e1",
+	        "email": "iheartladyjaye@eighties.com",
+	        "name": "Flint (L3, W4)",
+	        "__v": 0,
+	        "results": {
+	            "wins": 63,
+	            "losses": 32
+	        }
+	    },
+	    "siteadmin": {
+	    	"_id": "59b404ff258d2b0e4d7012b0",
+	     	"email": "siteadmin@test.test",
+	        "name": "Admin",
+	        "password": "password",
+	        "role" : "admin",
+	        "__v": 0,
+	        "results": {
+	            "wins": 1000000,
+	            "losses": 0
+	        }
+    	}
+	},
+	"decks": {
+		"_model" : "Deck",
+		"macgyverDeck": {
+			"_id": "59b3deef246d150ce329c5ed",
+			"user": "->users.macgyver",
+			"actions": [
+				"->actions.1",
+				"->actions.15",
+				"->actions.34",
+				"->actions.17",
+				"->actions.6",
+				"->actions.12",
+				"->actions.16",
+				"->actions.40",
+				"->actions.28",
+				"->actions.31"
+			]
+		},
+		"beachheadDeck": {
+			"_id": "59be7d0b2f7a32313c80d72c",
+			"user": "->users.beachhead",
+			"actions": [
+				"->actions.1",
+				"->actions.15",
+				"->actions.34",
+				"->actions.17",
+				"->actions.6",
+				"->actions.12",
+				"->actions.16",
+				"->actions.40",
+				"->actions.28",
+				"->actions.31"
+			]
+		},
+		"flintDeck": {
+			"_id": "59be89e5108ac13175e506e2",
+			"user": "->users.flint",
+			"actions": [
+				"->actions.28",
+				"->actions.23",
+				"->actions.21",
+				"->actions.22",
+				"->actions.38",
+				"->actions.4",
+				"->actions.36",
+				"->actions.9",
+				"->actions.2",
+				"->actions.1"
+			]
+		},
+		"commanderDeck": {
+			"_id": "59be88927ba0ef31664ef285",
+			"user": "->users.cobracommander",
+			"actions": [
+				"->actions.22",
+				"->actions.38",
+				"->actions.4",
+				"->actions.26",
+				"->actions.30",
+				"->actions.36",
+				"->actions.9",
+				"->actions.32",
+				"->actions.2",
+				"->actions.28"
+			]
+		},
+		"blankDeck": {
+			"user": "->users.martinblank",
+			"actions": [
+				"->actions.6",
+				"->actions.12",
+				"->actions.31",
+				"->actions.11",
+				"->actions.9",
+				"->actions.19",
+				"->actions.22",
+				"->actions.39",
+				"->actions.28",
+				"->actions.15"
+			]
+		},
+		"scottDeck": {
+			"user": "->users.scottb",
+			"actions": [
+				"->actions.19",
+				"->actions.13",
+				"->actions.37",
+				"->actions.18",
+				"->actions.16",
+				"->actions.5",
+				"->actions.4",
+				"->actions.38",
+				"->actions.27",
+				"->actions.11"
+			]
+		},
+		"misterTDeck": {
+			"_id": "59b3deef246d150ce329c5ee",
+			"user": "->users.mistert",
+			"actions": [
+				"->actions.7",
+				"->actions.11",
+				"->actions.2",
+				"->actions.21",
+				"->actions.36",
+				"->actions.41",
+				"->actions.31",
+				"->actions.21",
+				"->actions.19",
+				"->actions.16"
+			]
+		},
+		"recondoDeck": {
+			"_id": "59bd0502d9aad92ad30220ff",
+			"user": "->users.recondo",
+			"actions": [
+				"->actions.4",
+				"->actions.15",
+				"->actions.7",
+				"->actions.23",
+				"->actions.31",
+				"->actions.29",
+				"->actions.11",
+				"->actions.19",
+				"->actions.16",
+				"->actions.5"
+			]
+		},
+		"destroTDeck": {
+			"_id": "59bd040511a3892ac5ba27bb",
+			"user": "->users.destro",
+			"actions": [
+				"->actions.22",
+				"->actions.38",
+				"->actions.4",
+				"->actions.36",
+				"->actions.9",
+				"->actions.2",
+				"->actions.20",
+				"->actions.13",
+				"->actions.5",
+				"->actions.3"
+			]
+		}
+	},
+	"match": {
+		"_model" : "Match",
+		"macVmrt" : {
+			"deck_one": "->decks.macgyverDeck",
+			"deck_two": "->decks.misterTDeck",
+			"winner": "->users.mistert",
+			"reason": "surrender",
+			"story": "We're ashamed for Angus MacGyver. We've combed through the records and found little evidence to support that Angus MacGyver exists on our servers. Did Flint (L3, W4) invent this person? Surrender? Sometimes people have bad days. You roll out of bed. You slip on a banana peel. You veer into a truckload of manure. We understand. Flint (L3, W4) dominated Angus MacGyver so thoroughly that Angus MacGyver was seen weeping in the corner with a sun-warmed glass of Kool Aid and a worn copy of the Tao Te Ching. Perhaps combat isn't their specialty? Perk up, Angus MacGyver. Tomorrow you start your new job brushing feral hamsters at the local animal shelter. Opportunity!"
+		}
+	}
+}
+		
+	

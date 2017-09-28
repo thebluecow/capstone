@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-md-7">
+      <h2>{{vm.title}}</h2>
+      <p>{{vm.story}}</p>
+      <mapbox callback="vm.callback" gs-coordinates='vm.coordinates'></mapbox>
+      <div class="mission-btn-div">
+        <button class="btn btn-primary" ng-click="vm.playGame()">Play</button>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-5">
+      <h3>Current Conditions</h3>
+      <p>Overall: {{vm.conditions}} <img ng-src="http://openweathermap.org/img/w/{{vm.icon}}.png" alt="weather icon"></p>
+      <p>Local Time: {{vm.local}}</p>
+      <p>Temp: {{vm.temp}}</p>
+      <p>Humidity: {{vm.humidity}}%</p>
+      <p>Wind Speed: {{vm.windspeed}}</p>
+      <p>Longitude: {{vm.longitude}}</p>
+      <p>Latitude: {{vm.latitude}}
+    </div>
+  </div>
+</div>

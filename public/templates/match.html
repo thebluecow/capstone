@@ -1,0 +1,69 @@
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Select your Opponent</h3>
+        </div>
+        <div class="panel-body">
+            <div>
+                <label for="opponent">Select by Name</label>
+                <input type="text" class="form-control" id="opponent" ng-model="opponent" placeholder="search by name...">
+            </div>
+            <!-- TODO: THIS NEEDS TO BE UPDATED ONCE AUTHENTICATION IS PUT IN ALSO REMOVE VALUE FROM DECK-->
+
+            <div class="col-sm-4" ng-repeat="deck in vm.decks | filter: opponent" ng-if="deck.user._id !== vm.decks[0].user._id">
+                <div class="card" ng-click="vm.active.elm = $index" ng-class="{'bg-primary text-white opponent-selected' :  vm.active.elm == $index}">
+                    <div class="card-block">
+                        <div class="card-text">
+                            Challenge {{deck.user.name}}!</br><strong>Wins:</strong> {{deck.user.results.wins}}</br><strong>Losses:</strong> {{deck.user.results.losses}}</br><strong>Draws:</strong> {{deck.user.results.draws}}
+                            <div class="card-footer text-muted" ng-if="deck.user.achievements.length > 0">
+                                {{deck.user.achievements[0]}}
+                            </div>
+                            <div class="card-footer text-muted" ng-if="deck.user.results.wins == 0 && deck.user.results.losses == 0">
+                                New Player!
+                            </div>
+                            <div class="card-footer text-muted" ng-if="deck.user.results.wins > 0 && deck.user.results.losses == 0">
+                                Undefeated!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h5 class="error" ng-hide="vm.error == null">{{vm.error}}</h5>
+        <button class="btn btn-primary" ng-click="vm.smackdown()">Smackdown</button>
+    </div>
+    <div ng-if="(vm.decks|filter:{user: { _id: vm.user._id }}).length == 1">
+        <h4 class='table-header'>Your Decks</h4>
+        <table class="table table-striped center">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Create Date</th>
+                    <th>Actions</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="deck-row-selected" ng-init="vm.deck_active.elm = $index" ng-repeat="deck in vm.decks | filter: {user: { _id: vm.user._id }} | orderBy: '-createDate'">
+                    <!-- ng-class="{'deck-row-border':$first}" -->
+                    <th scope="row">{{$index + 1}}</th>
+                    <td>{{ deck.createDate | date: 'M/d/yyyy' }}</td>
+                    <td>
+                        <span ng-repeat="action in deck.actions track by $index">{{action.name}}</br></span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" type="delete" confirmed-click="vm.deleteDeck(deck._id, $index)" ng-confirm-click="Are you sure you wish to delete this deck?">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-if="(vm.decks|filter:{user: { _id: vm.user._id }}).length == 0">
+        <h5 class="error">Oh no! You don't have a deck built. Let's go build one!</h5>
+        <button class="btn btn-primary" ng-click="vm.buildDeck()">Build</button>
+    </div>
+</div>

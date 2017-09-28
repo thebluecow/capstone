@@ -1,0 +1,81 @@
+<!-- <div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Build Your Action Roster</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-6 col-md-4 col-lg-4 col-xs-3" ng-repeat="action in vm.actions track by $index">
+                <div class="card action-item" ng-click="vm.addToDeck(action)" ng-class="{ 'alert-danger disable alert' : vm.deck.indexOf(action) !== -1 }">
+                    <div class="card-block">
+                        <div class="card-text">
+                            {{action.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Total moves: {{vm.deck.length}}</h3>
+        </div>
+        <div class="panel-body">
+            <h5 class="error" ng-hide="vm.error == null">{{vm.error}}</h5>
+            <div class="col-lg-4">
+                <div class="bs-component">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="item in vm.deck track by $index" ng-click="vm.remove($index)" ng-class="{ 'alert-danger' : $odd }">
+                            <span class="badge">{{$index + 1}}</span> {{item.name}}
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary" ng-click="vm.updateOrCreateDeck()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6 col-md-6">
+			<div class="panel panel-primary">
+		        <div class="panel-heading">
+		            <h3 class="panel-title">Build Your Action Roster</h3>
+		        </div>
+		        <div class="panel-body">
+		            <div class="col-sm-6" ng-repeat="action in vm.actions track by $index">
+		                <div class="card action-item" ng-click="vm.addToDeck(action)" ng-class="{ 'alert-danger disable alert' : vm.deck.indexOf(action) !== -1 }">
+		                    <div class="card-block">
+		                        <div class="card-text">
+		                            {{action.name}}
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		<div class="col-sm-6 col-md-6">
+			<div class="panel panel-primary">
+		        <div class="panel-heading">
+		            <h3 class="panel-title">Total moves: {{vm.deck.length}}</h3>
+		        </div>
+		        <div class="panel-body">
+		            <h5 class="error" ng-hide="vm.error == null">{{vm.error}}</h5>
+		            <div class="col">
+		                <div class="bs-component">
+		                    <ul class="list-group">
+		                        <li class="list-group-item" ng-repeat="item in vm.deck track by $index" ng-click="vm.remove($index)" ng-class="{ 'alert-danger' : $odd }">
+		                            <span class="badge">{{$index + 1}}</span> {{item.name}}
+		                        </li>
+		                    </ul>
+		                    <button class="btn btn-primary" ng-click="vm.updateOrCreateDeck()">Submit</button>
+		                    <button class="btn btn-primary" confirmed-click="vm.clear()" ng-confirm-click="Are you sure you wish to clear these actions?">Clear</button>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>

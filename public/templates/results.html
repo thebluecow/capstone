@@ -1,0 +1,14 @@
+<div class="container">
+	<div class="jumbotron">
+  <h1 class="display-3">{{vm.matches[0].deck_one.user.name}}</h1>
+  <p class="lead">{{vm.matches[0].story}}</p>
+  <hr class="my-4">
+  <h3>Your Record</h3>
+  <p>Wins: {{vm.matches[0].deck_one.user.results.wins}}</p>
+  <p>Losses: {{vm.matches[0].deck_one.user.results.losses}}</p>
+  <p>Draws: {{vm.matches[0].deck_one.user.results.draws}}</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="#!/match" role="button">Play Again</a>
+  </p>
+</div>
+</div>
