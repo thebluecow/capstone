@@ -20,27 +20,27 @@ var _stories = {
         }
     ],
     "momentum": [{
-            "story": ["Few things in life are as rewarding as absolute domination, and in this respect WINNER excels. OPPONENT was",
-                " overmatched at every turn, and in the end, OPPONENT decided that surrendering was the best course of action. Would",
-                " someone with actual courage do such a thing? No. But OPPONENT was never one to possess much courage while WINNER measures",
+            "story": ["Few things in life are as rewarding as absolute domination, and in this respect {WINNER} excel{s}. [OPPONENT] [was]",
+                " overmatched at every turn, and in the end, [OPPONENT] decided that surrendering was the best course of action. Would",
+                " someone with actual courage do such a thing? No. But [OPPONENT] [was] never one to possess much courage while {WINNER} measure{s}",
                 " courage by the APC full. Congratulations WINNER. Of all the opponents you could have chosen this day, you found the most",
                 " craven, and that, my friend, is a real talent!"
             ]
         },
         {
-            "story": ["We're ashamed for OPPONENT. We've combed through the records and found little evidence to support that",
-                " OPPONENT exists on our servers. Did WINNER invent this person? Surrender? Sometimes people have bad days. You roll out of bed.",
-                " You slip on a banana peel. You veer into a truckload of manure. We understand. WINNER dominated OPPONENT so thoroughly",
-                " that OPPONENT was seen weeping in the corner with a sun-warmed glass of Kool Aid and a worn copy of the Tao Te Ching.",
+            "story": ["We're ashamed for [OPPONENT]. We've combed through the records and found little evidence to support that",
+                " [OPPONENT] exists on our server[s]. Did {WINNER} invent this person? Surrender? Sometimes people have bad days. You roll out of bed.",
+                " You slip on a banana peel. You veer into a truckload of manure. We understand. {WINNER} dominated [OPPONENT] so thoroughly",
+                " that [OPPONENT] [was] seen weeping in the corner with a sun-warmed glass of Kool Aid and a worn copy of the Tao Te Ching.",
                 " Perhaps combat isn't their specialty? Perk up, OPPONENT. Tomorrow you start your new job brushing feral hamsters at the",
                 " local animal shelter. Opportunity!"
             ]
         }
     ],
     "standard": [{
-            "story": ["One day, in the not so distant future, OPPONENT will look back upon this day and consider his or her battle as a",
-                " learning experience. 'The loss does not matter,' OPPONENT, thinks. Of course, he or she is an idiot and of course the",
-                " loss matters. Moral victories are great for the movies, but in real life, WINNER understands that the sweet taste of",
+            "story": ["One day, in the not so distant future, [OPPONENT] will look back upon this day and consider this battle as a",
+                " learning experience. 'The loss does not matter,' [OPPONENT] think[s]. Of course, this is pretty silly and of course the",
+                " loss matters. Moral victories are great for the movies, but in real life, {WINNER} understand{s} that the sweet taste of",
                 " victory is more important than slow motion celebrations in the runner's up tent. Congratulations WINNER. The day is",
                 " yours. Hold your head high as you march through the streets, waving your victory banner. Does a beverage taste better",
                 " after a win. Yes. Yes it does. Enjoy a beverage of choice!"
@@ -48,15 +48,19 @@ var _stories = {
         },
         {
             "story": ["It was perhaps the most exciting match we've yet seen here. Perhaps. It could also be described as a waste of our",
-                " time because we bet money on OPPONENT and now they've lost. We lost big.",
-                " The odds on OPPONENT were 100-1, the longest of long shots, and we bet accordingly. Is gambling illegal? Not when it's a sure thing.",
-                " That's called investing, friend, and now we realize that we should have 'invested' in WINNER. Oh, to think of our champagne",
+                " time because we bet money on [OPPONENT] and now we've lost. We lost big.",
+                " The odds on {WINNER} were 100-1, the longest of long shots, and we bet accordingly. Is gambling illegal? Not when it's a sure thing.",
+                " That's called investing, friend, and now we realize that we should have 'invested' in Cheetos instead. Oh, to think of our champagne",
                 " wishes and caviar dreams now being turned into RC Cola and Spam. OPPONENT, we never should have doubted your ability to screw everything up.",
                 " WINNER, we never should have doubted your tenacity and force of will. Also your big guns. Those came in handy.",
                 " Probably more than the tenacity and will. Yes. Much, much more."
             ]
         }
     ]
+};
+
+var _replaceRules = {
+
 };
 
 function _getRandomInt(min, max) {
@@ -84,11 +88,34 @@ function _buildStory(storyArray, players) {
 
     for (var i = 0; i < storyArray['story'].length; i++) {
         var line = storyArray['story'][i];
+        // let's do some fun 2nd person and verb conjugation
+        /* the rules:
+            1. [] - brackets are for opponent
+            2. {} - braces are for winner
+            3. if player1 wins, {s} should be removed; [s] should be replaced with s;
+               [was] remains as was
+            4. if player1 loses, {s} remains as s; [was] becomes were; {s} is dropped
+        */
+
+        if (players.winner === "player 1" || players.winner === "draw") {
+            line = line.replace("{WINNER}", 'you');
+            line = line.replace("{s}", '');
+            line = line.replace("[OPPONENT]", opponent);
+            line = line.replace("[was]", "was");
+            line = line.replace("[s]", "s");
+        } else {
+            line = line.replace("{WINNER}", winner);
+            line = line.replace("{s}", 's');
+            line = line.replace("[OPPONENT]", 'you');
+            line = line.replace("[was]", 'were');
+            line = line.replace("[s]", '');
+        }
         line = line.replace("WINNER", winner);
         line = line.replace("OPPONENT", opponent);
+        line = line.replace('. you', '. You');
+
         story += line;
     }
-    console.log(story);
     return story;
 }
 

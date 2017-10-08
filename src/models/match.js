@@ -35,6 +35,16 @@ var MatchSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: false
+  },
+  player_one: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: false
+  },
+  player_two: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: false
   }
 });
 

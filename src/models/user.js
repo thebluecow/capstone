@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+var passportLocalMongoose = require('passport-local-mongoose');
 
 var UserSchema = new mongoose.Schema({
     email: {
@@ -22,12 +23,16 @@ var UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: false
+        required: true
     },
-    role: {
+    champion: {
         type: String,
         required: false
     },
+    roles: [{
+        type: String,
+        required: false
+    }],
     achievements: [{
         type: String,
         required: false
@@ -54,49 +59,28 @@ UserSchema.path('email').validate(function(email) {
     return emailRegex.test(this.email); // Assuming email has a text attribute
 }, 'The e-mail is either empty or improperly formed.');
 
-// hash password before saving to database
-UserSchema.pre('save', function(next) {
-    var user = this;
-    if (!user.password) {
-        user.password = '';
-    }
-    bcrypt.hash(user.password, 10, function(err, hash) {
-        if (err) {
-            return next(err);
-        }
-        user.password = hash;
-        next();
-    });
-});
-
 // authenticate input against database documents
 UserSchema.statics.authenticate = function(email, password, callback) {
-    User.findOne({
-            email: email
+  User.findOne({ email: email })
+      .exec(function (error, user) {
+        if (error) {
+          return callback(error);
+        } else if ( !user ) {
+          var err = new Error('Email is not registered.');
+          err.status = 401;
+          return callback(err);
+        }
+        bcrypt.compare(password, user.password , function(error, result) {
+          if (result === true) {
+            return callback(null, user);
+          } else {
+            return callback();
+          }
         })
-        .exec(function(error, user) {
-            if (error) {
-                return callback(error);
-            } else if (!user) {
-                var err = new Error('User not found.');
-                err.status = 401;
-                return callback(err);
-            }
+      });
+};
 
-            if (user.role !== 'admin') {
-                return callback();
-            }
-
-            bcrypt.compare(password, user.password, function(error, result) {
-                if (result === true) {
-                    return callback(null, user);
-                } else {
-                    return callback();
-                }
-            })
-        });
-}
-
+// update the win/loss/draw in results
 UserSchema.method("updateRecord", function(result, callback) {
     if (result === "win") {
         this.results.wins += 1;
@@ -106,6 +90,20 @@ UserSchema.method("updateRecord", function(result, callback) {
         this.results.draws += 1;
     }
     this.save(callback);
+});
+
+// hash password before saving to database
+UserSchema.pre('save', function(next) {
+  var user = this;
+
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified('password')) return next();
+
+  bcrypt.hash(user.password, 10, function(err, hash) {
+    if (err) { return next(err); }
+    user.password = hash;
+    next();
+  });
 });
 
 var User = mongoose.model('User', UserSchema);

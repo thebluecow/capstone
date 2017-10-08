@@ -33,16 +33,10 @@ angular.module('ijwApp')
 
             }());
 
-            function convertUnixTime(time) {
-                return new Date(time * 1000).toString().substring(4, 24);
-            }
-
-            function convertToFahrenheit(temp) {
-                return (1.8 * (temp - 273) + 32).toFixed(2);
-            }
-
+            // routes user based on if deck is already created
             vm.playGame = function() {
-                dataService.getUserDecks('59b3d92a026d930c39bd9ed6')
+                var userId = dataService.getUserId();
+                dataService.getUserDecks(userId)
                     .then(function(deck) {
                         if (deck.data.length > 0) {
                             dataService.go('/match');

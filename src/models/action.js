@@ -65,6 +65,16 @@ var ActionSchema = new mongoose.Schema({
     }
 });
 
+// update the status (called via REST)
+ActionSchema.method("updateStatus", function(result, callback) {
+    if (result === "enable") {
+        this.active = true;
+    } else if (result === "disable") {
+        this.active = false;
+    } 
+    this.save(callback);
+});
+
 // authenticate input against database documents
 ActionSchema.statics.setValues = function(callback) {
 
@@ -110,6 +120,7 @@ ActionSchema.statics.setValues = function(callback) {
   }
 
 
+  // updates the action's value with those built through random and sort
   this.model("Action").find({}, function(err, actions) {
     if (err) { return callback(err); }
     totalActions = actions.length;

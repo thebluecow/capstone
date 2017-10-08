@@ -5,15 +5,23 @@ var angular = require('angular');
 var reporter = require('../js/reportBuilder.js');
 
 angular.module('ijwApp')
-    .service("gameService", function($http, $q, $log, dataService) {
+    .service("gameService", function($http, $q, $log, dataService, config) {
 
         ! function(game) {
 
-            var _actionCount = 10;
+            // _actions will hold values from database
             var _actions = {};
+            // used for individual play
+            var _newActions = {};
             var _weather = {};
-            const HOME = 'http://localhost:3000';
-            const MOMENTUM = 4;
+
+            var MAX_MOVES = config.MAX_MOVES;
+
+            const MOMENTUM = config.MOMENTUM;
+
+            // placeholder for later. For the moment, all games will be 'vs'
+            // this will allow us to add tournament modes
+            var _mode = null;
 
             // get current all actions with values
             (function() {
@@ -37,6 +45,8 @@ angular.module('ijwApp')
                     });
             }());
 
+            // based on code from openweathermap
+            // https://openweathermap.org/weather-conditions
             var _getWeatherCondition = function() {
                 var code = parseInt(_weather.weather[0]['id']);
                 code = 781;
@@ -56,41 +66,126 @@ angular.module('ijwApp')
                 return condition;
             }
 
+            // verify decks are of the correct length
             var verifyDecks = function(player1, player2) {
                 var verified = false;
 
-                verified = (player1.actions.length === _actionCount && player2.actions.length === _actionCount);
+                verified = (player1.actions.length === MAX_MOVES && player2.actions.length === MAX_MOVES);
 
                 return verified;
             };
 
+            // returns the action with the new value after bonuses were applied
+            // for individual play, random values are first assigned then bonuses are +/-
             var _getValue = function(move, bonuses) {
+                var newAction = {};
                 var value = 0;
-                _actions.forEach(function(action) {
-                    if (action._id === move._id) {
-                        value = action.value;
 
-                        if (bonuses.condition) {
-                            $log.info(bonuses.condition);
-                            value += action.bonuses[bonuses.condition];
-                        }
+                // use the _newActions array (after randomized) when 'vs mode'
+                if (_mode === 'vs') {
+                        _newActions.forEach(function(action) {
+                        if (action._id === move._id) {
+                            value = action.value;
+                            newAction.name = action.name;
 
-                        if (bonuses.mission.location.terrain) {
-                            $log.info(bonuses.mission.location.terrain);
-                            value += action.bonuses[bonuses.mission.location.terrain];
+                            if (bonuses.condition) {
+                                value += action.bonuses[bonuses.condition];
+                            }
+
+                            if (bonuses.mission.location.terrain) {
+                                value += action.bonuses[bonuses.mission.location.terrain];
+                            }
                         }
-                    }
-                });
-                return value;
+                    });
+                } else {
+                        _actions.forEach(function(action) {
+                        if (action._id === move._id) {
+                            value = action.value;
+                            newAction.name = action.name;
+
+                            if (bonuses.condition) {
+                                value += action.bonuses[bonuses.condition];
+                            }
+
+                            if (bonuses.mission.location.terrain) {
+                                value += action.bonuses[bonuses.mission.location.terrain];
+                            }
+                        }
+                    });
+                }
+
+                newAction.value = value;
+
+                return newAction;
             }
 
+            // based on same randomize function in action model
+            // TODO: make this DRY
+            var _randomizeValues = function() {
+              
+              var actionValues = [];
+              var totalActions = 0;
+
+              var _buildArray = function() {
+                // set max to be half of totalActions
+                var max = Math.floor(totalActions / 2);
+
+                // push the same value twice since two actions
+                // will have a value of 1, two of 2, etc.
+                for (var i = 1; i <= max; i++) {
+                  actionValues.push(i);
+                  actionValues.push(i);
+                }
+
+                totalActions % 2 === 0 ? true : actionValues.push(max + 1);
+
+                // call shuffle function to return the array of shuffled values
+                return _shuffle(actionValues);
+              };
+
+              // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+              // Fisher-Yates Shuffle Algorithm
+              function _shuffle(array) {
+                  var currentIndex = array.length, temporaryValue, randomIndex;
+
+                  // While there remain elements to shuffle...
+                  while (0 !== currentIndex) {
+
+                    // Pick a remaining element...
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+
+                    // And swap it with the current element.
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                  }
+
+                  return array;
+              }
+
+              _newActions = angular.copy(_actions);
+
+              totalActions = _newActions.length;
+              _buildArray();
+
+              _newActions.map(_newAction => {
+                _newAction.value = actionValues.pop();
+              }, function(err, result) {
+                if (err) {
+                    $log.error(err);
+                }
+              });
+            }
+
+            // compare the actions and return the round info (win, loss, tie)
             var compareActions = function(action_p1, action_p2) {
                 var bonuses = {};
                 bonuses.condition = _getWeatherCondition();
                 bonuses.mission = dataService.getMission();
 
-                action_p1.value = _getValue(action_p1, bonuses);
-                action_p2.value = _getValue(action_p2, bonuses);
+                action_p1 = _getValue(action_p1, bonuses);
+                action_p2 = _getValue(action_p2, bonuses);
 
                 var round = {};
                 // set round information
@@ -119,11 +214,13 @@ angular.module('ijwApp')
                 return round;
             }
 
+            // converts time from openweathermap
             function _convertUnixTime(time) {
                 //return new Date(time * 1000).toString().substring(4, 24);
                 return new Date(time * 1000).toString();
             }
 
+            // runs through the round information, determining match winner
             var _getResults = function(results) {
                 var player1 = 0;
                 var player2 = 0;
@@ -149,6 +246,7 @@ angular.module('ijwApp')
 
                 for (var property in results) {
                     if (results.hasOwnProperty(property) && !won) {
+                        console.log('propery', results[property]);
                         var move = results[property];
                         if (move.winner === 'player 1') {
                             player1++;
@@ -201,14 +299,19 @@ angular.module('ijwApp')
                     results.story = reporter.getStory('draw', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
                 }
 
+                // pushes values to match form
                 _updateResults(results);
 
                 results.player_1_moves = player1;
                 results.player_2_moves = player2;
 
+                // calls the function to return log for controller
+                _buildGameLog(results);
+
                 return results;
             }
 
+            // creates a match and also updates both users wins/losses/draws
             var _updateResults = function(results) {
                 var promiseUser;
                 var promiseOpp;
@@ -223,8 +326,6 @@ angular.module('ijwApp')
                     "reason"    : results.reason
                 };
 
-                $log.info(results);
-
                 if (results.winner === "player 1") {
                     winnerId = results["player 1"]["_id"];
                     loserId  = results["player 2"]["_id"];
@@ -234,11 +335,14 @@ angular.module('ijwApp')
                 }
 
                 match.winner = winnerId;
+                match.player_one = results["player 1"]["_id"];
+                match.player_two = results["player 2"]["_id"];
+                
                 promiseMatch =  dataService.createMatch(match)
                                 .then(function(result) {
                                 
                                 }, function(reason) {
-                                    $log.error('CREATE MATCH REASON', reason);
+                                    $log.error(reason);
                                 });
 
                 if (results.reason === 'draw') {
@@ -246,14 +350,14 @@ angular.module('ijwApp')
                                     .then(result => {
                                         //dataService.go('/result');
                                     }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
+                                        $log.error(reason);
                                     });
 
                     promiseOpp  =   dataService.updateUserRecord(loserId, 'draw')
                                     .then(result => {
                                         // dataService.go('/results');
                                     }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
+                                        $log.error(reason);
                                     });
                 }
 
@@ -262,14 +366,14 @@ angular.module('ijwApp')
                                     .then(result => {
                                         //dataService.go('/result');
                                     }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
+                                        $log.error(reason);
                                     });
 
                     promiseOpp  =   dataService.updateUserRecord(loserId, 'loss')
                                     .then(result => {
                                         //dataService.go('/result');
                                     }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
+                                       $log.error(reason);
                                     });
                 }
 
@@ -278,7 +382,34 @@ angular.module('ijwApp')
                 });
             };
 
-            game.playGame = function(player1, player2) {
+            // build out the results that we want to expose
+            var _buildGameLog = function(results) {
+                // first delete all the properties we don't need
+                var log = angular.copy(results);
+                delete log.deck_one;
+                delete log.deck_two;
+                delete log.story;
+                delete log['player 1'];
+                delete log['player 2'];
+                // hide the values in case a crafty player figures out the values
+                // uncomment to hide this information
+                /*for (var i = 0; i < MAX_MOVES; i++) {
+                    delete log['move_' + i]['player1']['value'];
+                    delete log['move_' + i]['player2']['value'];
+                    delete log['move_' + i]['diff'];
+                }*/
+
+                game.log = log;
+            }
+
+            // return the game.log
+            // game.log is set in _buildGameLog function
+            game.getLastLog = function() {
+                if (game.log) { return game.log; }
+            }
+
+            // open to controllers
+            game.playGame = function(player1, player2, mode) {
 
                 var results = {};
                 results['player 1'] = player1.user;
@@ -286,12 +417,16 @@ angular.module('ijwApp')
                 results.deck_one = player1._id;
                 results.deck_two = player2._id;
 
-                $log.info(results);
+                _mode = mode;
+
+                if (_mode === 'vs') {
+                    _randomizeValues();
+                }
 
                 // first, verify deck action arrays have the correct length
                 if (verifyDecks(player1, player2)) {
                     // loop through actions and return results
-                    for (var i = 0; i < _actionCount; i++) {
+                    for (var i = 0; i < MAX_MOVES; i++) {
                         results['move_' + i] = compareActions(player1.actions[i], player2.actions[i]);
                     }
 

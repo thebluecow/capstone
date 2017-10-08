@@ -9,9 +9,8 @@
                 <label for="opponent">Select by Name</label>
                 <input type="text" class="form-control" id="opponent" ng-model="opponent" placeholder="search by name...">
             </div>
-            <!-- TODO: THIS NEEDS TO BE UPDATED ONCE AUTHENTICATION IS PUT IN ALSO REMOVE VALUE FROM DECK-->
 
-            <div class="col-sm-4" ng-repeat="deck in vm.decks | filter: opponent" ng-if="deck.user._id !== vm.decks[0].user._id">
+            <div class="col-sm-4" ng-repeat="deck in vm.decks | filter: opponent" ng-if="deck.user._id !== vm.user._id">
                 <div class="card" ng-click="vm.active.elm = $index" ng-class="{'bg-primary text-white opponent-selected' :  vm.active.elm == $index}">
                     <div class="card-block">
                         <div class="card-text">
@@ -36,7 +35,7 @@
         <h5 class="error" ng-hide="vm.error == null">{{vm.error}}</h5>
         <button class="btn btn-primary" ng-click="vm.smackdown()">Smackdown</button>
     </div>
-    <div ng-if="(vm.decks|filter:{user: { _id: vm.user._id }}).length == 1">
+    <div ng-if="vm.userDeck">
         <h4 class='table-header'>Your Decks</h4>
         <table class="table table-striped center">
             <thead>
@@ -48,21 +47,22 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="deck-row-selected" ng-init="vm.deck_active.elm = $index" ng-repeat="deck in vm.decks | filter: {user: { _id: vm.user._id }} | orderBy: '-createDate'">
+                <!-- USE indexOf instead of $index to get filtered result -->
+                <tr class="deck-row-selected" ng-init="vm.deck_active.elm = vm.userDeck">
                     <!-- ng-class="{'deck-row-border':$first}" -->
-                    <th scope="row">{{$index + 1}}</th>
-                    <td>{{ deck.createDate | date: 'M/d/yyyy' }}</td>
+                    <th scope="row">1</th>
+                    <td>{{ vm.userDeck.createDate | date: 'M/d/yyyy' }}</td>
                     <td>
-                        <span ng-repeat="action in deck.actions track by $index">{{action.name}}</br></span>
+                        <span ng-repeat="action in vm.userDeck.actions track by $index">{{action.name}}</br></span>
                     </td>
                     <td>
-                        <button class="btn btn-primary" type="delete" confirmed-click="vm.deleteDeck(deck._id, $index)" ng-confirm-click="Are you sure you wish to delete this deck?">Delete</button>
+                        <button class="btn btn-primary" type="delete" confirmed-click="vm.deleteDeck(vm.userDeck._id)" ng-confirm-click="Are you sure you wish to delete this deck?">Delete</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div ng-if="(vm.decks|filter:{user: { _id: vm.user._id }}).length == 0">
+    <div ng-if="!vm.userDeck">
         <h5 class="error">Oh no! You don't have a deck built. Let's go build one!</h5>
         <button class="btn btn-primary" ng-click="vm.buildDeck()">Build</button>
     </div>
