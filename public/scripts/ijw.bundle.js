@@ -3474,7 +3474,7 @@ angular.module('xeditable').factory('editableThemes', function() {
          controller: 'homeCtrl',
          controllerAs: 'vm',
          templateUrl: 'templates/home.html',
-         access: {restricted: false, admin: false}
+         access: {restricted: true, admin: false}
      })
      .when('/login', {
          controller: 'loginCtrl',
@@ -5056,8 +5056,8 @@ angular.module('ijwApp')
             var _actions = {};
             var matches = undefined;
 
-            var weatherURL = 'http://api.openweathermap.org/data/2.5/weather';
-            var timezonedbURL = 'http://api.timezonedb.com/v2/get-time-zone?key=';
+            var weatherURL = 'https://api.openweathermap.org/data/2.5/weather';
+            var timezonedbURL = 'https://api.timezonedb.com/v2/get-time-zone?key=';
 
             var styles = {
                 'satellite': 'mapbox://styles/mapbox/satellite-v9',
