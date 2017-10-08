@@ -2,10 +2,16 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var path = require('path');
+var fs = require('fs');
 var session = require('express-session');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var passport = require('passport');
+//var localStrategy = require('passport-local').Strategy;
+var PassportLocalStrategy = require('passport-local')
+//var flash = require('connect-flash'); 
 
 // seed the database
 var seeder = require('mongoose-seeder');
@@ -20,11 +26,21 @@ var app = express();
 const DB_NAME = 'ijw';
 var port = process.env.PORT || 3000;
 
+require('./config/passport.js')(passport);
+
 // parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+app.use(cookieParser());
+app.use(require('express-session')({
+    secret: 'yo joe',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // serve static files from /public
 app.use('/', express.static('public'));
@@ -32,6 +48,7 @@ app.use('/', express.static('public'));
 // routes
 var actionRouter = require('./api/index.js');
 app.use('/api/', actionRouter);
+app.use('/user/', actionRouter);
 
 // connect to local mongodb
 mongoose.connect('mongodb://localhost:27017/' + DB_NAME);

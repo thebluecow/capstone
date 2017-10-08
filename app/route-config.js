@@ -13,55 +13,104 @@
   
    angular
      .module('ijwApp')
-     .config(config);
+     .config(config)
+     .run(run)
+     .run(function(editableOptions) {
+        editableOptions.theme = 'bs3';
+      });
 
    function config($locationProvider, $routeProvider) {
 
     $locationProvider.hashPrefix('!');
 
      $routeProvider
+     .when('/', {
+         controller: 'homeCtrl',
+         controllerAs: 'vm',
+         templateUrl: 'templates/home.html',
+         access: {restricted: false, admin: false}
+     })
      .when('/login', {
          controller: 'loginCtrl',
-         controllerAs: 'vm',
-         templateUrl: 'templates/login.html'
+         templateUrl: 'templates/login.html',
+         access: {restricted: false, admin: false}
      })
      .when('/logout', {
-         controller: 'loginCtrl',
+         controller: 'logoutCtrl',
+         access: {restricted: true, admin: false}
+     })
+     .when('/register', {
+         controller: 'registerCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/login.html'
+         templateUrl: 'templates/register.html',
+         access: {restricted: false, admin: false}
      })
       .when('/about', {
-         controller: 'loginCtrl',
-         controllerAs: 'vm',
-         templateUrl: 'templates/about.html'
+         templateUrl: 'templates/about.html',
+         access: {restricted: false, admin: false}
      })
       .when('/profile', {
-         controller: 'deckBuildCtrl',
+         controller: 'matchCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/profile.html'
+         templateUrl: 'templates/profile.html',
+         access: {restricted: true, admin: false}
      })
       .when('/mission', {
          controller: 'missionCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/mission.html'
+         templateUrl: 'templates/mission.html',
+         access: {restricted: true, admin: false}
      })
        .when('/deck', {
          controller: 'deckBuildCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/deck-build.html'
+         templateUrl: 'templates/deck-build.html',
+         access: {restricted: true, admin: false}
        })
      .when('/match', {
          controller: 'matchCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/match.html'
+         templateUrl: 'templates/match.html',
+         access: {restricted: true, admin: false}
      })
      .when('/results', {
          controller: 'matchCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/results.html'
+         templateUrl: 'templates/results.html',
+         access: {restricted: true, admin: false}
+     })
+     .when('/admin', {
+         controller: 'adminCtrl',
+         controllerAs: 'vm',
+         templateUrl: 'templates/admin.html',
+         access: {restricted: true, admin: true}
      })
        .otherwise({
          redirectTo: '/'
        });
    }
+
+   function run($rootScope, $location, $route, AuthService) {
+      $rootScope.$on('$routeChangeStart',
+        function (event, next, current) {
+          AuthService.getUserStatus()
+          .then(function(){
+            if (next.access.restricted && !AuthService.isLoggedIn()){
+              $location.path('/login');
+              $route.reload();
+            }
+          })
+          .then(function() {
+            if (next.access.admin) {
+              AuthService.getUserRoles()
+              .then(function() {
+                if (!AuthService.isAdmin()) {
+                  $location.path('/');
+                  $route.reload();
+                }
+              })
+            }
+          });
+        });
+    }
 })();

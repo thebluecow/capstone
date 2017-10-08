@@ -7,8 +7,20 @@ webpackJsonp([0],[
 
 
 var angular = __webpack_require__(0);
+var angularUtils = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"angular-utils-pagination\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+var xeditable = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"angular-xeditable\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
-angular.module('ijwApp', ['ngRoute']);
+angular.module('ijwApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'xeditable'])
+.constant('config', {
+	'appName': 'ijw',
+	'appVersion': '1.0',
+	'BONUSES': {
+		'min': -20,
+		'max': 20
+	},
+	'MAX_MOVES': 10,
+	'MOMENTUM': 4
+});
 
 __webpack_require__(3);
 __webpack_require__(4);
@@ -16,8 +28,14 @@ __webpack_require__(5);
 __webpack_require__(6);
 __webpack_require__(7);
 __webpack_require__(8);
+__webpack_require__(9);
+__webpack_require__(10);
 __webpack_require__(11);
+__webpack_require__(12);
 __webpack_require__(13);
+__webpack_require__(16);
+__webpack_require__(17);
+__webpack_require__(20);
 
 /***/ }),
 /* 2 */,
@@ -39,57 +57,106 @@ __webpack_require__(13);
   
    angular
      .module('ijwApp')
-     .config(config);
+     .config(config)
+     .run(run)
+     .run(function(editableOptions) {
+        editableOptions.theme = 'bs3';
+      });
 
    function config($locationProvider, $routeProvider) {
 
     $locationProvider.hashPrefix('!');
 
      $routeProvider
+     .when('/', {
+         controller: 'homeCtrl',
+         controllerAs: 'vm',
+         templateUrl: 'templates/home.html',
+         access: {restricted: false, admin: false}
+     })
      .when('/login', {
          controller: 'loginCtrl',
-         controllerAs: 'vm',
-         templateUrl: 'templates/login.html'
+         templateUrl: 'templates/login.html',
+         access: {restricted: false, admin: false}
      })
      .when('/logout', {
-         controller: 'loginCtrl',
+         controller: 'logoutCtrl',
+         access: {restricted: true, admin: false}
+     })
+     .when('/register', {
+         controller: 'registerCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/login.html'
+         templateUrl: 'templates/register.html',
+         access: {restricted: false, admin: false}
      })
       .when('/about', {
-         controller: 'loginCtrl',
-         controllerAs: 'vm',
-         templateUrl: 'templates/about.html'
+         templateUrl: 'templates/about.html',
+         access: {restricted: false, admin: false}
      })
       .when('/profile', {
-         controller: 'deckBuildCtrl',
+         controller: 'matchCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/profile.html'
+         templateUrl: 'templates/profile.html',
+         access: {restricted: true, admin: false}
      })
       .when('/mission', {
          controller: 'missionCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/mission.html'
+         templateUrl: 'templates/mission.html',
+         access: {restricted: true, admin: false}
      })
        .when('/deck', {
          controller: 'deckBuildCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/deck-build.html'
+         templateUrl: 'templates/deck-build.html',
+         access: {restricted: true, admin: false}
        })
      .when('/match', {
          controller: 'matchCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/match.html'
+         templateUrl: 'templates/match.html',
+         access: {restricted: true, admin: false}
      })
      .when('/results', {
          controller: 'matchCtrl',
          controllerAs: 'vm',
-         templateUrl: 'templates/results.html'
+         templateUrl: 'templates/results.html',
+         access: {restricted: true, admin: false}
+     })
+     .when('/admin', {
+         controller: 'adminCtrl',
+         controllerAs: 'vm',
+         templateUrl: 'templates/admin.html',
+         access: {restricted: true, admin: true}
      })
        .otherwise({
          redirectTo: '/'
        });
    }
+
+   function run($rootScope, $location, $route, AuthService) {
+      $rootScope.$on('$routeChangeStart',
+        function (event, next, current) {
+          AuthService.getUserStatus()
+          .then(function(){
+            if (next.access.restricted && !AuthService.isLoggedIn()){
+              $location.path('/login');
+              $route.reload();
+            }
+          })
+          .then(function() {
+            if (next.access.admin) {
+              AuthService.getUserRoles()
+              .then(function() {
+                if (!AuthService.isAdmin()) {
+                  $location.path('/');
+                  $route.reload();
+                }
+              })
+            }
+          });
+        });
+    }
 })();
 
 /***/ }),
@@ -101,19 +168,109 @@ __webpack_require__(13);
 
 var angular = __webpack_require__(0);
 
-angular.module('ijwApp')
-.controller('loginCtrl', function($scope, $log, $interval, dataService){
+angular.module('ijwApp').controller('loginCtrl',
+  ['$scope', '$location', 'AuthService',
+  function ($scope, $location, AuthService) {
 
-	!function(vm) {
-		
-		return vm;
-		
-	}(this);
-  
-})
+    $scope.login = function () {
+
+      // initial values
+      $scope.error = false;
+      $scope.disabled = true;
+
+      // call login from service
+      AuthService.login($scope.loginForm.email, $scope.loginForm.password)
+        // handle success
+        .then(function () {
+          $location.path('/profile');
+          $scope.disabled = false;
+          $scope.loginForm = {};
+        })
+        // handle error
+        .catch(function () {
+          $scope.error = true;
+          $scope.errorMessage = "Invalid email and/or password";
+          $scope.disabled = false;
+          $scope.loginForm = {};
+        });
+
+    };
+
+}]);
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var angular = __webpack_require__(0);
+
+angular.module('ijwApp').controller('logoutCtrl',
+  ['$scope', '$location', 'AuthService',
+  function ($scope, $location, AuthService) {
+
+    $scope.logout = function () {
+
+    	// initial values
+      $scope.error = false;
+
+      // call logout from service
+      AuthService.logout()
+        .then(function () {
+          $location.path('/login');
+        })
+        .catch(function() {
+        	$scope.error = true;
+          	$scope.errorMessage = "There's an error on logout";
+        });
+
+    };
+
+}]);
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var angular = __webpack_require__(0);
+
+angular.module('ijwApp').controller('registerCtrl',
+  ['$scope', '$location', 'AuthService',
+  function ($scope, $location, AuthService) {
+
+    $scope.register = function () {
+
+      // initial values
+      $scope.error = false;
+      $scope.disabled = true;
+
+      // call register from service
+      AuthService.register($scope.registerForm.email, $scope.registerForm.name, $scope.registerForm.password, $scope.registerForm.confirmPassword)
+        // handle success
+        .then(function () {
+          $location.path('/login');
+          $scope.disabled = false;
+          $scope.registerForm = {};
+        })
+        // handle error
+        .catch(function () {
+          $scope.error = true;
+          $scope.errorMessage = "Something went wrong!";
+          $scope.disabled = false;
+          $scope.registerForm = {};
+        });
+
+    };
+
+}]);
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -123,24 +280,65 @@ angular.module('ijwApp')
 var angular = __webpack_require__(0);
 
 angular.module('ijwApp')
-    .controller('deckBuildCtrl', function($scope, $log, $interval, dataService) {
+    .controller('homeCtrl', function($scope, $log, $q, dataService) {
 
         ! function(vm) {
 
-            var MAX_ACTIONS = 10;
+            // get user from dataService
+            (function() {
+                dataService.getAllUsers().then( users => {
+                    vm.users = users.data;
+                }, error => {
+                    $log.error(error);
+                });
+            }());
+
+            // used to sort table
+            vm.sort = function(header) {
+                vm.sortKey = header;
+                vm.reverse = !vm.reverse;
+            }
+
+            // returns a float as string
+            vm.returnPercentage = function(user) {
+                var float = parseFloat(user.results.wins / (user.results.wins + user.results.losses) * 100).toFixed(2);
+                if (isNaN(float)) {
+                    float = '0.00';
+                }
+                return float;
+            }
+
+            return vm;
+
+        }(this);
+
+    })
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
+var angular = __webpack_require__(0);
+
+angular.module('ijwApp')
+    .controller('deckBuildCtrl', function($scope, $log, $interval, dataService, config) {
+
+        ! function(vm) {
+
+            var MAX_MOVES = config.MAX_MOVES;
             vm.deck = [];
             vm.error = null;
             vm.actions = [];
+            var mission = {};
 
-            // get current user (for testing until auth strategy)
-            (function() {
-                dataService.getUser('59b3d92a026d930c39bd9ed6')
-                    .then(function(user) {
-                        vm.user = (user !== 'null') ? user.data : {};
-                    }, function(reason) {
-                        $log.error('USER REASON', reason);
-                    });
-            }());
+            // user does not need to be visible to scope
+            var user = {
+                _id: dataService.getUserId()
+            };
 
             // get actions from dataService
             (function() {
@@ -152,37 +350,49 @@ angular.module('ijwApp')
                     });
             }());
 
+            // get mission from dataService
+            (function() {
+                mission = dataService.getMission();
+                vm.title = mission.location.title;
+                vm.story = mission.location.story;
+            }());
+
+
+            // add an action to the deck
             vm.addToDeck = function(action) {
-                if (vm.deck.length < MAX_ACTIONS) {
+                if (vm.deck.length < MAX_MOVES) {
                     vm.deck.push(action);
                     vm.error = null;
                 } else {
-                    vm.error = 'Action list can contain no more than ' + MAX_ACTIONS + ' actions.';
+                    vm.error = 'Action list can contain no more than ' + MAX_MOVES + ' actions.';
                 }
             }
 
+            // remove an action from the deck
             vm.remove = function(index) {
                 vm.deck.splice(index, 1);
                 vm.error = null;
             }
 
+            // clear the deck
             vm.clear = function() {
                 vm.deck = [];
                 vm.error = null;
             }
 
+            // update the deck if it already exists or create a new one
             vm.updateOrCreateDeck = function() {
 
                 var newDeck = {};
 
-                if (vm.deck.length < MAX_ACTIONS) {
-                    vm.error = 'Action list must contain ' + MAX_ACTIONS + ' actions to submit.';
+                if (vm.deck.length < MAX_MOVES) {
+                    vm.error = 'Action list must contain ' + MAX_MOVES + ' actions to submit.';
                     return $log.error('Array less than appropriate');
-                } else if (vm.user === null) {
+                } else if (user === null) {
                     return $log.error('User is null');
                 } else {
                     newDeck.user = {
-                        '_id': vm.user._id
+                        '_id': user._id
                     };
                     newDeck.actions = [];
                     for (var i = 0; i < vm.deck.length; i++) {
@@ -193,7 +403,8 @@ angular.module('ijwApp')
                     }
                 }
 
-                dataService.updateOrCreateDeck(newDeck, vm.user._id)
+                // after modifying/creating the deck, route to the /match screen
+                dataService.updateOrCreateDeck(newDeck, user._id)
                     .then(result => {
                         dataService.go('/match');
                     }, reason => {
@@ -208,7 +419,27 @@ angular.module('ijwApp')
     })
 
 /***/ }),
-/* 6 */
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
+var angular = __webpack_require__(0);
+
+// http://www.christophbrill.de/en_US/marking-bootstrap-navigation-tags-as-active-using-angularjs/
+angular.module('ijwApp')
+    .controller('headerCtrl', function($scope, $log, $location) {
+
+        $scope.isActive = function (viewLocation) { 
+	      return viewLocation === $location.path();
+	    };
+
+    })
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -218,14 +449,14 @@ angular.module('ijwApp')
 var angular = __webpack_require__(0);
 
 angular.module('ijwApp')
-    .controller('matchCtrl', function($scope, $log, $interval, dataService, gameService) {
+    .controller('matchCtrl', function($scope, $log, $q, $interval, dataService, gameService, config) {
 
         ! function(vm) {
 
             vm.user = {
-                '_id': '59b3d92a026d930c39bd9ed6'
+                _id: dataService.getUserId()
             };
-
+            
             vm.active = {
                 elm: -1
             };
@@ -236,78 +467,107 @@ angular.module('ijwApp')
 
             vm.error = null;
 
-            // get all users' decks
+            var MAX_MOVES = config.MAX_MOVES;
+
+            // used on controller only
+            var _decks = [];
+            // available to scope, listing only users with decks
+            vm.decks = [];
+
+            // get user from dataService
             (function() {
-                dataService.getAllDecks()
-                    .then(function(decks) {
-                        vm.decks = (decks !== 'null') ? decks.data : {};
-                    }, function(reason) {
-                        $log.error(reason);
-                    });
-            }());
-
-            // get user's last match
-            (function() {
-                dataService.getUserMatches(vm.user._id)
-                    .then(function(matches) {
-                        vm.matches = (matches !== 'null') ? matches.data : {};
-                    }, function(reason) {
-                        $log.error(reason);
-                    });
-            }());
-
-            var _createMatch = function(results) {
-                var match = {
-                    "deck_one"  : results.deck_one,
-                    "deck_two"  : results.deck_two,
-                    "story"     : results.story,
-                    "reason"    : results.reason
-                };
-
-                if (results.winner === 'player 1') {
-                    match.winner = results['player 1']['_id'];
-                } else if (results.winner === 'player 2') {
-                    match.winner = results['player 2']['_id'];
-                }
-
-                dataService.createMatch(match)
-                .then(function(result) {
-                    dataService.go('/results');
-                }, function(reason) {
-                    $log.error(reason);
+                dataService.getCurrentUser().then( user => {
+                    vm.currentUser = user;
+                }, error => {
+                    $log.error(error);
                 });
+            }());
 
+            // get all decks from dataService
+            (function() {
+                dataService.getAllDecks().then( decks => {
+                    _decks = decks.data;
+                    _buildDeckArrays(_decks);
+                }, error => {
+                    $log.error(error);
+                });
+            }());
+
+            // get user's matches from dataService
+            (function() {
+                dataService.getCurrentUserMatches().then( matches => {
+                    vm.matches = matches;
+                }, error => {
+                    $log.error(error);
+                });
+            }());
+
+            // get the last game log from service
+            // will be empty if singleton is reloaded
+            (function() {
+                vm.log = gameService.getLastLog() || null;
+            }());
+
+            // as a means of hiding player deck values
+            var _buildDeckArrays = function(decks) {
+                if (decks.length > 0) {
+                    for (var i = 0; i < decks.length; i++) {
+                        // create user deck to show user on match page
+                        if (decks[i]['user']['_id'] === vm.user._id) {
+                            vm.userDeck = decks[i];
+                        }
+                        // build out the deck values for each user
+                        var deck = {};
+                        deck.user = decks[i]['user'];
+                        deck._id = decks[i]['_id'];
+                        var actions = [];
+                        // attempting to obfuscate the actions
+                        for (var j = 0; j < decks[i]['actions'].length; j++) {
+                            var action = {};
+                            action._id = decks[i]['actions'][j]['_id'];
+                            actions.push(action);
+                        }
+
+                        deck.actions = actions;
+                        vm.decks.push(deck);
+                    }
+                }
             }
 
-            vm.deleteDeck = function(deckId, index) {
+            // delete the deck from the database
+            vm.deleteDeck = function(deckId) {
                 dataService.deleteDeck(deckId)
                     .then(function(deck) {
-                        vm.decks.splice(index, 1);
+                        vm.userDeck = null;
                     }, function(reason) {
                         $log.error(reason);
                     });
             };
 
+            // route user to /deck
             vm.buildDeck = function() {
                 dataService.go('/deck');
             }
 
+            // play the game
             vm.smackdown = function() {
                 var opponent = angular.element(document.getElementsByClassName('opponent-selected'));
-                var userDeck = angular.element(document.getElementsByClassName('deck-row-selected'));
-                $log.info(userDeck);
                 var results = {};
-                if (opponent.length > 0 && userDeck.length > 0) {
-                    // player1 is logged in user
-                    var player1 = vm.decks[vm.deck_active.elm];
+                // later we can add a variable on the page
+                var mode = 'vs';
+                if (opponent.length > 0 && (vm.userDeck != null || vm.userDeck === undefined)) {
+                    var player1 = {};
+                    player1.user = vm.userDeck.user;
+                    player1.actions = vm.userDeck.actions;
+                    player1._id = vm.userDeck._id;
+
                     // player2 is chosen opponent
                     var player2 = vm.decks[vm.active.elm];
-
-                    console.log('play1', player1);
     
-                    results = gameService.playGame(player1, player2);
+                    results = gameService.playGame(player1, player2, mode);
 
                     vm.error = null;
+
                 } else {
                     vm.error = 'You must choose an opponent and a deck to continue.';
                 }
@@ -320,7 +580,7 @@ angular.module('ijwApp')
     })
 
 /***/ }),
-/* 7 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -359,16 +619,10 @@ angular.module('ijwApp')
 
             }());
 
-            function convertUnixTime(time) {
-                return new Date(time * 1000).toString().substring(4, 24);
-            }
-
-            function convertToFahrenheit(temp) {
-                return (1.8 * (temp - 273) + 32).toFixed(2);
-            }
-
+            // routes user based on if deck is already created
             vm.playGame = function() {
-                dataService.getUserDecks('59b3d92a026d930c39bd9ed6')
+                var userId = dataService.getUserId();
+                dataService.getUserDecks(userId)
                     .then(function(deck) {
                         if (deck.data.length > 0) {
                             dataService.go('/match');
@@ -393,7 +647,7 @@ angular.module('ijwApp')
     })
 
 /***/ }),
-/* 8 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -401,7 +655,178 @@ angular.module('ijwApp')
 
 
 var angular = __webpack_require__(0);
-const mapboxgl = __webpack_require__(9);
+
+angular.module('ijwApp')
+    .controller('adminCtrl', function($scope, $log, $q, $interval, dataService, config) {
+
+        ! function(vm) {
+
+            /*vm.user = {
+                _id: dataService.getUserId()
+            };*/
+
+            vm.actionForm = {};
+            vm.errorMessage = [];
+            vm.error = false;
+            vm.sortKey = 'name';
+            vm.reverse = false;
+
+            // set bonus min and max
+            var BONUSES = {
+                'min': config.BONUSES.min,
+                'max': config.BONUSES.max
+            };
+            
+            // get all actions from dataService
+            (function() {
+                dataService.getAllActions().then( actions => {
+                    vm.actions = actions.data;
+                }, error => {
+                    $log.error(error);
+                });
+            }());
+
+            // updates the status of an action to either true or false
+            vm.actionStatus = function(actionId, status, $index) {
+                dataService.updateActionStatus(actionId, status)
+                .then(function() {
+                    vm.actions[$index].active = (status === 'enable') ? true : false;
+                })
+            }
+
+            // updates the values of actions
+            vm.updateActionValues = function() {
+                dataService.updateActionValues()
+                .then(function() {
+                    dataService.getAllActions().then( actions => {
+                        vm.actions = actions.data;
+                        $log.info(actions.data);
+                    }, error => {
+                        $log.error(error);
+                    });
+                })
+            }
+
+            // used to sort the tables
+            vm.sort = function(header) {
+                vm.sortKey = header;
+                vm.reverse = !vm.reverse;
+            }
+
+            // validates if action can be saved
+            vm.validateAction = function(action) {
+                var error = '';
+                var valid = true;
+
+                if (action.name === 'undefined' || action.name.length === 0) {
+                    error = 'Action name must be populated.';
+                    vm.errorMessage.push(error);
+                    valid = false;
+                }
+
+                for (var bonus in action.bonuses) {
+                    if (action.bonuses.hasOwnProperty(bonus)) {
+                        if (action.bonuses[bonus] < BONUSES.min || action.bonuses[bonus] > BONUSES.max || action.bonuses[bonus] === undefined ) {
+                            error = `Bonus value ${bonus} must fall between ${BONUSES.min} and ${BONUSES.max}.`;
+                            vm.errorMessage.push(error);
+                            valid = false;
+                        }
+                    }
+                }
+
+                return valid;
+            }
+
+            // validates if a bonus value falls within the min/max
+            vm.validateBonuses = function(bonus) {
+
+                if (typeof bonus === "number") {
+                    if (bonus < BONUSES.min || bonus > BONUSES.max || bonus === undefined) {
+                        return `Value must fall between ${BONUSES.min} and ${BONUSES.max}.`;
+                    }
+                } else {
+                    return `Value must be a number.`;
+                }
+                
+                return true;
+            }
+
+            // validates if the name is present
+            vm.validateName = function(name) {
+                if (name === undefined || name.length === 0) {
+                    return `Name cannot be null.`;
+                }
+
+                return true;
+            }
+
+            // first validates the action, then saves
+            vm.saveAction = function($index) {
+                var action = angular.copy(vm.actions[$index]);
+                
+                // validate if name and bonus values are valid
+                if (vm.validateAction(action)) {
+                    // if action._id is undefined, create a new action
+                    if (action._id === undefined) {
+                        dataService.createAction(action)
+                        .then(function() {
+                            vm.error = false;
+                            vm.errorMessage = null;
+                        }, function(err) {
+                            vm.error = true;
+                            vm.errorMessage = err;
+                        });
+                    } else {
+                        // save existing action
+                        dataService.updateActionBonuses(action._id, action)
+                        .then(function() {
+                            vm.error = false;
+                            vm.errorMessage = null;
+                        }, function(err) {
+                            vm.error = true;
+                            vm.errorMessage = err;
+                        });
+                    }  
+                } else {
+                    vm.error = true;
+                }
+            }
+
+            // add user
+          vm.addAction = function() {
+            // insert a new action into the vm.actions array
+            vm.inserted = {
+              name: '',
+              active: false,
+              value: 0,
+              bonuses: {
+                city: 0,
+                jungle: 0,
+                desert: 0,
+                extreme: 0,
+                rain: 0,
+                snow: 0
+              }
+            };
+            vm.actions.push(vm.inserted);
+          };
+
+            return vm;
+
+        }(this);
+
+    })
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
+var angular = __webpack_require__(0);
+const mapboxgl = __webpack_require__(14);
 
 const styles = {
     'satellite': 'mapbox://styles/mapbox/satellite-v9',
@@ -511,9 +936,6 @@ angular.module('ijwApp')
                   .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
                   .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
                   .addTo(map);
-                //mapboxgl.accessToken = 'pk.eyJ1IjoidGhlYmx1ZWNvdyIsImEiOiJjajdzdndjd3AxZDl4MzducWNsMHprMzl2In0._WHslvWYG1dB7GQQGJJ6dw';
-                //var map = mapboxgl.map(element[0], 'examples.map-i86nkdio');
-                //scope.callback(map);
             }
         };
     }
@@ -537,7 +959,7 @@ angular.module('ijwApp')
   }]);
 
 /***/ }),
-/* 9 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.mapboxgl = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
@@ -1001,10 +1423,10 @@ module.exports={"$version":8,"$root":{"version":{"required":true,"type":"enum","
 
 
 //# sourceMappingURL=mapbox-gl.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
-/* 10 */
+/* 15 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1031,7 +1453,173 @@ module.exports = g;
 
 
 /***/ }),
-/* 11 */
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var angular = __webpack_require__(0);
+
+angular.module('ijwApp').factory('AuthService', ['$rootScope', '$q', '$timeout', '$http', '$log', function ($rootScope, $q, $timeout, $http, $log) {
+
+    // create user variable
+    var user = null;
+    var _id = null;
+    var admin = null;
+
+    var config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    function getUserId() {
+      return _id;
+    }
+
+    function isLoggedIn() {
+      if(user) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function getUserStatus() {
+      return $http.get('/user/status')
+      // handle success
+      .then(function(response) {
+          if (response.data.status === true) {
+            user = true;
+            $rootScope.loggedIn = true;
+            _id = response.data.user;
+          } else {
+            user = false;
+            $rootScope.loggedIn = false;
+            _id = null;
+          }
+      }, function (data) {
+        user = false;
+      });
+    }
+
+    function login(email, password) {
+
+      // create a new instance of deferred
+      var deferred = $q.defer();
+
+      // send a post request to the server
+      $http.post('/user/login',
+        {email: email, password: password}, config)
+        // handle success
+        .then(function(response) {
+            if(response.status === 200){
+              user = true;
+              _id = response.data.user;
+              deferred.resolve();
+            } else {
+              $log.error(data);
+              user = false;
+              _id = null;
+              deferred.reject();
+            }
+        }, function(data) {
+          user = false;
+          _id = null;
+          deferred.reject();
+        });
+
+      // return promise object
+      return deferred.promise;
+
+    }
+
+    function logout() {
+
+      // create a new instance of deferred
+      var deferred = $q.defer();
+
+      // send a get request to the server
+      $http.get('/user/logout').then(function(data) {
+            user = false;
+            deferred.resolve();
+        }, function(data) {
+          console.log('error', data);
+          user = false;
+          deferred.reject();
+        });
+
+      // return promise object
+      return deferred.promise;
+
+    }
+
+    function register(email, username, password, confirmPassword) {
+
+      // create a new instance of deferred
+      var deferred = $q.defer();
+
+      // send a post request to the server
+      $http.post('/user/register', JSON.stringify({email: email, name: username, password: password, confirmPassword: confirmPassword}), config)
+
+        // handle success
+        .then(function(data, status) {
+            if(/*status === 200 && */data.status === 200){
+              deferred.resolve();
+            } else {
+              $log.error(data);
+              deferred.reject();
+            }
+        }, function(data) {
+          user = false;
+          deferred.reject();
+        });
+
+      // return promise object
+      return deferred.promise;
+
+    }
+
+    function getUserRoles() {
+        return $http.get('/api/users/' + _id)
+        // handle success
+        .then(function(response) {
+             if (response.data.roles.includes('admin')) {
+                admin = true;
+            } else {
+                $log.info('not an admin');
+                admin = false;
+            }
+        }, function (data) {
+            admin = false;
+        });
+    }
+
+    function isAdmin() {
+      if(admin) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    // return available functions for use in the controllers
+    return ({
+      isLoggedIn: isLoggedIn,
+      getUserStatus: getUserStatus,
+      login: login,
+      logout: logout,
+      register: register,
+      getUserId: getUserId,
+      getUserRoles: getUserRoles,
+      isAdmin: isAdmin
+    });
+
+}]);
+
+/***/ }),
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1039,74 +1627,35 @@ module.exports = g;
 
 
 var angular = __webpack_require__(0);
-var api = __webpack_require__(12);
+var api = __webpack_require__(18);
+// longitude, latitude format
+var locations = __webpack_require__(19);
 
 angular.module('ijwApp')
-    .service("dataService", function($http, $log, $q, $location, $httpParamSerializer) {
+    .service("dataService", function($http, $log, $q, $timeout, $location, $httpParamSerializer, AuthService) {
 
         ! function(vm) {
 
             // The base URL for the REST API is http://localhost:5000/
-            const HOME = 'http://localhost:3000';
+            /*const HOME = 'http://localhost:3000';*/
             let config = {
-                //headers : { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
                 headers: {
                     'Content-Type': 'application/json'
                 }
             };
+
+            var _id = AuthService.getUserId();
+            var user = {};
 
             /* BEGIN VARIABLES EXCLUSIVE TO MAP AND WEATHER APIS */
 
             var mission = {};
             var weather = {};
             var _actions = {};
+            var matches = undefined;
 
             var weatherURL = 'http://api.openweathermap.org/data/2.5/weather';
             var timezonedbURL = 'http://api.timezonedb.com/v2/get-time-zone?key=';
-
-            // longitude, latitude format
-            var locations = [
-                {
-                 "city": {
-                        "location": "Amazon",
-                        "global": [-62.215881, -3.465305],
-                        "title": "Deep in the Amazon",
-                        "story": "The jungle is alive with Cobra operatives.",
-                        "terrain": "jungle",
-                        "offset": 0
-                    }
-                },
-                {
-                    "city": {
-                        "location": "Russia, Novosibirsk",
-                        "global": [82.93573270000002, 55.00835259999999],
-                        "title": "Sibera Novosibirsk",
-                        "story": "Cobra siezes control of the Russian servers, posting fake news on FaceBook.",
-                        "terrain": "city",
-                        "offset": 11
-                    }
-                },
-                {
-                    "city": {
-                        "location": "Bruges, Belgium",
-                        "global": [3.2246995000000425, 51.209348],
-                        "title": "In Bruges?",
-                        "story": "GI Joe finds Cobra operatives hiding away in a small bread and breakfast in Bruges, Belgium. In Bruges?",
-                        "terrain": "city",
-                        "offset": 6
-                    }
-                },
-                {
-                    "city": {
-                        "location": "Kalahari Desert",
-                        "global": [21.093731, -25.592021],
-                        "title": "Sand, Sand, Everywhere ",
-                        "story": "Cobra has taken shelter in southern Africa, building B.A.T.S. and robotic cheetahs that meow in code.",
-                        "terrain": "desert",
-                        "offset": 6
-                    }
-                }
-            ];
 
             var styles = {
                 'satellite': 'mapbox://styles/mapbox/satellite-v9',
@@ -1141,7 +1690,12 @@ angular.module('ijwApp')
                                     "timezone": result[1]['data']
                                 }
                             });
-            }());
+            }()); 
+
+            // return the user's id
+            vm.getUserId = function() {
+                return _id;
+            }
 
             // return only the necessary components for the mission with weather
             vm.getMission = function() {
@@ -1177,6 +1731,7 @@ angular.module('ijwApp')
                 return deferred.promise;
             }
 
+            // returns a random integer
             function _getRandomInt(min, max) {
                 min = Math.ceil(min);
                 max = Math.floor(max);
@@ -1187,53 +1742,113 @@ angular.module('ijwApp')
 
             // GET /api/actions - Gets all of the actions.
             vm.getAllActions = function() {
-                return $http.get(HOME + '/api/actions');
+                return $http.get('/api/actions');
             };
 
             // GET /api/actions/all - Gets all of the actions.
             // TODO - remove this after switching up its call
             vm.getActionValues = function() {
-                return $http.get(HOME + '/api/actions/all');
+                return $http.get('/api/actions/all');
             };
 
             // GET /api/users/:userId - Gets a single user
             vm.getUser = function(userId) {
-                return $http.get(HOME + '/api/users/' + userId);
+                return $http.get('/api/users/' + userId);
+            }
+
+             // GET /api/users/- Gets all users
+            vm.getAllUsers = function() {
+                return $http.get('/api/users/');
+            }
+
+            // get the current user's info
+            vm.getCurrentUser = function() {
+                var deferred = $q.defer();
+
+                // send a get request to the server
+                $http.get('/api/users/' + _id).then(function(response) {
+                    user = response.data;
+                    deferred.resolve(user);
+                }, function(error) {
+                  $log.error(error);
+                  deferred.reject();
+                });
+
+                // return promise object
+                return deferred.promise;
+            }
+
+            // get the current user's matches
+            vm.getCurrentUserMatches = function() {
+                var deferred = $q.defer();
+                var matches = {};
+
+                // send a get request to the server
+                $http.get('/api/matches/user/' + _id).then(function(response) {
+                    matches = response.data;
+                    deferred.resolve(matches);
+                }, function(error) {
+                  $log.error(error);
+                  deferred.reject();
+                });
+
+                // return promise object
+                return deferred.promise;
             }
 
             // GET /api/decks - Gets all decks
             vm.getAllDecks = function() {
-                return $http.get(HOME + '/api/decks');
+                return $http.get('/api/decks');
             }
 
             // GET /api/decks/user/:userId - Gets all decks by a user (should only be one)
             vm.getUserDecks = function(userId) {
-                return $http.get(HOME + '/api/decks/user/' + userId);
+                return $http.get('/api/decks/user/' + userId);
             }
 
             // POST /api/users/:userId/results-win - updates the user's record
             vm.updateUserRecord = function(userId, result) {
-                return $http.post(HOME + '/api/users/' + userId + '/result-' + result);
+                return $http.post('/api/users/' + userId + '/result-' + result);
+            }
+
+            // POST /api/users/:userId/results-win - updates the user's record
+            vm.updateActionStatus = function(actionId, status) {
+                return $http.post('/api/actions/' + actionId + '/status-' + status);
+            }
+
+            // POST /api/history - Save and then modify action values
+            vm.updateActionValues = function() {
+                return $http.post('/api/history/');
+            }
+
+            // POST /api/history - Save and then modify action values
+            vm.createAction = function(action) {
+                return $http.post('/api/actions/', JSON.stringify(action), config);
+            }
+
+            // PUT /api/actions/:aID - Update an action
+            vm.updateActionBonuses = function(actionId, action) {
+                return $http.put('api/actions/' + actionId, JSON.stringify(action), config);
             }
 
             // POST /api/matches - Creates a match for the specified user
             vm.createMatch = function(match) {
-                return $http.post(HOME + '/api/matches', JSON.stringify(match), config);
+                return $http.post('/api/matches', JSON.stringify(match), config);
             }
 
             // GET /api/matches/user/:userId - Gets the most recent match for the user
             vm.getUserMatches = function(userId) {
-                return $http.get(HOME + '/api/matches/user/' + userId);
+                return $http.get('/api/matches/user/' + userId);
             }
 
             // POST /api/decks - Create a deck for the specified user
             vm.updateOrCreateDeck = function(deck, userId) {
-                return $http.post(HOME + '/api/decks/user/' + userId, JSON.stringify(deck), config);
+                return $http.post(/* HOME + */'/api/decks/user/' + userId, JSON.stringify(deck), config);
             }
 
             // DELETE /api/decks/:deckId
             vm.deleteDeck = function(deckId) {
-                return $http.delete(HOME + '/api/decks/' + deckId);
+                return $http.delete(/* HOME + */'/api/decks/' + deckId);
             }
 
             // redirect browser to path
@@ -1248,13 +1863,19 @@ angular.module('ijwApp')
     });
 
 /***/ }),
-/* 12 */
+/* 18 */
 /***/ (function(module, exports) {
 
-module.exports = {"mapbox":{"styleURL":"mapbox://styles/thebluecow/cj7t3fpw70uo12sphdf24ihyo","accessToken":"pk.eyJ1IjoidGhlYmx1ZWNvdyIsImEiOiJjajdzdndjd3AxZDl4MzducWNsMHprMzl2In0._WHslvWYG1dB7GQQGJJ6dw"},"openweather":{"key":"5a05f6359147d5fb27c9dbae68a8e285"},"askGeo":{"id":1851,"accessToken":"f48e1be141f91812339ecdd8b08666d05b7a4a25b3592d1b5bdd882464e3f056"},"timezonedb":{"apiKey":"I6PO4E87OH8B"}}
+module.exports = {"mapbox":{"styleURL":"mapbox://styles/thebluecow/cj7t3fpw70uo12sphdf24ihyo","accessToken":"pk.eyJ1IjoidGhlYmx1ZWNvdyIsImEiOiJjajdzdndjd3AxZDl4MzducWNsMHprMzl2In0._WHslvWYG1dB7GQQGJJ6dw"},"openweather":{"key":"5a05f6359147d5fb27c9dbae68a8e285"},"timezonedb":{"apiKey":"I6PO4E87OH8B"}}
 
 /***/ }),
-/* 13 */
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = [{"city":{"location":"Amazon","global":[-62.215881,-3.465305],"title":"Deep in the Amazon","story":"The jungle is teeming with Cobra operatives. We haven't seen activity like this since last year's Dreanok's Super Bowl party, and NOBODY wants the Patriots to win again. HQ speculates it's deep in the jungle where Tom Brady finds his elixir or youth, and we're tasked with stopping it.","terrain":"jungle","offset":0}},{"city":{"location":"Russia, Novosibirsk","global":[82.93573270000002,55.00835259999999],"title":"Sibera Novosibirsk","story":"Cobra siezes control of the Russian servers, posting fake news on FaceBook. The Cobra operative Litterbox was hired to create cat memes that controlled the viewer's mind into wishing to eat processed fish sticks and play with wadded up aluminum foil. Needless to say, the situation is...delicate. Insurance providers are scrambling to add a hairball clause.","terrain":"city","offset":11}},{"city":{"location":"Bruges, Belgium","global":[3.2246995000000425,51.209348],"title":"In Bruges?","story":"GI Joe finds Cobra operatives hiding away in a small bread and breakfast in Bruges, Belgium. In Bruges? Sure, in Bruges. There are canals, the architecture is beautiful, and if you're a farmer you'll love the historical attractions. Mind the stairwell to the tower. It's narrow!","terrain":"city","offset":6}},{"city":{"location":"Kalahari Desert","global":[21.093731,-25.592021],"title":"Sand, Sand, Everywhere ","story":"Cobra has taken shelter in southern Africa, building B.A.T.S. and robotic cheetahs that meow in code. HQ is worried that the cheetahs will be organized into choirs in time for the holiday season and pass our valued secrets. They must be stopped!","terrain":"desert","offset":6}},{"city":{"location":"Mariana Trench","global":[142.1999992,11.3499986],"title":"Time to get Soaked","story":"Deep in the Mariana Trench, our sensors have picked up disturbing activity that we believe to be Cobra working in the area. Based on local intelligence--Echo the Dolphin and friends--we believe Cobra is building a Rebounderz style trampoline facility that will undoubtedly be too much fun to ignore. From there, they will capture the minds of unwitting patrons into buying souvenirs and cruddy funnel cakes. Yuck! Stop this, okay?","terrain":"ocean","offset":14}}]
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1262,18 +1883,26 @@ module.exports = {"mapbox":{"styleURL":"mapbox://styles/thebluecow/cj7t3fpw70uo1
 
 
 var angular = __webpack_require__(0);
-var reporter = __webpack_require__(14);
+var reporter = __webpack_require__(21);
 
 angular.module('ijwApp')
-    .service("gameService", function($http, $q, $log, dataService) {
+    .service("gameService", function($http, $q, $log, dataService, config) {
 
         ! function(game) {
 
-            var _actionCount = 10;
+            // _actions will hold values from database
             var _actions = {};
+            // used for individual play
+            var _newActions = {};
             var _weather = {};
-            const HOME = 'http://localhost:3000';
-            const MOMENTUM = 4;
+
+            var MAX_MOVES = config.MAX_MOVES;
+
+            const MOMENTUM = config.MOMENTUM;
+
+            // placeholder for later. For the moment, all games will be 'vs'
+            // this will allow us to add tournament modes
+            var _mode = null;
 
             // get current all actions with values
             (function() {
@@ -1297,6 +1926,8 @@ angular.module('ijwApp')
                     });
             }());
 
+            // based on code from openweathermap
+            // https://openweathermap.org/weather-conditions
             var _getWeatherCondition = function() {
                 var code = parseInt(_weather.weather[0]['id']);
                 code = 781;
@@ -1316,41 +1947,126 @@ angular.module('ijwApp')
                 return condition;
             }
 
+            // verify decks are of the correct length
             var verifyDecks = function(player1, player2) {
                 var verified = false;
 
-                verified = (player1.actions.length === _actionCount && player2.actions.length === _actionCount);
+                verified = (player1.actions.length === MAX_MOVES && player2.actions.length === MAX_MOVES);
 
                 return verified;
             };
 
+            // returns the action with the new value after bonuses were applied
+            // for individual play, random values are first assigned then bonuses are +/-
             var _getValue = function(move, bonuses) {
+                var newAction = {};
                 var value = 0;
-                _actions.forEach(function(action) {
-                    if (action._id === move._id) {
-                        value = action.value;
 
-                        if (bonuses.condition) {
-                            $log.info(bonuses.condition);
-                            value += action.bonuses[bonuses.condition];
-                        }
+                // use the _newActions array (after randomized) when 'vs mode'
+                if (_mode === 'vs') {
+                        _newActions.forEach(function(action) {
+                        if (action._id === move._id) {
+                            value = action.value;
+                            newAction.name = action.name;
 
-                        if (bonuses.mission.location.terrain) {
-                            $log.info(bonuses.mission.location.terrain);
-                            value += action.bonuses[bonuses.mission.location.terrain];
+                            if (bonuses.condition) {
+                                value += action.bonuses[bonuses.condition];
+                            }
+
+                            if (bonuses.mission.location.terrain) {
+                                value += action.bonuses[bonuses.mission.location.terrain];
+                            }
                         }
-                    }
-                });
-                return value;
+                    });
+                } else {
+                        _actions.forEach(function(action) {
+                        if (action._id === move._id) {
+                            value = action.value;
+                            newAction.name = action.name;
+
+                            if (bonuses.condition) {
+                                value += action.bonuses[bonuses.condition];
+                            }
+
+                            if (bonuses.mission.location.terrain) {
+                                value += action.bonuses[bonuses.mission.location.terrain];
+                            }
+                        }
+                    });
+                }
+
+                newAction.value = value;
+
+                return newAction;
             }
 
+            // based on same randomize function in action model
+            // TODO: make this DRY
+            var _randomizeValues = function() {
+              
+              var actionValues = [];
+              var totalActions = 0;
+
+              var _buildArray = function() {
+                // set max to be half of totalActions
+                var max = Math.floor(totalActions / 2);
+
+                // push the same value twice since two actions
+                // will have a value of 1, two of 2, etc.
+                for (var i = 1; i <= max; i++) {
+                  actionValues.push(i);
+                  actionValues.push(i);
+                }
+
+                totalActions % 2 === 0 ? true : actionValues.push(max + 1);
+
+                // call shuffle function to return the array of shuffled values
+                return _shuffle(actionValues);
+              };
+
+              // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+              // Fisher-Yates Shuffle Algorithm
+              function _shuffle(array) {
+                  var currentIndex = array.length, temporaryValue, randomIndex;
+
+                  // While there remain elements to shuffle...
+                  while (0 !== currentIndex) {
+
+                    // Pick a remaining element...
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+
+                    // And swap it with the current element.
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                  }
+
+                  return array;
+              }
+
+              _newActions = angular.copy(_actions);
+
+              totalActions = _newActions.length;
+              _buildArray();
+
+              _newActions.map(_newAction => {
+                _newAction.value = actionValues.pop();
+              }, function(err, result) {
+                if (err) {
+                    $log.error(err);
+                }
+              });
+            }
+
+            // compare the actions and return the round info (win, loss, tie)
             var compareActions = function(action_p1, action_p2) {
                 var bonuses = {};
                 bonuses.condition = _getWeatherCondition();
                 bonuses.mission = dataService.getMission();
 
-                action_p1.value = _getValue(action_p1, bonuses);
-                action_p2.value = _getValue(action_p2, bonuses);
+                action_p1 = _getValue(action_p1, bonuses);
+                action_p2 = _getValue(action_p2, bonuses);
 
                 var round = {};
                 // set round information
@@ -1379,11 +2095,13 @@ angular.module('ijwApp')
                 return round;
             }
 
+            // converts time from openweathermap
             function _convertUnixTime(time) {
                 //return new Date(time * 1000).toString().substring(4, 24);
                 return new Date(time * 1000).toString();
             }
 
+            // runs through the round information, determining match winner
             var _getResults = function(results) {
                 var player1 = 0;
                 var player2 = 0;
@@ -1409,6 +2127,7 @@ angular.module('ijwApp')
 
                 for (var property in results) {
                     if (results.hasOwnProperty(property) && !won) {
+                        console.log('propery', results[property]);
                         var move = results[property];
                         if (move.winner === 'player 1') {
                             player1++;
@@ -1461,14 +2180,19 @@ angular.module('ijwApp')
                     results.story = reporter.getStory('draw', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
                 }
 
+                // pushes values to match form
                 _updateResults(results);
 
                 results.player_1_moves = player1;
                 results.player_2_moves = player2;
 
+                // calls the function to return log for controller
+                _buildGameLog(results);
+
                 return results;
             }
 
+            // creates a match and also updates both users wins/losses/draws
             var _updateResults = function(results) {
                 var promiseUser;
                 var promiseOpp;
@@ -1483,8 +2207,6 @@ angular.module('ijwApp')
                     "reason"    : results.reason
                 };
 
-                $log.info(results);
-
                 if (results.winner === "player 1") {
                     winnerId = results["player 1"]["_id"];
                     loserId  = results["player 2"]["_id"];
@@ -1494,11 +2216,14 @@ angular.module('ijwApp')
                 }
 
                 match.winner = winnerId;
+                match.player_one = results["player 1"]["_id"];
+                match.player_two = results["player 2"]["_id"];
+                
                 promiseMatch =  dataService.createMatch(match)
                                 .then(function(result) {
                                 
                                 }, function(reason) {
-                                    $log.error('CREATE MATCH REASON', reason);
+                                    $log.error(reason);
                                 });
 
                 if (results.reason === 'draw') {
@@ -1506,14 +2231,14 @@ angular.module('ijwApp')
                                     .then(result => {
                                         //dataService.go('/result');
                                     }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
+                                        $log.error(reason);
                                     });
 
                     promiseOpp  =   dataService.updateUserRecord(loserId, 'draw')
                                     .then(result => {
                                         // dataService.go('/results');
                                     }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
+                                        $log.error(reason);
                                     });
                 }
 
@@ -1522,14 +2247,14 @@ angular.module('ijwApp')
                                     .then(result => {
                                         //dataService.go('/result');
                                     }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
+                                        $log.error(reason);
                                     });
 
                     promiseOpp  =   dataService.updateUserRecord(loserId, 'loss')
                                     .then(result => {
                                         //dataService.go('/result');
                                     }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
+                                       $log.error(reason);
                                     });
                 }
 
@@ -1538,7 +2263,34 @@ angular.module('ijwApp')
                 });
             };
 
-            game.playGame = function(player1, player2) {
+            // build out the results that we want to expose
+            var _buildGameLog = function(results) {
+                // first delete all the properties we don't need
+                var log = angular.copy(results);
+                delete log.deck_one;
+                delete log.deck_two;
+                delete log.story;
+                delete log['player 1'];
+                delete log['player 2'];
+                // hide the values in case a crafty player figures out the values
+                // uncomment to hide this information
+                /*for (var i = 0; i < MAX_MOVES; i++) {
+                    delete log['move_' + i]['player1']['value'];
+                    delete log['move_' + i]['player2']['value'];
+                    delete log['move_' + i]['diff'];
+                }*/
+
+                game.log = log;
+            }
+
+            // return the game.log
+            // game.log is set in _buildGameLog function
+            game.getLastLog = function() {
+                if (game.log) { return game.log; }
+            }
+
+            // open to controllers
+            game.playGame = function(player1, player2, mode) {
 
                 var results = {};
                 results['player 1'] = player1.user;
@@ -1546,12 +2298,16 @@ angular.module('ijwApp')
                 results.deck_one = player1._id;
                 results.deck_two = player2._id;
 
-                $log.info(results);
+                _mode = mode;
+
+                if (_mode === 'vs') {
+                    _randomizeValues();
+                }
 
                 // first, verify deck action arrays have the correct length
                 if (verifyDecks(player1, player2)) {
                     // loop through actions and return results
-                    for (var i = 0; i < _actionCount; i++) {
+                    for (var i = 0; i < MAX_MOVES; i++) {
                         results['move_' + i] = compareActions(player1.actions[i], player2.actions[i]);
                     }
 
@@ -1567,7 +2323,7 @@ angular.module('ijwApp')
     });
 
 /***/ }),
-/* 14 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1593,27 +2349,27 @@ var _stories = {
         }
     ],
     "momentum": [{
-            "story": ["Few things in life are as rewarding as absolute domination, and in this respect WINNER excels. OPPONENT was",
-                " overmatched at every turn, and in the end, OPPONENT decided that surrendering was the best course of action. Would",
-                " someone with actual courage do such a thing? No. But OPPONENT was never one to possess much courage while WINNER measures",
+            "story": ["Few things in life are as rewarding as absolute domination, and in this respect {WINNER} excel{s}. [OPPONENT] [was]",
+                " overmatched at every turn, and in the end, [OPPONENT] decided that surrendering was the best course of action. Would",
+                " someone with actual courage do such a thing? No. But [OPPONENT] [was] never one to possess much courage while {WINNER} measure{s}",
                 " courage by the APC full. Congratulations WINNER. Of all the opponents you could have chosen this day, you found the most",
                 " craven, and that, my friend, is a real talent!"
             ]
         },
         {
-            "story": ["We're ashamed for OPPONENT. We've combed through the records and found little evidence to support that",
-                " OPPONENT exists on our servers. Did WINNER invent this person? Surrender? Sometimes people have bad days. You roll out of bed.",
-                " You slip on a banana peel. You veer into a truckload of manure. We understand. WINNER dominated OPPONENT so thoroughly",
-                " that OPPONENT was seen weeping in the corner with a sun-warmed glass of Kool Aid and a worn copy of the Tao Te Ching.",
+            "story": ["We're ashamed for [OPPONENT]. We've combed through the records and found little evidence to support that",
+                " [OPPONENT] exists on our server[s]. Did {WINNER} invent this person? Surrender? Sometimes people have bad days. You roll out of bed.",
+                " You slip on a banana peel. You veer into a truckload of manure. We understand. {WINNER} dominated [OPPONENT] so thoroughly",
+                " that [OPPONENT] [was] seen weeping in the corner with a sun-warmed glass of Kool Aid and a worn copy of the Tao Te Ching.",
                 " Perhaps combat isn't their specialty? Perk up, OPPONENT. Tomorrow you start your new job brushing feral hamsters at the",
                 " local animal shelter. Opportunity!"
             ]
         }
     ],
     "standard": [{
-            "story": ["One day, in the not so distant future, OPPONENT will look back upon this day and consider his or her battle as a",
-                " learning experience. 'The loss does not matter,' OPPONENT, thinks. Of course, he or she is an idiot and of course the",
-                " loss matters. Moral victories are great for the movies, but in real life, WINNER understands that the sweet taste of",
+            "story": ["One day, in the not so distant future, [OPPONENT] will look back upon this day and consider this battle as a",
+                " learning experience. 'The loss does not matter,' [OPPONENT] think[s]. Of course, this is pretty silly and of course the",
+                " loss matters. Moral victories are great for the movies, but in real life, {WINNER} understand{s} that the sweet taste of",
                 " victory is more important than slow motion celebrations in the runner's up tent. Congratulations WINNER. The day is",
                 " yours. Hold your head high as you march through the streets, waving your victory banner. Does a beverage taste better",
                 " after a win. Yes. Yes it does. Enjoy a beverage of choice!"
@@ -1621,15 +2377,19 @@ var _stories = {
         },
         {
             "story": ["It was perhaps the most exciting match we've yet seen here. Perhaps. It could also be described as a waste of our",
-                " time because we bet money on OPPONENT and now they've lost. We lost big.",
-                " The odds on OPPONENT were 100-1, the longest of long shots, and we bet accordingly. Is gambling illegal? Not when it's a sure thing.",
-                " That's called investing, friend, and now we realize that we should have 'invested' in WINNER. Oh, to think of our champagne",
+                " time because we bet money on [OPPONENT] and now we've lost. We lost big.",
+                " The odds on {WINNER} were 100-1, the longest of long shots, and we bet accordingly. Is gambling illegal? Not when it's a sure thing.",
+                " That's called investing, friend, and now we realize that we should have 'invested' in Cheetos instead. Oh, to think of our champagne",
                 " wishes and caviar dreams now being turned into RC Cola and Spam. OPPONENT, we never should have doubted your ability to screw everything up.",
                 " WINNER, we never should have doubted your tenacity and force of will. Also your big guns. Those came in handy.",
                 " Probably more than the tenacity and will. Yes. Much, much more."
             ]
         }
     ]
+};
+
+var _replaceRules = {
+
 };
 
 function _getRandomInt(min, max) {
@@ -1657,11 +2417,34 @@ function _buildStory(storyArray, players) {
 
     for (var i = 0; i < storyArray['story'].length; i++) {
         var line = storyArray['story'][i];
+        // let's do some fun 2nd person and verb conjugation
+        /* the rules:
+            1. [] - brackets are for opponent
+            2. {} - braces are for winner
+            3. if player1 wins, {s} should be removed; [s] should be replaced with s;
+               [was] remains as was
+            4. if player1 loses, {s} remains as s; [was] becomes were; {s} is dropped
+        */
+
+        if (players.winner === "player 1" || players.winner === "draw") {
+            line = line.replace("{WINNER}", 'you');
+            line = line.replace("{s}", '');
+            line = line.replace("[OPPONENT]", opponent);
+            line = line.replace("[was]", "was");
+            line = line.replace("[s]", "s");
+        } else {
+            line = line.replace("{WINNER}", winner);
+            line = line.replace("{s}", 's');
+            line = line.replace("[OPPONENT]", 'you');
+            line = line.replace("[was]", 'were');
+            line = line.replace("[s]", '');
+        }
         line = line.replace("WINNER", winner);
         line = line.replace("OPPONENT", opponent);
+        line = line.replace('. you', '. You');
+
         story += line;
     }
-    console.log(story);
     return story;
 }
 

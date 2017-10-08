@@ -6,10 +6,6 @@
 	"openweather" : {
 		"key": "5a05f6359147d5fb27c9dbae68a8e285"
 	},
-	"askGeo" : {
-		"id" :1851,
-		"accessToken": "f48e1be141f91812339ecdd8b08666d05b7a4a25b3592d1b5bdd882464e3f056"
-	},
 	"timezonedb" : {
 		"apiKey": "I6PO4E87OH8B"
 	}

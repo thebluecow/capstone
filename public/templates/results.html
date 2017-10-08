@@ -11,4 +11,99 @@
     <a class="btn btn-primary btn-lg" href="#!/match" role="button">Play Again</a>
   </p>
 </div>
+<div ng-if="vm.log !== undefined">
+        <h4 class='table-header'>Match Results</h4>
+        <table class="table table-striped center">
+            <thead>
+                <tr>
+                    <th>Round #</th>
+                    <th>Your Move</th>
+                    <th>Opponent's Move</th>
+                    <th>Winner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-class="{'danger': vm.log.final.includes(0), 'info': vm.log.move_0.winner === 'player 1'}">
+                    <th scope="row">1</th>
+                    <td>{{vm.log.move_0.player1.name}}</td>
+                    <td>{{vm.log.move_0.player2.name}}</td>
+                    <td ng-if="vm.log.move_0.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_0.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_0.winner === 'tie'">Tie</td>
+                </tr>
+                <tr ng-class="{'danger': vm.log.final.includes(1), 'info': vm.log.move_1.winner === 'player 1'}">
+                    <th scope="row">2</th>
+                    <td>{{vm.log.move_1.player1.name}}</td>
+                    <td>{{vm.log.move_1.player2.name}}</td>
+                    <td ng-if="vm.log.move_1.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_1.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_1.winner === 'tie'">Tie</td>
+                </tr>
+                <tr ng-class="{'danger': vm.log.final.includes(2), 'info': vm.log.move_2.winner === 'player 1'}">
+                    <th scope="row">3</th>
+                    <td>{{vm.log.move_2.player1.name}}</td>
+                    <td>{{vm.log.move_2.player2.name}}</td>
+                    <td ng-if="vm.log.move_2.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_2.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_2.winner === 'tie'">Tie</td>
+                </tr>
+                <tr ng-class="{'danger': vm.log.final.includes(3), 'info': vm.log.move_3.winner === 'player 1'}">
+                    <th scope="row">4</th>
+                    <td>{{vm.log.move_3.player1.name}}</td>
+                    <td>{{vm.log.move_3.player2.name}}</td>
+                    <td ng-if="vm.log.move_3.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_3.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_3.winner === 'tie'">Tie</td>
+                </tr>
+                <tr ng-class="{'danger': vm.log.final.includes(4), 'info': vm.log.move_4.winner === 'player 1'}">
+                    <th scope="row">5</th>
+                    <td>{{vm.log.move_4.player1.name}}</td>
+                    <td>{{vm.log.move_4.player2.name}}</td>
+                    <td ng-if="vm.log.move_4.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_4.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_4.winner === 'tie'">Tie</td>
+                </tr>
+                <tr ng-class="{'danger': vm.log.final.includes(5), 'info': vm.log.move_5.winner === 'player 1'}">
+                    <th scope="row">6</th>
+                    <td>{{vm.log.move_5.player1.name}}</td>
+                    <td>{{vm.log.move_5.player2.name}}</td>
+                    <td ng-if="vm.log.move_5.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_5.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_5.winner === 'tie'">Tie</td>
+                </tr>
+                <tr ng-class="{'danger': vm.log.final.includes(6), 'info': vm.log.move_6.winner === 'player 1'}">
+                    <th scope="row">7</th>
+                    <td>{{vm.log.move_6.player1.name}}</td>
+                    <td>{{vm.log.move_6.player2.name}}</td>
+                    <td ng-if="vm.log.move_6.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_6.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_6.winner === 'tie'">Tie</td>
+                </tr>
+                <tr ng-class="{'danger': vm.log.final.includes(7), 'info': vm.log.move_7.winner === 'player 1'}">
+                    <th scope="row">8</th>
+                    <td>{{vm.log.move_7.player1.name}}</td>
+                    <td>{{vm.log.move_7.player2.name}}</td>
+                    <td ng-if="vm.log.move_7.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_7.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_7.winner === 'tie'">Tie</td>
+                </tr>
+                <tr ng-class="{'danger': vm.log.final.includes(8), 'info': vm.log.move_8.winner === 'player 1'}">
+                    <th scope="row">9</th>
+                    <td>{{vm.log.move_8.player1.name}}</td>
+                    <td>{{vm.log.move_8.player2.name}}</td>
+                    <td ng-if="vm.log.move_8.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_8.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_8.winner === 'tie'">Tie</td>
+                </tr>
+                <tr ng-class="{'danger': vm.log.final.includes(9), 'info': vm.log.move_9.winner === 'player 1'}">
+                    <th scope="row">10</th>
+                    <td>{{vm.log.move_9.player1.name}}</td>
+                    <td>{{vm.log.move_9.player2.name}}</td>
+                    <td ng-if="vm.log.move_9.winner === 'player 1'">{{vm.matches[0].deck_one.user.name}}</td>
+                    <td ng-if="vm.log.move_9.winner === 'player 2'">{{vm.matches[0].deck_two.user.name}}</td>
+                    <td ng-if="vm.log.move_9.winner === 'tie'">Tie</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

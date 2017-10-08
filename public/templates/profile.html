@@ -1,3 +1,105 @@
+<div class="container">
+                <div class="card-block">
+                	<h3 class="card-title">{{vm.currentUser.name}}</h3>
+                    <div class="card-text">
+                        <p>Look at this! We've gone through the trouble of tracking all of your greatest victories and those unfortunate defeats. Put down that pen and paper and rest easy.</p>
+                        <p>If you're new, why not start by going over to the <a href="#!/mission">Mission</a> page and being assigned your first duties. From there, build out your deck. Easy!</p>
+                    </div>
+                    <div class="card-text">
+                    	<h4>Wins: {{vm.currentUser.results.wins}}</h4>
+                    	<h4>Losses: {{vm.currentUser.results.losses}}</h4>
+                    	<h4>Draws: {{vm.currentUser.results.draws}}</h4>
+                        
+                        <div class="card-footer text-muted iconbox">
+                            <div>
+                                <img src="../images/icon.png" height="50" width="50" />
+                                <p>New Player</p>
+                            </div>
+                            <div ng-if="vm.currentUser.results.wins > 0">
+                                <img src="../images/icon.png" height="50" width="50" />
+                                <p>First Victory</p>
+                            </div>
+                            <div ng-if="vm.currentUser.results.wins > 0 && vm.currentUser.results.losses == 0">
+                                <img src="../images/icon.png" height="50" width="50" />
+                                <p>Undefeated</p>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
 <div>
-	<h2>This is where the profile goes</h2>
+	<div class="container">
+		 <div ng-if="vm.userDeck">
+        <h4 class='table-header'>Your Deck</h4>
+        <table class="table table-striped center">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Create Date</th>
+                    <th>Actions</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="deck-row-selected" ng-init="vm.deck_active.elm = vm.userDeck">
+                    <!-- ng-class="{'deck-row-border':$first}" -->
+                    <th scope="row">1</th>
+                    <td>{{ vm.userDeck.createDate | date: 'M/d/yyyy' }}</td>
+                    <td>
+                        <span ng-repeat="action in vm.userDeck.actions track by $index">{{action.name}}</br></span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" type="delete" confirmed-click="vm.deleteDeck(vm.userDeck._id)" ng-confirm-click="Are you sure you wish to delete this deck?">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-if="!vm.userDeck">
+        <h5 class="error">Oh no! You don't have a deck built. Let's go build one!</h5>
+        <button class="btn btn-primary" ng-click="vm.buildDeck()">Build</button>
+    </div>
+	</div>
+	<div class="container">
+        <h4 class='table-header'>Your Matches</h4>
+        <table class="table table-striped center">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Match Date</th>
+                    <th>Opponent</th>
+                    <th>Winner</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody ng-if="vm.matches.length > 0">
+                <!-- USE indexOf instead of $index to get filtered result -->
+                <tr ng-repeat="match in vm.matches">
+                    <!-- ng-class="{'deck-row-border':$first}" -->
+                    <th scope="row">{{$index + 1}}</th>
+                    <td>{{ match.gameDate | date: 'M/d/yyyy' }}</td>
+                    <td ng-if="vm.currentUser._id === match.player_one">{{match.deck_two.user.name}}</td>
+                    <td ng-if="vm.currentUser._id === match.player_two">{{match.deck_one.user.name}}</td>
+                    <td ng-if="match.winner === match.player_one">{{match.deck_one.user.name}}</td>
+                    <td ng-if="match.winner === match.player_two">{{match.deck_two.user.name}}</td>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody ng-if="vm.matches.length == 0 || vm.matches === undefined">
+                <!-- USE indexOf instead of $index to get filtered result -->
+                <tr>
+                    <!-- ng-class="{'deck-row-border':$first}" -->
+                    <th scope="row">--</th>
+                    <td class="error">You haven't had any matches yet.</td>
+                    <td></td>
+                    <td></td>
+                    <td><a class="btn btn-primary" href="#!/mission" role="button">Play</a></td>
+                </tr>
+            </tbody>
+        </table>
+	</div>
+	<div class="container" ng-controller="logoutCtrl">
+	  <a ng-click='logout()' class="btn btn-primary">Logout</a>
+	</div>
+</div>
 </div>

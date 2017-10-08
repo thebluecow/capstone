@@ -1,0 +1,91 @@
+<div class="container">
+	<div>
+		<label for="name">Select by Name</label>
+		<input type="text" class="form-control" id="name" ng-model="name" placeholder="search by name...">
+	</div>
+		<button class="btn btn-primary register" ng-click="vm.updateActionValues()">Update All</button>
+		<button type="button" class="btn btn-default register" ng-click="vm.addAction()">Add action</button>
+		<div ng-show="vm.error" class="alert alert-danger" ng-repeat="error in vm.errorMessage">{{error}}</div>
+	<table class="table table-striped">
+            <thead>
+                <tr>
+                    <th ng-click="vm.sort('name')">Name</th>
+                    <th ng-click="vm.sort('active')">Active</th>
+                    <th ng-click="vm.sort('value')">Value</th>  	
+                    <th ng-click="vm.sort('bonuses.city')">City</th>      	
+                    <th ng-click="vm.sort('bonuses.jungle')">Jungle</th>
+                    <th ng-click="vm.sort('bonuses.desert')">Desert</th>
+                    <th ng-click="vm.sort('bonuses.extreme')">Extreme</th>
+                    <th ng-click="vm.sort('bonuses.rain')">Rain</th>
+                    <th ng-click="vm.sort('bonuses.snow')">Snow</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr dir-paginate="action in vm.actions | filter: name | orderBy:vm.sortKey:vm.reverse|itemsPerPage:10">
+                    <td>
+                    	<span editable-text="action.name" e-name="name" onbeforesave="vm.validateName($data)" e-form="rowform">
+                    		{{ action.name || 'empty'}}
+                    </td>
+                     <td>
+                    	<span e-form="rowform" e-name="active">{{ action.active }}</span>
+                    </td>
+                    <td>
+                    	<span e-form="rowform" e-name="value">{{ action.value }}</span>
+                    </td>
+                    <td>
+                    	<span editable-number="action.bonuses.city" onbeforesave="vm.validateBonuses($data)" e-name="bonus.city" e-form="rowform">
+                    		{{ action.bonuses.city || 0}}
+                    	</span>
+                    </td>
+                    <td>
+                    	<span editable-number="action.bonuses.jungle" onbeforesave="vm.validateBonuses($data)" e-name="bonus.jungle" e-form="rowform">
+                    		{{ action.bonuses.jungle || 0}}
+                    	</span>
+                    </td>
+                    <td>
+                    	<span editable-number="action.bonuses.desert" onbeforesave="vm.validateBonuses($data)" e-name="bonus.desert" e-form="rowform">
+                    		{{ action.bonuses.desert || 0}}
+                    	</span>
+                    </td>
+                    <td>
+                    	<span editable-number="action.bonuses.extreme" onbeforesave="vm.validateBonuses($data)" e-name="bonus.extreme" e-form="rowform">
+                    		{{ action.bonuses.extreme || 0}}
+                    	</span>
+                    </td>
+                    <td>
+                    	<span editable-number="action.bonuses.rain" onbeforesave="vm.validateBonuses($data)" e-name="bonus.rain" e-form="rowform">
+                    		{{ action.bonuses.rain || 0}}
+                    	</span>
+                    </td>
+                    <td>
+                    	<span editable-number="action.bonuses.snow" onbeforesave="vm.validateBonuses($data)" e-name="bonus.snow" e-form="rowform">
+                    		{{ action.bonuses.snow || 0}}
+                    	</span>
+                    </td>
+                    <!-- <td>
+                        <a class="btn btn-primary" ng-click="vm.populateForm(vm.actions.indexOf(action))">Edit</a>
+                    </td> -->
+                    <td style="white-space: nowrap">
+			        <!-- form -->
+			        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == action" onaftersave="vm.saveAction(vm.actions.indexOf(action))">
+			          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+			            save
+			          </button>
+			          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+			            cancel
+			          </button>
+			        </form>
+			        <div class="buttons" ng-show="!rowform.$visible">
+			          <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+			          <button ng-if="action.active === true" type="button" class="btn btn-danger" ng-click="vm.actionStatus(action._id, 'disable', vm.actions.indexOf(action))">disable</button>
+			          <button ng-if="action.active === false" type="button" class="btn btn-default" ng-click="vm.actionStatus(action._id, 'enable', vm.actions.indexOf(action))">enable</button>
+			        </div>  
+			      </td>
+                </tr>
+            </tbody>
+        </table>
+        <dir-pagination-controls max-size="6" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            
+           
+</div>

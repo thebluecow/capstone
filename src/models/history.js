@@ -30,7 +30,9 @@ var HistorySchema = new mongoose.Schema({
     }]
 });
 
-// hash password before saving to database
+// After creating records in history, set new action values
+// will be required in tournament mode to have set action values
+// and historical records
 HistorySchema.post('save', function(next) {
     Action.setValues();
 });

@@ -1,0 +1,52 @@
+[
+    {
+     "city": {
+            "location": "Amazon",
+            "global": [-62.215881, -3.465305],
+            "title": "Deep in the Amazon",
+            "story": "The jungle is teeming with Cobra operatives. We haven't seen activity like this since last year's Dreanok's Super Bowl party, and NOBODY wants the Patriots to win again. HQ speculates it's deep in the jungle where Tom Brady finds his elixir or youth, and we're tasked with stopping it.",
+            "terrain": "jungle",
+            "offset": 0
+        }
+    },
+    {
+        "city": {
+            "location": "Russia, Novosibirsk",
+            "global": [82.93573270000002, 55.00835259999999],
+            "title": "Sibera Novosibirsk",
+            "story": "Cobra siezes control of the Russian servers, posting fake news on FaceBook. The Cobra operative Litterbox was hired to create cat memes that controlled the viewer's mind into wishing to eat processed fish sticks and play with wadded up aluminum foil. Needless to say, the situation is...delicate. Insurance providers are scrambling to add a hairball clause.",
+            "terrain": "city",
+            "offset": 11
+        }
+    },
+    {
+        "city": {
+            "location": "Bruges, Belgium",
+            "global": [3.2246995000000425, 51.209348],
+            "title": "In Bruges?",
+            "story": "GI Joe finds Cobra operatives hiding away in a small bread and breakfast in Bruges, Belgium. In Bruges? Sure, in Bruges. There are canals, the architecture is beautiful, and if you're a farmer you'll love the historical attractions. Mind the stairwell to the tower. It's narrow!",
+            "terrain": "city",
+            "offset": 6
+        }
+    },
+    {
+        "city": {
+            "location": "Kalahari Desert",
+            "global": [21.093731, -25.592021],
+            "title": "Sand, Sand, Everywhere ",
+            "story": "Cobra has taken shelter in southern Africa, building B.A.T.S. and robotic cheetahs that meow in code. HQ is worried that the cheetahs will be organized into choirs in time for the holiday season and pass our valued secrets. They must be stopped!",
+            "terrain": "desert",
+            "offset": 6
+        }
+    },
+    {
+        "city": {
+            "location": "Mariana Trench",
+            "global": [142.1999992, 11.3499986],
+            "title": "Time to get Soaked",
+            "story": "Deep in the Mariana Trench, our sensors have picked up disturbing activity that we believe to be Cobra working in the area. Based on local intelligence--Echo the Dolphin and friends--we believe Cobra is building a Rebounderz style trampoline facility that will undoubtedly be too much fun to ignore. From there, they will capture the minds of unwitting patrons into buying souvenirs and cruddy funnel cakes. Yuck! Stop this, okay?",
+            "terrain": "ocean",
+            "offset": 14
+        }
+    }
+]

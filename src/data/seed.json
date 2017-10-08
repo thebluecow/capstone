@@ -501,6 +501,7 @@
 	        "email": "scottb@test.com",
 	        "password": "password",
 	        "name": "Scott B",
+	        "roles" : ["user"],
 	        "__v": 0,
 	        "results": {
 	            "wins": 65,
@@ -510,7 +511,10 @@
 	    "mistert": {
 	        "_id": "59b3d92a026d930c39bd9ed5",
 	        "email": "mistert@eighties.com",
+	        "password": "password",
+	        "champion": "World Champion",
 	        "name": "Mr. T",
+	        "roles" : ["user"],
 	        "achievements": ["World Champion"],
 	        "__v": 0,
 	        "results": {
@@ -521,7 +525,9 @@
 	    "destro": {
 	    	"_id": "59bd040511a3892ac5ba27b8",
 	        "email": "destrosdepot@destro.com",
+	        "password": "password",
 	        "name": "Destro (W4-0)",
+	        "roles" : ["user"],
 	        "__v": 0,
 	        "results": {
 	            "wins": 0,
@@ -531,7 +537,10 @@
 	    "recondo": {
 	    	"_id": "59bd0502d9aad92ad30220fc",
 	    	"email": "recondosrentals@gijoe.com",
+	    	"password": "password",
+	    	"champion": "Intercontinental Champion",
 	        "name": "Recondo",
+	        "roles" : ["user"],
 	        "achievements": ["Intercontinental Champion"],
 	        "__v": 0,
 	        "results": {
@@ -542,7 +551,9 @@
 	    "martinblank": {
 	        "_id": "59b3d92a026d930c39bd9ed7",
 	        "email": "martinblank@grossepoinths.edu",
+	        "password": "password",
 	        "name": "Martin Blank",
+	        "roles" : ["user"],
 	        "achievements": ["Storm Shadow Assassin of the Year"],
 	        "__v": 0,
 	        "results": {
@@ -553,7 +564,9 @@
 	    "macgyver": {
 	        "_id": "59b3d92a026d930c39bd9ed6",
 	        "email": "macgyver@eighties.com",
+	        "password": "password",
 	        "name": "Angus MacGyver",
+	        "roles" : ["user"],
 	        "__v": 0,
 	        "results": {
 	            "wins": 32,
@@ -563,7 +576,9 @@
 	    "beachhead": {
 	    	"_id": "59be7d0b2f7a32313c80d72b",
 	        "email": "lifeisabeach@eighties.com",
+	        "password": "password",
 	        "name": "Beachhead (All Tie)",
+	        "roles" : ["user"],
 	        "__v": 0,
 	        "results": {
 	            "wins": 5,
@@ -573,7 +588,9 @@
 	    "cobracommander": {
 	    	"_id": "59be88927ba0ef31664ef284",
 	        "email": "retreat@eighties.com",
+	        "password": "password",
 	        "name": "Cobra Commander (W3-L2-W2-L1-W1-L1 6-4)",
+	        "roles" : ["user"],
 	        "__v": 0,
 	        "results": {
 	            "wins": 1,
@@ -583,6 +600,8 @@
 	    "flint": {
 	    	"_id": "59be89e5108ac13175e506e1",
 	        "email": "iheartladyjaye@eighties.com",
+	        "password": "password",
+	        "roles" : ["user"],
 	        "name": "Flint (L3, W4)",
 	        "__v": 0,
 	        "results": {
@@ -595,7 +614,7 @@
 	     	"email": "siteadmin@test.test",
 	        "name": "Admin",
 	        "password": "password",
-	        "role" : "admin",
+	        "roles" : ["admin", "user"],
 	        "__v": 0,
 	        "results": {
 	            "wins": 1000000,
@@ -746,16 +765,6 @@
 				"->actions.5",
 				"->actions.3"
 			]
-		}
-	},
-	"match": {
-		"_model" : "Match",
-		"macVmrt" : {
-			"deck_one": "->decks.macgyverDeck",
-			"deck_two": "->decks.misterTDeck",
-			"winner": "->users.mistert",
-			"reason": "surrender",
-			"story": "We're ashamed for Angus MacGyver. We've combed through the records and found little evidence to support that Angus MacGyver exists on our servers. Did Flint (L3, W4) invent this person? Surrender? Sometimes people have bad days. You roll out of bed. You slip on a banana peel. You veer into a truckload of manure. We understand. Flint (L3, W4) dominated Angus MacGyver so thoroughly that Angus MacGyver was seen weeping in the corner with a sun-warmed glass of Kool Aid and a worn copy of the Tao Te Ching. Perhaps combat isn't their specialty? Perk up, Angus MacGyver. Tomorrow you start your new job brushing feral hamsters at the local animal shelter. Opportunity!"
 		}
 	}
 }

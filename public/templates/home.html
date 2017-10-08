@@ -1,0 +1,32 @@
+<div class="container">
+<h3 ng-repeat="user in vm.users | filter: { champion: 'World Champion' }">World Champion: {{user.name}}</h3>
+<h3 ng-repeat="user in vm.users | filter: { champion: 'Intercontinental Champion' }">Intercontinental Champion: {{user.name}}</h3>
+<table class="table table-striped center">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th ng-click="vm.sort('name')">Name</th>
+                    <th ng-click="vm.sort('results.wins')">Wins</th>
+                    <th ng-click="vm.sort('results.losses')">Losses</th>
+                    <th ng-click="vm.sort('results.draws')">Draws</th>
+                    <th>Win %</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- USE indexOf instead of $index to get filtered result -->
+                <tr ng-init="vm.sortKey='results.wins'; vm.reverse='true'" dir-paginate="user in vm.users | orderBy:vm.sortKey:vm.reverse| filter: {name: '!Admin'}|itemsPerPage:10">
+                    <!-- ng-class="{'deck-row-border':$first}" -->
+                    <th scope="row">{{$index + 1}}</th>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.results.wins }}</td>
+                    <td>{{ user.results.losses }}</td>
+                    <td>{{ user.results.draws }}</td>
+                    <td>{{ vm.returnPercentage(user) }}
+                </tr>
+            </tbody>
+        </table>
+        <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+<div ng-controller="logoutCtrl">
+  <a ng-click='logout()' class="btn btn-primary">Logout</a>
+</div>
+</div>

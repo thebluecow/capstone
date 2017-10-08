@@ -10,6 +10,7 @@ var Deck = require('../models/deck');
 var Match = require('../models/match');
 var History = require('../models/history');
 var mongoose = require('mongoose');
+var passport = require('passport');
 var Schema = mongoose.Schema;
 
 // get action from database
@@ -91,7 +92,7 @@ router.get('/actions', (req, res, next) => {
 // TODO - REMOVE THIS
 router.get('/actions/all', (req, res, next) => {
     Action.find({})
-        .select('_id value bonuses')
+        .select('_id value bonuses name')
         .sort({
             name: -1
         })
@@ -105,6 +106,20 @@ router.get('/actions/all', (req, res, next) => {
         });
 });
 
+// POST /action
+// route to create a match
+router.post('/actions', (req, res, next) => {
+    var action = new Action(req.body);
+    action.save(function(err, action) {
+        if (err) {
+            res.status(400);
+            return next(err);
+        }
+        res.status(201);
+        res.json(action);
+    });
+});
+
 // GET /actions/:aID
 // route to get a specific action
 router.get('/actions/:aID', (req, res, next) => {
@@ -112,10 +127,45 @@ router.get('/actions/:aID', (req, res, next) => {
     res.json(req.action);
 });
 
+// PUT /actions/:aID
+// route to update an action
+router.put('/actions/:aID', (req, res, next) => {
+    req.action.update(req.body, {"new": true}, function(err, result){
+        if(err) {
+            res.status(400);
+            return next(err);
+        }
+        res.status(204);
+        res.location('/');
+        res.json(result);
+    });
+});
+
+// GET /actions/:aID
+// route to get a specific action
+router.post('/actions/:aID/status-:dir',
+     function(req, res, next){
+        if(req.params.dir.search(/^(enable|disable)$/) === -1) {
+            var err = new Error("Not Found");
+            err.status = 404;
+            next(err);
+        } else {
+            req.status = req.params.dir;
+            next();
+        }
+    }, 
+    function(req, res, next){
+        req.action.updateStatus(req.status, function(err, action){
+            if(err) return next(err);
+            res.json(action);
+        });
+});
+
 // GET /users
 // route to get all users
 router.get('/users', (req, res, next) => {
     User.find({})
+    .select('email champion name results achievements roles')
         .sort({
             name: -1
         })
@@ -166,7 +216,7 @@ router.get('/decks', (req, res, next) => {
         })
         .populate([{
             path: 'actions',
-            select: 'name value'
+            select: 'name'
         }, {
             path: 'user',
             select: 'name results achievements'
@@ -262,7 +312,7 @@ router.get('/matches', (req, res, next) => {
                     select: 'name'
                 }, {
                     path: 'actions',
-                    select: 'name value'
+                    select: 'name'
                 }]
             },
             {
@@ -272,7 +322,7 @@ router.get('/matches', (req, res, next) => {
                     select: 'name'
                 }, {
                     path: 'actions',
-                    select: 'name value'
+                    select: 'name'
                 }]
             },
             {
@@ -296,7 +346,8 @@ router.get('/matches', (req, res, next) => {
 // GET /decks/user/:userId
 // route to get a specific user's decks
 router.get('/matches/user/:userId', (req, res, next) => {
-    Match.find({ $or: [ {'deck_one.user._id': Schema.Types.ObjectId(req.params.userId) }, {'deck_two.user._id': Schema.Types.ObjectId(req.params.userId) }]})
+    var oid = new Schema.Types.ObjectId(req.params.userId);
+    Match.find({ $or: [ {'player_one': req.params.userId }, {'player_two': req.params.userId }]})
         .sort({
             $natural:-1
         })
@@ -319,13 +370,6 @@ router.get('/matches/user/:userId', (req, res, next) => {
                     path: 'actions',
                     select: 'name value'
                 }]
-            },
-            {
-                path: 'winner',
-                populate: {
-                    path: 'user',
-                    select: 'name'
-                }
             }
         ])
         .exec(function(err, decks) {
@@ -355,7 +399,7 @@ router.post('/matches', (req, res, next) => {
 
 // GET /admin
 // route to get admin maintenance page
-router.get('/admin', mid.validateUser, (req, res, next) => {
+router.get('/admin', (req, res, next) => {
     // When I make a request to the GET /api/users route with the correct credentials,
     // the corresponding user document is returned
     res.status(200);
@@ -383,7 +427,7 @@ router.get('/history', mid.validateUser, (req, res, next) => {
 
 // POST /history
 // route to create a history record
-router.post('/history', mid.validateUser, (req, res, next) => {
+router.post('/history', (req, res, next) => {
     Action.find({})
         .sort({
             name: -1
@@ -421,6 +465,104 @@ router.post('/history', mid.validateUser, (req, res, next) => {
             });
 
         });
+});
+
+// POST /login
+router.post('/login', passport.authenticate('local'), function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+        if (err) {
+            return next(err);
+        }
+
+        if (!user) {
+            return res.status(401).json({
+                err: info
+            });
+        }
+    
+        req.logIn(user, function(err) {
+            if (err) {
+                return res.status(500).json({
+                    err: 'Could not log in user'
+                });
+            }
+            res.status(200).json({
+                status: 'Login successful!',
+                user: req.session.passport.user
+            });
+        });
+    })(req, res, next);
+});
+
+// GET /logout
+router.get('/logout', function(req, res, next) {
+    req.logout();
+    res.status(200).json({ status: 'logged out.'});
+});
+
+// POST /register
+router.post('/register', function(req, res, next) {
+  if (req.body.email &&
+    req.body.name &&
+    req.body.password &&
+    req.body.confirmPassword) {
+
+      // confirm that user typed same password twice
+      if (req.body.password !== req.body.confirmPassword) {
+        var err = new Error('Passwords do not match.');
+        err.status = 400;
+        return next(err);
+      }
+
+      // ensures duplicate usernames cannot be used
+      User.findOne({ email: req.body.email })
+      .exec(function (error, user) {
+        if (error) {
+          return next(error);
+        } else if ( user ) {
+          var err = new Error('User already exists.');
+          err.status = 401;
+          return next(err);
+        }
+    });
+
+      // create object with form input
+      var userData = {
+        email: req.body.email,
+        name: req.body.name,
+        password: req.body.password
+      };
+
+      // use schema's `create` method to insert document into Mongo
+      User.create(userData, function (error, user) {
+        if (error) {
+          return next(error);
+        } else {
+          return res.status(200).json({
+            status: 'Registration successful'
+          });
+        }
+      });
+
+    } else {
+      var err = new Error('All fields required.');
+      err.status = 400;
+      return next(err);
+    }
+});
+
+// get the user's status
+// sets the user as the passport user (mongo _id)
+router.get('/status', function(req, res) {
+  if (req.isAuthenticated()) {
+    return res.status(200).json({
+      status: true,
+      user: req.session.passport.user
+    });
+  }
+  return res.status(200).json({
+    status: false
+  });
 });
 
 
