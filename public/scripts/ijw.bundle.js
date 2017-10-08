@@ -1,27 +1,27 @@
-webpackJsonp([0],{
-
-/***/ 185:
+webpackJsonp([0],[
+/* 0 */,
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var angular = __webpack_require__(28);
+var angular = __webpack_require__(0);
 
 angular.module('ijwApp', ['ngRoute']);
 
-__webpack_require__(187);
-__webpack_require__(188);
-__webpack_require__(189);
-__webpack_require__(190);
-__webpack_require__(385);
-__webpack_require__(386);
-__webpack_require__(380);
-__webpack_require__(381);
+__webpack_require__(3);
+__webpack_require__(4);
+__webpack_require__(5);
+__webpack_require__(6);
+__webpack_require__(7);
+__webpack_require__(8);
+__webpack_require__(11);
+__webpack_require__(13);
 
 /***/ }),
-
-/***/ 187:
+/* 2 */,
+/* 3 */
 /***/ (function(module, exports) {
 
 
@@ -93,14 +93,13 @@ __webpack_require__(381);
 })();
 
 /***/ }),
-
-/***/ 188:
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var angular = __webpack_require__(28);
+var angular = __webpack_require__(0);
 
 angular.module('ijwApp')
 .controller('loginCtrl', function($scope, $log, $interval, dataService){
@@ -114,15 +113,14 @@ angular.module('ijwApp')
 })
 
 /***/ }),
-
-/***/ 189:
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-var angular = __webpack_require__(28);
+var angular = __webpack_require__(0);
 
 angular.module('ijwApp')
     .controller('deckBuildCtrl', function($scope, $log, $interval, dataService) {
@@ -210,15 +208,14 @@ angular.module('ijwApp')
     })
 
 /***/ }),
-
-/***/ 190:
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-var angular = __webpack_require__(28);
+var angular = __webpack_require__(0);
 
 angular.module('ijwApp')
     .controller('matchCtrl', function($scope, $log, $interval, dataService, gameService) {
@@ -323,655 +320,14 @@ angular.module('ijwApp')
     })
 
 /***/ }),
-
-/***/ 380:
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-var angular = __webpack_require__(28);
-var api = __webpack_require__(396);
-
-angular.module('ijwApp')
-    .service("dataService", function($http, $log, $q, $location, $httpParamSerializer) {
-
-        ! function(vm) {
-
-            // The base URL for the REST API is http://localhost:5000/
-            const HOME = 'http://localhost:3000';
-            let config = {
-                //headers : { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            /* BEGIN VARIABLES EXCLUSIVE TO MAP AND WEATHER APIS */
-
-            var mission = {};
-            var weather = {};
-            var _actions = {};
-
-            var weatherURL = 'http://api.openweathermap.org/data/2.5/weather';
-            var timezonedbURL = 'http://api.timezonedb.com/v2/get-time-zone?key=';
-
-            // longitude, latitude format
-            var locations = [
-                {
-                 "city": {
-                        "location": "Amazon",
-                        "global": [-62.215881, -3.465305],
-                        "title": "Deep in the Amazon",
-                        "story": "The jungle is alive with Cobra operatives.",
-                        "terrain": "jungle",
-                        "offset": 0
-                    }
-                },
-                {
-                    "city": {
-                        "location": "Russia, Novosibirsk",
-                        "global": [82.93573270000002, 55.00835259999999],
-                        "title": "Sibera Novosibirsk",
-                        "story": "Cobra siezes control of the Russian servers, posting fake news on FaceBook.",
-                        "terrain": "city",
-                        "offset": 11
-                    }
-                },
-                {
-                    "city": {
-                        "location": "Bruges, Belgium",
-                        "global": [3.2246995000000425, 51.209348],
-                        "title": "In Bruges?",
-                        "story": "GI Joe finds Cobra operatives hiding away in a small bread and breakfast in Bruges, Belgium. In Bruges?",
-                        "terrain": "city",
-                        "offset": 6
-                    }
-                },
-                {
-                    "city": {
-                        "location": "Kalahari Desert",
-                        "global": [21.093731, -25.592021],
-                        "title": "Sand, Sand, Everywhere ",
-                        "story": "Cobra has taken shelter in southern Africa, building B.A.T.S. and robotic cheetahs that meow in code.",
-                        "terrain": "desert",
-                        "offset": 6
-                    }
-                }
-            ];
-
-            var styles = {
-                'satellite': 'mapbox://styles/mapbox/satellite-v9',
-                'satellite-streets': 'mapbox://styles/mapbox/satellite-streets-v9',
-                'streets': 'mapbox://styles/mapbox/streets-v9',
-                'outdoors': 'mapbox://styles/mapbox/outdoors-v10',
-                'light': 'mapbox://styles/mapbox/light-v9',
-                'dark': 'mapbox://styles/mapbox/dark-v9',
-                'personal': 'mapbox://styles/thebluecow/cj7t3fpw70uo12sphdf24ihyo'
-            };
-
-            /* END VARIABLES EXCLUSIVE TO MAP AND WEATHER APIS */
-
-            /* BEGIN FUNCTIONS EXCLUSIVE TO MAP AND WEATHER APIS */
-
-            // get current mission and weather
-            (function() {
-                var location = locations[_getRandomInt(0, locations.length)];
-                mission.location = location.city;
-
-                var weatherQuery = '?lat=' + mission.location.global[1] + '&lon=' + mission.location.global[0] + '&units=imperial';
-                var newWeatherURL = `${weatherURL}${weatherQuery}&APPID=${api.openweather.key}`;
-                var p1 = $http.get(newWeatherURL);
-
-                var timezonedbQuery = '&lat=' + mission.location.global[1] + '&lng=' + mission.location.global[0];
-                var newTimezoneURL = `${timezonedbURL}${api.timezonedb.apiKey}&format=json&by=position${timezonedbQuery}`;
-                var p2 = $http.get(newTimezoneURL);
-
-                weather = $q.all([p1, p2]).then(function (result) {
-                                return {
-                                    "weather" : result[0]['data'],
-                                    "timezone": result[1]['data']
-                                }
-                            });
-            }());
-
-            // return only the necessary components for the mission with weather
-            vm.getMission = function() {
-                return mission;
-            }
-
-            // return weather
-            vm.getWeather = function() {
-                return weather;
-            }
-
-            // returns an array of actions. Can return all actions or only those fields
-            // specified
-            vm.getActions = function (fields) {
-                var deferred = $q.defer();
-
-                vm.getAllActions().then( result => {
-                    var actions = [];
-                    if (fields.length > 0) {
-                        result.data.forEach( action => {
-                            var _action = {};
-                            for (var i = 0; i < fields.length; i++) {
-                                _action[fields[i]] = action[fields[i]];
-                            }
-                            actions.push(_action);
-                        });
-                        result.data = actions;
-                    }
-
-                    deferred.resolve(result);
-                });
-
-                return deferred.promise;
-            }
-
-            function _getRandomInt(min, max) {
-                min = Math.ceil(min);
-                max = Math.floor(max);
-                return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-            }
-
-            /* END FUNCTIONS EXCLUSIVE TO MAP AND WEATHER APIS */
-
-            // GET /api/actions - Gets all of the actions.
-            vm.getAllActions = function() {
-                return $http.get(HOME + '/api/actions');
-            };
-
-            // GET /api/actions/all - Gets all of the actions.
-            // TODO - remove this after switching up its call
-            vm.getActionValues = function() {
-                return $http.get(HOME + '/api/actions/all');
-            };
-
-            // GET /api/users/:userId - Gets a single user
-            vm.getUser = function(userId) {
-                return $http.get(HOME + '/api/users/' + userId);
-            }
-
-            // GET /api/decks - Gets all decks
-            vm.getAllDecks = function() {
-                return $http.get(HOME + '/api/decks');
-            }
-
-            // GET /api/decks/user/:userId - Gets all decks by a user (should only be one)
-            vm.getUserDecks = function(userId) {
-                return $http.get(HOME + '/api/decks/user/' + userId);
-            }
-
-            // POST /api/users/:userId/results-win - updates the user's record
-            vm.updateUserRecord = function(userId, result) {
-                return $http.post(HOME + '/api/users/' + userId + '/result-' + result);
-            }
-
-            // POST /api/matches - Creates a match for the specified user
-            vm.createMatch = function(match) {
-                return $http.post(HOME + '/api/matches', JSON.stringify(match), config);
-            }
-
-            // GET /api/matches/user/:userId - Gets the most recent match for the user
-            vm.getUserMatches = function(userId) {
-                return $http.get(HOME + '/api/matches/user/' + userId);
-            }
-
-            // POST /api/decks - Create a deck for the specified user
-            vm.updateOrCreateDeck = function(deck, userId) {
-                return $http.post(HOME + '/api/decks/user/' + userId, JSON.stringify(deck), config);
-            }
-
-            // DELETE /api/decks/:deckId
-            vm.deleteDeck = function(deckId) {
-                return $http.delete(HOME + '/api/decks/' + deckId);
-            }
-
-            // redirect browser to path
-            vm.go = function(path) {
-                return $location.path(path);
-            };
-
-            return vm;
-
-        }(this);
-
-    });
-
-/***/ }),
-
-/***/ 381:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-
-var angular = __webpack_require__(28);
-var reporter = __webpack_require__(384);
-
-angular.module('ijwApp')
-    .service("gameService", function($http, $q, $log, dataService) {
-
-        ! function(game) {
-
-            var _actionCount = 10;
-            var _actions = {};
-            var _weather = {};
-            const HOME = 'http://localhost:3000';
-            const MOMENTUM = 4;
-
-            // get current all actions with values
-            (function() {
-                dataService.getActionValues()
-                    .then(function(actions) {
-                        _actions = (actions !== 'null') ? actions.data : {};
-                    }, function(reason) {
-                        $log.error(reason);
-                    });
-            }());
-
-            // get weather conditions
-            (function() {
-                dataService.getWeather()
-                    .then(function(weather) {
-                        _weather = (weather !== 'null') ? weather.weather : {};
-                        _weather.sunrise = _convertUnixTime(_weather.sys.sunrise);
-                        _weather.sunset = _convertUnixTime(_weather.sys.sunset);
-                    }, function(reason) {
-                        $log.error(reason);
-                    });
-            }());
-
-            var _getWeatherCondition = function() {
-                var code = parseInt(_weather.weather[0]['id']);
-                code = 781;
-                var condition = '';
-                if (code === 511 || code === 601 || code === 602 || code === 622) {
-                    condition = 'snow';
-                }
-                else if (code === 202 || code === 211 || code === 212 || code === 502 || code === 503 || code === 504)
-                {
-                    condition = 'rain';
-                }
-                else if (code === 781 || code === 900 || code === 902 || code === 905 || code === 961 || code === 962)
-                {
-                    condition = 'extreme';
-                }
-
-                return condition;
-            }
-
-            var verifyDecks = function(player1, player2) {
-                var verified = false;
-
-                verified = (player1.actions.length === _actionCount && player2.actions.length === _actionCount);
-
-                return verified;
-            };
-
-            var _getValue = function(move, bonuses) {
-                var value = 0;
-                _actions.forEach(function(action) {
-                    if (action._id === move._id) {
-                        value = action.value;
-
-                        if (bonuses.condition) {
-                            $log.info(bonuses.condition);
-                            value += action.bonuses[bonuses.condition];
-                        }
-
-                        if (bonuses.mission.location.terrain) {
-                            $log.info(bonuses.mission.location.terrain);
-                            value += action.bonuses[bonuses.mission.location.terrain];
-                        }
-                    }
-                });
-                return value;
-            }
-
-            var compareActions = function(action_p1, action_p2) {
-                var bonuses = {};
-                bonuses.condition = _getWeatherCondition();
-                bonuses.mission = dataService.getMission();
-
-                action_p1.value = _getValue(action_p1, bonuses);
-                action_p2.value = _getValue(action_p2, bonuses);
-
-                var round = {};
-                // set round information
-                round.player1 = {
-                    'name': action_p1.name,
-                    'value': action_p1.value
-                };
-
-                round.player2 = {
-                    'name': action_p2.name,
-                    'value': action_p2.value
-                };
-
-                // check action values
-                if (action_p1.value > action_p2.value) {
-                    round.winner = 'player 1';
-                    round.diff = (action_p1.value - action_p2.value);
-                } else if (action_p2.value > action_p1.value) {
-                    round.winner = 'player 2';
-                    round.diff = (action_p2.value - action_p1.value);
-                } else {
-                    round.winner = 'tie';
-                    round.diff = 0;
-                }
-
-                return round;
-            }
-
-            function _convertUnixTime(time) {
-                //return new Date(time * 1000).toString().substring(4, 24);
-                return new Date(time * 1000).toString();
-            }
-
-            var _getResults = function(results) {
-                var player1 = 0;
-                var player2 = 0;
-                var consecutive = 0;
-                var last = '';
-                var won = false;
-
-                var lastFour = function(property) {
-                    var move = property.substring(5, 6);
-                    var moves = [];
-
-                    if (!isNaN(move)) {
-
-                        moves.push(parseInt(move));
-
-                        while (moves.length < MOMENTUM) {
-                            moves.push(--move);
-                        }
-                    }
-
-                    return moves;
-                };
-
-                for (var property in results) {
-                    if (results.hasOwnProperty(property) && !won) {
-                        var move = results[property];
-                        if (move.winner === 'player 1') {
-                            player1++;
-                            if (last === 'player 1' || last === '' || last === 'tie') {
-                                consecutive++;
-                                last = 'player 1';
-                            } else {
-                                consecutive = 1;
-                                last = 'player 1';
-                            }
-                        } else if (move.winner === 'player 2') {
-                            player2++;
-                            if (last === 'player 2' || last === '' || last === 'tie') {
-                                consecutive++;
-                                last = 'player 2';
-                            } else {
-                                consecutive = 1;
-                                last = 'player 2';
-                            }
-                        } else {
-                            last = 'tie';
-                            consecutive = 0;
-                        }
-
-                        if (consecutive === MOMENTUM) {
-                            results.winner = last;
-                            results.cause = 'momentum';
-                            results.final = lastFour(property);
-                            won = true;
-                        }
-                    }
-
-
-                }
-
-                if (won && results.cause === 'momentum') {
-                    results.reason = 'surrender';
-                    results.story = reporter.getStory('momentum', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
-                } else if (player1 > player2) {
-                    results.winner = 'player 1';
-                    results.reason = 'moves';
-                    results.story = reporter.getStory('standard', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
-                } else if (player2 > player1) {
-                    results.winner = 'player 2';
-                    results.reason = 'moves';
-                    results.story = reporter.getStory('standard', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
-                } else {
-                    results.winner = 'draw';
-                    results.reason = 'draw';
-                    results.story = reporter.getStory('draw', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
-                }
-
-                _updateResults(results);
-
-                results.player_1_moves = player1;
-                results.player_2_moves = player2;
-
-                return results;
-            }
-
-            var _updateResults = function(results) {
-                var promiseUser;
-                var promiseOpp;
-                var promiseMatch;
-                var winnerId;
-                var loserId;
-
-                var match = {
-                    "deck_one"  : results["deck_one"],
-                    "deck_two"  : results["deck_two"],
-                    "story"     : results.story,
-                    "reason"    : results.reason
-                };
-
-                $log.info(results);
-
-                if (results.winner === "player 1") {
-                    winnerId = results["player 1"]["_id"];
-                    loserId  = results["player 2"]["_id"];
-                } else {
-                    winnerId = results["player 2"]["_id"];
-                    loserId =  results["player 1"]["_id"];
-                }
-
-                match.winner = winnerId;
-                promiseMatch =  dataService.createMatch(match)
-                                .then(function(result) {
-                                
-                                }, function(reason) {
-                                    $log.error('CREATE MATCH REASON', reason);
-                                });
-
-                if (results.reason === 'draw') {
-                    promiseUser =   dataService.updateUserRecord(winnerId, 'draw')
-                                    .then(result => {
-                                        //dataService.go('/result');
-                                    }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
-                                    });
-
-                    promiseOpp  =   dataService.updateUserRecord(loserId, 'draw')
-                                    .then(result => {
-                                        // dataService.go('/results');
-                                    }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
-                                    });
-                }
-
-                else {
-                    promiseUser =   dataService.updateUserRecord(winnerId, 'win')
-                                    .then(result => {
-                                        //dataService.go('/result');
-                                    }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
-                                    });
-
-                    promiseOpp  =   dataService.updateUserRecord(loserId, 'loss')
-                                    .then(result => {
-                                        //dataService.go('/result');
-                                    }, reason => {
-                                        $log.error('UPDATE USER RECORD', reason);
-                                    });
-                }
-
-                $q.all([promiseMatch, promiseUser, promiseOpp]).then(function() {
-                    dataService.go('/results');
-                });
-            };
-
-            game.playGame = function(player1, player2) {
-
-                var results = {};
-                results['player 1'] = player1.user;
-                results['player 2'] = player2.user;
-                results.deck_one = player1._id;
-                results.deck_two = player2._id;
-
-                $log.info(results);
-
-                // first, verify deck action arrays have the correct length
-                if (verifyDecks(player1, player2)) {
-                    // loop through actions and return results
-                    for (var i = 0; i < _actionCount; i++) {
-                        results['move_' + i] = compareActions(player1.actions[i], player2.actions[i]);
-                    }
-
-                }
-
-                return _getResults(results);
-            }
-
-            return game;
-
-        }(this);
-
-    });
-
-/***/ }),
-
-/***/ 384:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-
-var _stories = {
-    "draw": [{
-            "story": ["WINNER, your pathetic attempts at world domination were countered at ever turn.",
-                " What's worse is that OPPONENT laughed at your feeble attempts and is now more emboldened than ever.",
-                " Perhaps next time you should choose more carefully before picking on the neighborhood bully and now having",
-                " your lunch money stolen daily. I would suggest training, starting with an opponent more equal to your skill",
-                " level--Alf, perhaps--and trying anew. Just not on this server. We're ashamed of you."
-            ]
-        },
-        {
-            "story": ["WINNER, you came. You saw. You conquered...the time tested art of negotiation. Seeing that OPPONENT was of equal",
-                " strength, you wisely chose to call your duel a draw and live to fight another day. Will this gain you honor in",
-                " the eyes of your friends and family? Perhaps not. They are shortsighted and narrowminded. They are the type of",
-                " people that buy cereal simply for the toys. Not you. Eat your Wheaties, friend. Reach for the stars. Perhaps",
-                " next time you'll conquer your foe and win adulation for your clan."
-            ]
-        }
-    ],
-    "momentum": [{
-            "story": ["Few things in life are as rewarding as absolute domination, and in this respect WINNER excels. OPPONENT was",
-                " overmatched at every turn, and in the end, OPPONENT decided that surrendering was the best course of action. Would",
-                " someone with actual courage do such a thing? No. But OPPONENT was never one to possess much courage while WINNER measures",
-                " courage by the APC full. Congratulations WINNER. Of all the opponents you could have chosen this day, you found the most",
-                " craven, and that, my friend, is a real talent!"
-            ]
-        },
-        {
-            "story": ["We're ashamed for OPPONENT. We've combed through the records and found little evidence to support that",
-                " OPPONENT exists on our servers. Did WINNER invent this person? Surrender? Sometimes people have bad days. You roll out of bed.",
-                " You slip on a banana peel. You veer into a truckload of manure. We understand. WINNER dominated OPPONENT so thoroughly",
-                " that OPPONENT was seen weeping in the corner with a sun-warmed glass of Kool Aid and a worn copy of the Tao Te Ching.",
-                " Perhaps combat isn't their specialty? Perk up, OPPONENT. Tomorrow you start your new job brushing feral hamsters at the",
-                " local animal shelter. Opportunity!"
-            ]
-        }
-    ],
-    "standard": [{
-            "story": ["One day, in the not so distant future, OPPONENT will look back upon this day and consider his or her battle as a",
-                " learning experience. 'The loss does not matter,' OPPONENT, thinks. Of course, he or she is an idiot and of course the",
-                " loss matters. Moral victories are great for the movies, but in real life, WINNER understands that the sweet taste of",
-                " victory is more important than slow motion celebrations in the runner's up tent. Congratulations WINNER. The day is",
-                " yours. Hold your head high as you march through the streets, waving your victory banner. Does a beverage taste better",
-                " after a win. Yes. Yes it does. Enjoy a beverage of choice!"
-            ]
-        },
-        {
-            "story": ["It was perhaps the most exciting match we've yet seen here. Perhaps. It could also be described as a waste of our",
-                " time because we bet money on OPPONENT and now they've lost. We lost big.",
-                " The odds on OPPONENT were 100-1, the longest of long shots, and we bet accordingly. Is gambling illegal? Not when it's a sure thing.",
-                " That's called investing, friend, and now we realize that we should have 'invested' in WINNER. Oh, to think of our champagne",
-                " wishes and caviar dreams now being turned into RC Cola and Spam. OPPONENT, we never should have doubted your ability to screw everything up.",
-                " WINNER, we never should have doubted your tenacity and force of will. Also your big guns. Those came in handy.",
-                " Probably more than the tenacity and will. Yes. Much, much more."
-            ]
-        }
-    ]
-};
-
-function _getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
-
-function _capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function _buildStory(storyArray, players) {
-    var story = '';
-    var opponent = '';
-    var winner = '';
-
-    if (players.winner === "player 1" || players.winner === "draw") {
-        winner = players["player 1"]["name"];
-        opponent = players["player 2"]["name"];
-    } else {
-        winner = players["player 2"]["name"];
-        opponent = players["player 1"]["name"];
-    }
-
-    for (var i = 0; i < storyArray['story'].length; i++) {
-        var line = storyArray['story'][i];
-        line = line.replace("WINNER", winner);
-        line = line.replace("OPPONENT", opponent);
-        story += line;
-    }
-    console.log(story);
-    return story;
-}
-
-function getStory(type, players) {
-    var story = _stories[type];
-    story = story[_getRandomInt(0, story.length)];
-    return _buildStory(story, players);
-}
-
-module.exports.getStory = getStory;
-
-/***/ }),
-
-/***/ 385:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-
-var angular = __webpack_require__(28);
+var angular = __webpack_require__(0);
 
 angular.module('ijwApp')
     .controller('missionCtrl', function($scope, $log, $interval, dataService) {
@@ -1037,16 +393,15 @@ angular.module('ijwApp')
     })
 
 /***/ }),
-
-/***/ 386:
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-var angular = __webpack_require__(28);
-const mapboxgl = __webpack_require__(387);
+var angular = __webpack_require__(0);
+const mapboxgl = __webpack_require__(9);
 
 const styles = {
     'satellite': 'mapbox://styles/mapbox/satellite-v9',
@@ -1182,8 +537,7 @@ angular.module('ijwApp')
   }]);
 
 /***/ }),
-
-/***/ 387:
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.mapboxgl = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
@@ -1647,18 +1001,10 @@ module.exports={"$version":8,"$root":{"version":{"required":true,"type":"enum","
 
 
 //# sourceMappingURL=mapbox-gl.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-
-/***/ 396:
-/***/ (function(module, exports) {
-
-module.exports = {"mapbox":{"styleURL":"mapbox://styles/thebluecow/cj7t3fpw70uo12sphdf24ihyo","accessToken":"pk.eyJ1IjoidGhlYmx1ZWNvdyIsImEiOiJjajdzdndjd3AxZDl4MzducWNsMHprMzl2In0._WHslvWYG1dB7GQQGJJ6dw"},"openweather":{"key":"5a05f6359147d5fb27c9dbae68a8e285"},"askGeo":{"id":1851,"accessToken":"f48e1be141f91812339ecdd8b08666d05b7a4a25b3592d1b5bdd882464e3f056"},"timezonedb":{"apiKey":"I6PO4E87OH8B"}}
-
-/***/ }),
-
-/***/ 6:
+/* 10 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1684,6 +1030,648 @@ try {
 module.exports = g;
 
 
-/***/ })
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
 
-},[185]);
+"use strict";
+
+
+
+var angular = __webpack_require__(0);
+var api = __webpack_require__(12);
+
+angular.module('ijwApp')
+    .service("dataService", function($http, $log, $q, $location, $httpParamSerializer) {
+
+        ! function(vm) {
+
+            // The base URL for the REST API is http://localhost:5000/
+            const HOME = 'http://localhost:3000';
+            let config = {
+                //headers : { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            /* BEGIN VARIABLES EXCLUSIVE TO MAP AND WEATHER APIS */
+
+            var mission = {};
+            var weather = {};
+            var _actions = {};
+
+            var weatherURL = 'http://api.openweathermap.org/data/2.5/weather';
+            var timezonedbURL = 'http://api.timezonedb.com/v2/get-time-zone?key=';
+
+            // longitude, latitude format
+            var locations = [
+                {
+                 "city": {
+                        "location": "Amazon",
+                        "global": [-62.215881, -3.465305],
+                        "title": "Deep in the Amazon",
+                        "story": "The jungle is alive with Cobra operatives.",
+                        "terrain": "jungle",
+                        "offset": 0
+                    }
+                },
+                {
+                    "city": {
+                        "location": "Russia, Novosibirsk",
+                        "global": [82.93573270000002, 55.00835259999999],
+                        "title": "Sibera Novosibirsk",
+                        "story": "Cobra siezes control of the Russian servers, posting fake news on FaceBook.",
+                        "terrain": "city",
+                        "offset": 11
+                    }
+                },
+                {
+                    "city": {
+                        "location": "Bruges, Belgium",
+                        "global": [3.2246995000000425, 51.209348],
+                        "title": "In Bruges?",
+                        "story": "GI Joe finds Cobra operatives hiding away in a small bread and breakfast in Bruges, Belgium. In Bruges?",
+                        "terrain": "city",
+                        "offset": 6
+                    }
+                },
+                {
+                    "city": {
+                        "location": "Kalahari Desert",
+                        "global": [21.093731, -25.592021],
+                        "title": "Sand, Sand, Everywhere ",
+                        "story": "Cobra has taken shelter in southern Africa, building B.A.T.S. and robotic cheetahs that meow in code.",
+                        "terrain": "desert",
+                        "offset": 6
+                    }
+                }
+            ];
+
+            var styles = {
+                'satellite': 'mapbox://styles/mapbox/satellite-v9',
+                'satellite-streets': 'mapbox://styles/mapbox/satellite-streets-v9',
+                'streets': 'mapbox://styles/mapbox/streets-v9',
+                'outdoors': 'mapbox://styles/mapbox/outdoors-v10',
+                'light': 'mapbox://styles/mapbox/light-v9',
+                'dark': 'mapbox://styles/mapbox/dark-v9',
+                'personal': 'mapbox://styles/thebluecow/cj7t3fpw70uo12sphdf24ihyo'
+            };
+
+            /* END VARIABLES EXCLUSIVE TO MAP AND WEATHER APIS */
+
+            /* BEGIN FUNCTIONS EXCLUSIVE TO MAP AND WEATHER APIS */
+
+            // get current mission and weather
+            (function() {
+                var location = locations[_getRandomInt(0, locations.length)];
+                mission.location = location.city;
+
+                var weatherQuery = '?lat=' + mission.location.global[1] + '&lon=' + mission.location.global[0] + '&units=imperial';
+                var newWeatherURL = `${weatherURL}${weatherQuery}&APPID=${api.openweather.key}`;
+                var p1 = $http.get(newWeatherURL);
+
+                var timezonedbQuery = '&lat=' + mission.location.global[1] + '&lng=' + mission.location.global[0];
+                var newTimezoneURL = `${timezonedbURL}${api.timezonedb.apiKey}&format=json&by=position${timezonedbQuery}`;
+                var p2 = $http.get(newTimezoneURL);
+
+                weather = $q.all([p1, p2]).then(function (result) {
+                                return {
+                                    "weather" : result[0]['data'],
+                                    "timezone": result[1]['data']
+                                }
+                            });
+            }());
+
+            // return only the necessary components for the mission with weather
+            vm.getMission = function() {
+                return mission;
+            }
+
+            // return weather
+            vm.getWeather = function() {
+                return weather;
+            }
+
+            // returns an array of actions. Can return all actions or only those fields
+            // specified
+            vm.getActions = function (fields) {
+                var deferred = $q.defer();
+
+                vm.getAllActions().then( result => {
+                    var actions = [];
+                    if (fields.length > 0) {
+                        result.data.forEach( action => {
+                            var _action = {};
+                            for (var i = 0; i < fields.length; i++) {
+                                _action[fields[i]] = action[fields[i]];
+                            }
+                            actions.push(_action);
+                        });
+                        result.data = actions;
+                    }
+
+                    deferred.resolve(result);
+                });
+
+                return deferred.promise;
+            }
+
+            function _getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+            }
+
+            /* END FUNCTIONS EXCLUSIVE TO MAP AND WEATHER APIS */
+
+            // GET /api/actions - Gets all of the actions.
+            vm.getAllActions = function() {
+                return $http.get(HOME + '/api/actions');
+            };
+
+            // GET /api/actions/all - Gets all of the actions.
+            // TODO - remove this after switching up its call
+            vm.getActionValues = function() {
+                return $http.get(HOME + '/api/actions/all');
+            };
+
+            // GET /api/users/:userId - Gets a single user
+            vm.getUser = function(userId) {
+                return $http.get(HOME + '/api/users/' + userId);
+            }
+
+            // GET /api/decks - Gets all decks
+            vm.getAllDecks = function() {
+                return $http.get(HOME + '/api/decks');
+            }
+
+            // GET /api/decks/user/:userId - Gets all decks by a user (should only be one)
+            vm.getUserDecks = function(userId) {
+                return $http.get(HOME + '/api/decks/user/' + userId);
+            }
+
+            // POST /api/users/:userId/results-win - updates the user's record
+            vm.updateUserRecord = function(userId, result) {
+                return $http.post(HOME + '/api/users/' + userId + '/result-' + result);
+            }
+
+            // POST /api/matches - Creates a match for the specified user
+            vm.createMatch = function(match) {
+                return $http.post(HOME + '/api/matches', JSON.stringify(match), config);
+            }
+
+            // GET /api/matches/user/:userId - Gets the most recent match for the user
+            vm.getUserMatches = function(userId) {
+                return $http.get(HOME + '/api/matches/user/' + userId);
+            }
+
+            // POST /api/decks - Create a deck for the specified user
+            vm.updateOrCreateDeck = function(deck, userId) {
+                return $http.post(HOME + '/api/decks/user/' + userId, JSON.stringify(deck), config);
+            }
+
+            // DELETE /api/decks/:deckId
+            vm.deleteDeck = function(deckId) {
+                return $http.delete(HOME + '/api/decks/' + deckId);
+            }
+
+            // redirect browser to path
+            vm.go = function(path) {
+                return $location.path(path);
+            };
+
+            return vm;
+
+        }(this);
+
+    });
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+module.exports = {"mapbox":{"styleURL":"mapbox://styles/thebluecow/cj7t3fpw70uo12sphdf24ihyo","accessToken":"pk.eyJ1IjoidGhlYmx1ZWNvdyIsImEiOiJjajdzdndjd3AxZDl4MzducWNsMHprMzl2In0._WHslvWYG1dB7GQQGJJ6dw"},"openweather":{"key":"5a05f6359147d5fb27c9dbae68a8e285"},"askGeo":{"id":1851,"accessToken":"f48e1be141f91812339ecdd8b08666d05b7a4a25b3592d1b5bdd882464e3f056"},"timezonedb":{"apiKey":"I6PO4E87OH8B"}}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
+var angular = __webpack_require__(0);
+var reporter = __webpack_require__(14);
+
+angular.module('ijwApp')
+    .service("gameService", function($http, $q, $log, dataService) {
+
+        ! function(game) {
+
+            var _actionCount = 10;
+            var _actions = {};
+            var _weather = {};
+            const HOME = 'http://localhost:3000';
+            const MOMENTUM = 4;
+
+            // get current all actions with values
+            (function() {
+                dataService.getActionValues()
+                    .then(function(actions) {
+                        _actions = (actions !== 'null') ? actions.data : {};
+                    }, function(reason) {
+                        $log.error(reason);
+                    });
+            }());
+
+            // get weather conditions
+            (function() {
+                dataService.getWeather()
+                    .then(function(weather) {
+                        _weather = (weather !== 'null') ? weather.weather : {};
+                        _weather.sunrise = _convertUnixTime(_weather.sys.sunrise);
+                        _weather.sunset = _convertUnixTime(_weather.sys.sunset);
+                    }, function(reason) {
+                        $log.error(reason);
+                    });
+            }());
+
+            var _getWeatherCondition = function() {
+                var code = parseInt(_weather.weather[0]['id']);
+                code = 781;
+                var condition = '';
+                if (code === 511 || code === 601 || code === 602 || code === 622) {
+                    condition = 'snow';
+                }
+                else if (code === 202 || code === 211 || code === 212 || code === 502 || code === 503 || code === 504)
+                {
+                    condition = 'rain';
+                }
+                else if (code === 781 || code === 900 || code === 902 || code === 905 || code === 961 || code === 962)
+                {
+                    condition = 'extreme';
+                }
+
+                return condition;
+            }
+
+            var verifyDecks = function(player1, player2) {
+                var verified = false;
+
+                verified = (player1.actions.length === _actionCount && player2.actions.length === _actionCount);
+
+                return verified;
+            };
+
+            var _getValue = function(move, bonuses) {
+                var value = 0;
+                _actions.forEach(function(action) {
+                    if (action._id === move._id) {
+                        value = action.value;
+
+                        if (bonuses.condition) {
+                            $log.info(bonuses.condition);
+                            value += action.bonuses[bonuses.condition];
+                        }
+
+                        if (bonuses.mission.location.terrain) {
+                            $log.info(bonuses.mission.location.terrain);
+                            value += action.bonuses[bonuses.mission.location.terrain];
+                        }
+                    }
+                });
+                return value;
+            }
+
+            var compareActions = function(action_p1, action_p2) {
+                var bonuses = {};
+                bonuses.condition = _getWeatherCondition();
+                bonuses.mission = dataService.getMission();
+
+                action_p1.value = _getValue(action_p1, bonuses);
+                action_p2.value = _getValue(action_p2, bonuses);
+
+                var round = {};
+                // set round information
+                round.player1 = {
+                    'name': action_p1.name,
+                    'value': action_p1.value
+                };
+
+                round.player2 = {
+                    'name': action_p2.name,
+                    'value': action_p2.value
+                };
+
+                // check action values
+                if (action_p1.value > action_p2.value) {
+                    round.winner = 'player 1';
+                    round.diff = (action_p1.value - action_p2.value);
+                } else if (action_p2.value > action_p1.value) {
+                    round.winner = 'player 2';
+                    round.diff = (action_p2.value - action_p1.value);
+                } else {
+                    round.winner = 'tie';
+                    round.diff = 0;
+                }
+
+                return round;
+            }
+
+            function _convertUnixTime(time) {
+                //return new Date(time * 1000).toString().substring(4, 24);
+                return new Date(time * 1000).toString();
+            }
+
+            var _getResults = function(results) {
+                var player1 = 0;
+                var player2 = 0;
+                var consecutive = 0;
+                var last = '';
+                var won = false;
+
+                var lastFour = function(property) {
+                    var move = property.substring(5, 6);
+                    var moves = [];
+
+                    if (!isNaN(move)) {
+
+                        moves.push(parseInt(move));
+
+                        while (moves.length < MOMENTUM) {
+                            moves.push(--move);
+                        }
+                    }
+
+                    return moves;
+                };
+
+                for (var property in results) {
+                    if (results.hasOwnProperty(property) && !won) {
+                        var move = results[property];
+                        if (move.winner === 'player 1') {
+                            player1++;
+                            if (last === 'player 1' || last === '' || last === 'tie') {
+                                consecutive++;
+                                last = 'player 1';
+                            } else {
+                                consecutive = 1;
+                                last = 'player 1';
+                            }
+                        } else if (move.winner === 'player 2') {
+                            player2++;
+                            if (last === 'player 2' || last === '' || last === 'tie') {
+                                consecutive++;
+                                last = 'player 2';
+                            } else {
+                                consecutive = 1;
+                                last = 'player 2';
+                            }
+                        } else {
+                            last = 'tie';
+                            consecutive = 0;
+                        }
+
+                        if (consecutive === MOMENTUM) {
+                            results.winner = last;
+                            results.cause = 'momentum';
+                            results.final = lastFour(property);
+                            won = true;
+                        }
+                    }
+
+
+                }
+
+                if (won && results.cause === 'momentum') {
+                    results.reason = 'surrender';
+                    results.story = reporter.getStory('momentum', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
+                } else if (player1 > player2) {
+                    results.winner = 'player 1';
+                    results.reason = 'moves';
+                    results.story = reporter.getStory('standard', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
+                } else if (player2 > player1) {
+                    results.winner = 'player 2';
+                    results.reason = 'moves';
+                    results.story = reporter.getStory('standard', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
+                } else {
+                    results.winner = 'draw';
+                    results.reason = 'draw';
+                    results.story = reporter.getStory('draw', { "player 1" : results["player 1"], "player 2" : results["player 2"], "winner" : results.winner});
+                }
+
+                _updateResults(results);
+
+                results.player_1_moves = player1;
+                results.player_2_moves = player2;
+
+                return results;
+            }
+
+            var _updateResults = function(results) {
+                var promiseUser;
+                var promiseOpp;
+                var promiseMatch;
+                var winnerId;
+                var loserId;
+
+                var match = {
+                    "deck_one"  : results["deck_one"],
+                    "deck_two"  : results["deck_two"],
+                    "story"     : results.story,
+                    "reason"    : results.reason
+                };
+
+                $log.info(results);
+
+                if (results.winner === "player 1") {
+                    winnerId = results["player 1"]["_id"];
+                    loserId  = results["player 2"]["_id"];
+                } else {
+                    winnerId = results["player 2"]["_id"];
+                    loserId =  results["player 1"]["_id"];
+                }
+
+                match.winner = winnerId;
+                promiseMatch =  dataService.createMatch(match)
+                                .then(function(result) {
+                                
+                                }, function(reason) {
+                                    $log.error('CREATE MATCH REASON', reason);
+                                });
+
+                if (results.reason === 'draw') {
+                    promiseUser =   dataService.updateUserRecord(winnerId, 'draw')
+                                    .then(result => {
+                                        //dataService.go('/result');
+                                    }, reason => {
+                                        $log.error('UPDATE USER RECORD', reason);
+                                    });
+
+                    promiseOpp  =   dataService.updateUserRecord(loserId, 'draw')
+                                    .then(result => {
+                                        // dataService.go('/results');
+                                    }, reason => {
+                                        $log.error('UPDATE USER RECORD', reason);
+                                    });
+                }
+
+                else {
+                    promiseUser =   dataService.updateUserRecord(winnerId, 'win')
+                                    .then(result => {
+                                        //dataService.go('/result');
+                                    }, reason => {
+                                        $log.error('UPDATE USER RECORD', reason);
+                                    });
+
+                    promiseOpp  =   dataService.updateUserRecord(loserId, 'loss')
+                                    .then(result => {
+                                        //dataService.go('/result');
+                                    }, reason => {
+                                        $log.error('UPDATE USER RECORD', reason);
+                                    });
+                }
+
+                $q.all([promiseMatch, promiseUser, promiseOpp]).then(function() {
+                    dataService.go('/results');
+                });
+            };
+
+            game.playGame = function(player1, player2) {
+
+                var results = {};
+                results['player 1'] = player1.user;
+                results['player 2'] = player2.user;
+                results.deck_one = player1._id;
+                results.deck_two = player2._id;
+
+                $log.info(results);
+
+                // first, verify deck action arrays have the correct length
+                if (verifyDecks(player1, player2)) {
+                    // loop through actions and return results
+                    for (var i = 0; i < _actionCount; i++) {
+                        results['move_' + i] = compareActions(player1.actions[i], player2.actions[i]);
+                    }
+
+                }
+
+                return _getResults(results);
+            }
+
+            return game;
+
+        }(this);
+
+    });
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
+var _stories = {
+    "draw": [{
+            "story": ["WINNER, your pathetic attempts at world domination were countered at ever turn.",
+                " What's worse is that OPPONENT laughed at your feeble attempts and is now more emboldened than ever.",
+                " Perhaps next time you should choose more carefully before picking on the neighborhood bully and now having",
+                " your lunch money stolen daily. I would suggest training, starting with an opponent more equal to your skill",
+                " level--Alf, perhaps--and trying anew. Just not on this server. We're ashamed of you."
+            ]
+        },
+        {
+            "story": ["WINNER, you came. You saw. You conquered...the time tested art of negotiation. Seeing that OPPONENT was of equal",
+                " strength, you wisely chose to call your duel a draw and live to fight another day. Will this gain you honor in",
+                " the eyes of your friends and family? Perhaps not. They are shortsighted and narrowminded. They are the type of",
+                " people that buy cereal simply for the toys. Not you. Eat your Wheaties, friend. Reach for the stars. Perhaps",
+                " next time you'll conquer your foe and win adulation for your clan."
+            ]
+        }
+    ],
+    "momentum": [{
+            "story": ["Few things in life are as rewarding as absolute domination, and in this respect WINNER excels. OPPONENT was",
+                " overmatched at every turn, and in the end, OPPONENT decided that surrendering was the best course of action. Would",
+                " someone with actual courage do such a thing? No. But OPPONENT was never one to possess much courage while WINNER measures",
+                " courage by the APC full. Congratulations WINNER. Of all the opponents you could have chosen this day, you found the most",
+                " craven, and that, my friend, is a real talent!"
+            ]
+        },
+        {
+            "story": ["We're ashamed for OPPONENT. We've combed through the records and found little evidence to support that",
+                " OPPONENT exists on our servers. Did WINNER invent this person? Surrender? Sometimes people have bad days. You roll out of bed.",
+                " You slip on a banana peel. You veer into a truckload of manure. We understand. WINNER dominated OPPONENT so thoroughly",
+                " that OPPONENT was seen weeping in the corner with a sun-warmed glass of Kool Aid and a worn copy of the Tao Te Ching.",
+                " Perhaps combat isn't their specialty? Perk up, OPPONENT. Tomorrow you start your new job brushing feral hamsters at the",
+                " local animal shelter. Opportunity!"
+            ]
+        }
+    ],
+    "standard": [{
+            "story": ["One day, in the not so distant future, OPPONENT will look back upon this day and consider his or her battle as a",
+                " learning experience. 'The loss does not matter,' OPPONENT, thinks. Of course, he or she is an idiot and of course the",
+                " loss matters. Moral victories are great for the movies, but in real life, WINNER understands that the sweet taste of",
+                " victory is more important than slow motion celebrations in the runner's up tent. Congratulations WINNER. The day is",
+                " yours. Hold your head high as you march through the streets, waving your victory banner. Does a beverage taste better",
+                " after a win. Yes. Yes it does. Enjoy a beverage of choice!"
+            ]
+        },
+        {
+            "story": ["It was perhaps the most exciting match we've yet seen here. Perhaps. It could also be described as a waste of our",
+                " time because we bet money on OPPONENT and now they've lost. We lost big.",
+                " The odds on OPPONENT were 100-1, the longest of long shots, and we bet accordingly. Is gambling illegal? Not when it's a sure thing.",
+                " That's called investing, friend, and now we realize that we should have 'invested' in WINNER. Oh, to think of our champagne",
+                " wishes and caviar dreams now being turned into RC Cola and Spam. OPPONENT, we never should have doubted your ability to screw everything up.",
+                " WINNER, we never should have doubted your tenacity and force of will. Also your big guns. Those came in handy.",
+                " Probably more than the tenacity and will. Yes. Much, much more."
+            ]
+        }
+    ]
+};
+
+function _getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function _capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function _buildStory(storyArray, players) {
+    var story = '';
+    var opponent = '';
+    var winner = '';
+
+    if (players.winner === "player 1" || players.winner === "draw") {
+        winner = players["player 1"]["name"];
+        opponent = players["player 2"]["name"];
+    } else {
+        winner = players["player 2"]["name"];
+        opponent = players["player 1"]["name"];
+    }
+
+    for (var i = 0; i < storyArray['story'].length; i++) {
+        var line = storyArray['story'][i];
+        line = line.replace("WINNER", winner);
+        line = line.replace("OPPONENT", opponent);
+        story += line;
+    }
+    console.log(story);
+    return story;
+}
+
+function getStory(type, players) {
+    var story = _stories[type];
+    story = story[_getRandomInt(0, story.length)];
+    return _buildStory(story, players);
+}
+
+module.exports.getStory = getStory;
+
+/***/ })
+],[1]);
