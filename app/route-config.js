@@ -28,7 +28,7 @@
          controller: 'homeCtrl',
          controllerAs: 'vm',
          templateUrl: 'templates/home.html',
-         access: {restricted: false, admin: false}
+         access: {restricted: true, admin: false}
      })
      .when('/login', {
          controller: 'loginCtrl',
