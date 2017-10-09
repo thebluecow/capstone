@@ -39,25 +39,25 @@
 	    },
 	    "4": {
 	        "_id": "59b3d655bb644f0c119e5f4d",
-	        "name": "Time for the Night Vision Goggles",
+	        "name": "Give 'em HAL!",
 	        "__v": 0,
 	        "value": 20,
 	         "bonuses": {
-	            "snow": -3,
-	            "rain": -5,
+	            "snow": 0,
+	            "rain": 2,
 	            "extreme": -2,
 	            "desert": 0
 	        }
 	    },
 	    "5": {
 	        "_id": "59b3d655bb644f0c119e5f53",
-	        "name": "T-11 Parachute",
+	        "name": "S.N.A.K.E. in the Grass",
 	        "__v": 0,
 	        "value": 17,
 	         "bonuses": {
-	            "snow": 0,
+	            "snow": 3,
 	            "rain": 2,
-	            "extreme": -5,
+	            "extreme": 0,
 	            "desert": 0
 	        }
 	    },
@@ -123,25 +123,25 @@
 	    },
 	    "11": {
 	        "_id": "59b3d655bb644f0c119e5f3b",
-	        "name": "Punch",
+	        "name": "Mindbender's Monocle",
 	        "__v": 0,
 	        "value": 15,
 	         "bonuses": {
-	            "snow": -1,
-	            "rain": 2,
-	            "extreme": -3,
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
 	            "desert": 0
 	        }
 	    },
 	    "12": {
 	        "_id": "59b3d655bb644f0c119e5f4e",
-	        "name": "PRC-117 Radios HQ",
+	        "name": "Dial-Tone's Beret",
 	        "__v": 0,
 	        "value": 1,
 	         "bonuses": {
-	            "snow": 2,
-	            "rain": 1,
-	            "extreme": -3,
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
 	            "desert": 0
 	        }
 	    },
@@ -159,7 +159,7 @@
 	    },
 	    "14": {
 	        "_id": "59b3d655bb644f0c119e5f47",
-	        "name": "MK19 Grenade Machine Gun",
+	        "name": "Ripper's Purple Shirt",
 	        "__v": 0,
 	        "value": 12,
 	         "bonuses": {
@@ -176,14 +176,14 @@
 	        "value": 11,
 	         "bonuses": {
 	            "snow": 0,
-	            "rain": 0,
+	            "rain": 3,
 	            "extreme": -3,
-	            "desert": -20
+	            "desert": -5
 	        }
 	    },
 	    "16": {
 	        "_id": "59b3d655bb644f0c119e5f4f",
-	        "name": "MK-54 Torpedo",
+	        "name": "Glenda's Laser rifle",
 	        "__v": 0,
 	        "value": 10,
 	         "bonuses": {
@@ -195,7 +195,7 @@
 	    },
 	    "17": {
 	        "_id": "59b3d655bb644f0c119e5f49",
-	        "name": "M777 Howitzer",
+	        "name": "Ninja-Ku, Do You?",
 	        "__v": 0,
 	        "value": 13,
 	         "bonuses": {
@@ -207,19 +207,19 @@
 	    },
 	    "18": {
 	        "_id": "59b3d655bb644f0c119e5f3a",
-	        "name": "M3 Bradley FIghting Vehicle",
+	        "name": "Gymkata!",
 	        "__v": 0,
 	        "value": 2,
 	         "bonuses": {
-	            "snow": 3,
-	            "rain": 2,
-	            "extreme": -2,
+	            "snow": 2,
+	            "rain": 1,
+	            "extreme": 2,
 	            "desert": 0
 	        }
 	    },
 	    "19": {
 	        "_id": "59b3d655bb644f0c119e5f45",
-	        "name": "M224 60mm Mortar",
+	        "name": "Shimik's Receding Hairline",
 	        "__v": 0,
 	        "value": 9,
 	         "bonuses": {
@@ -231,38 +231,38 @@
 	    },
 	    "20": {
 	        "_id": "59b3d655bb644f0c119e5f43",
-	        "name": "M1911 Locked & Loaded",
+	        "name": "We're in A.W.E.",
 	        "__v": 0,
 	        "value": 18,
 	         "bonuses": {
-	            "snow": 0,
+	            "snow": -2,
 	            "rain": 0,
-	            "extreme": 0,
-	            "desert": 0
+	            "extreme": 2,
+	            "desert": 4
 	        }
 	    },
 	    "21": {
 	        "_id": "59b3d655bb644f0c119e5f42",
-	        "name": "M-60",
+	        "name": "Barrel Roll, Target Sighted",
 	        "__v": 0,
 	        "value": 3,
 	         "bonuses": {
-	            "snow": 0,
+	            "snow": -2,
 	            "rain": 0,
-	            "extreme": 0,
+	            "extreme": 2,
 	            "desert": 0
 	        }
 	    },
 	    "22": {
 	        "_id": "59b3d655bb644f0c119e5f3e",
-	        "name": "LAV-25 Light Armored Vehicle",
+	        "name": "Monkeywrench in the Works",
 	        "__v": 0,
 	        "value": 21,
 	         "bonuses": {
 	            "snow": 0,
 	            "rain": 0,
-	            "extreme": 0,
-	            "desert": 0
+	            "extreme": 2,
+	            "desert": 2
 	        }
 	    },
 	    "23": {
@@ -279,14 +279,14 @@
 	    },
 	    "24": {
 	        "_id": "59b3d655bb644f0c119e5f4c",
-	        "name": "Kastle FX95 HP Skis Found",
+	        "name": "Thunder Machine Time!",
 	        "__v": 0,
 	        "value": 14,
 	         "bonuses": {
-	            "snow": 0,
-	            "rain": 0,
-	            "extreme": 0,
-	            "desert": -10
+	            "snow": -3,
+	            "rain": 3,
+	            "extreme": 3,
+	            "desert": -3
 	        }
 	    },
 	    "25": {
@@ -303,31 +303,31 @@
 	    },
 	    "26": {
 	        "_id": "59b3d655bb644f0c119e5f3d",
-	        "name": "Grenade",
+	        "name": "Wild Weasel to the Rescue",
 	        "__v": 0,
 	        "value": 7,
 	         "bonuses": {
 	            "snow": -2,
-	            "rain": 5,
-	            "extreme": 0,
-	            "desert": 0
+	            "rain": 2,
+	            "extreme": -2,
+	            "desert": 2
 	        }
 	    },
 	    "27": {
 	        "_id": "59b3d655bb644f0c119e5f3c",
-	        "name": "Find Cover",
+	        "name": "Good in the Clutch",
 	        "__v": 0,
 	        "value": 2,
 	         "bonuses": {
-	            "snow": 5,
-	            "rain": 5,
-	            "extreme": 5,
-	            "desert": -5
+	            "snow": 2,
+	            "rain": -2,
+	            "extreme": 2,
+	            "desert": 0
 	        }
 	    },
 	    "28": {
 	        "_id": "59b3d655bb644f0c119e5f46",
-	        "name": "FGM-148 Javelin",
+	        "name": "A Study in Scarlett",
 	        "__v": 0,
 	        "value": 1,
 	         "bonuses": {
@@ -351,31 +351,31 @@
 	    },
 	    "30": {
 	        "_id": "59b3d655bb644f0c119e5f44",
-	        "name": "Dodge, Dip, Dive, Duck, & Dodge",
+	        "name": "Spencer, Welcome Home",
 	        "__v": 0,
 	        "value": 5,
 	         "bonuses": {
-	            "snow": 0,
-	            "rain": 0,
-	            "extreme": 0,
-	            "desert": 0
+	            "snow": 4,
+	            "rain": 2,
+	            "extreme": 4,
+	            "desert": -3
 	        }
 	    },
 	    "31": {
 	        "_id": "59b3d655bb644f0c119e5f40",
-	        "name": "Dig a Trench",
+	        "name": "Cobra Island Getaway",
 	        "__v": 0,
 	        "value": 14,
 	         "bonuses": {
 	            "snow": 0,
-	            "rain": 0,
+	            "rain": -1,
 	            "extreme": 0,
-	            "desert": -5
+	            "desert": 1
 	        }
 	    },
 	    "32": {
 	        "_id": "59b3d655bb644f0c119e5f56",
-	        "name": "Cobra!!!!",
+	        "name": "Cobra!",
 	        "__v": 0,
 	        "value": 7,
 	         "bonuses": {
@@ -387,14 +387,14 @@
 	    },
 	    "33": {
 	        "_id": "59b3d655bb644f0c119e5f52",
-	        "name": "Buffalo MPRC Mine Sweep",
+	        "name": "Iceberg Takes Aim",
 	        "__v": 0,
 	        "value": 4,
 	         "bonuses": {
-	            "snow": 0,
+	            "snow": 5,
 	            "rain": 0,
 	            "extreme": 0,
-	            "desert": 0
+	            "desert": -5
 	        }
 	    },
 	    "34": {
@@ -411,19 +411,19 @@
 	    },
 	    "35": {
 	        "_id": "59b3d655bb644f0c119e5f54",
-	        "name": "Beretta M9",
+	        "name": "Stalker Takes Charge",
 	        "__v": 0,
 	        "value": 12,
 	         "bonuses": {
-	            "snow": 0,
-	            "rain": 0,
-	            "extreme": 0,
-	            "desert": 0
+	            "snow": 3,
+	            "rain": 3,
+	            "extreme": 3,
+	            "desert": 3
 	        }
 	    },
 	    "36": {
 	        "_id": "59b3d655bb644f0c119e5f5e",
-	        "name": "Alternate Reality: World Without End",
+	        "name": "Baron Ironblood's Evil Genius",
 	        "__v": 0,
 	        "value": 19,
 	         "bonuses": {
@@ -447,43 +447,43 @@
 	    },
 	    "38": {
 	        "_id": "59b3d655bb644f0c119e5f41",
-	        "name": "Airstrike!",
+	        "name": "Shipwreck Has a Plan",
 	        "__v": 0,
 	        "value": 20,
 	         "bonuses": {
-	            "snow": -2,
-	            "rain": 2,
-	            "extreme": -5,
-	            "desert": 10
+	            "snow": -3,
+	            "rain": 3,
+	            "extreme": 0,
+	            "desert": 3
 	        }
 	    },
 	    "39": {
 	        "_id": "59b3d655bb644f0c119e5f4b",
-	        "name": "AN/ALQ-144 Infrared Jammer",
+	        "name": "Torpedo's Wetsuit",
 	        "__v": 0,
 	        "value": 6,
 	         "bonuses": {
 	            "snow": 0,
-	            "rain": 0,
+	            "rain": 2,
 	            "extreme": 0,
-	            "desert": 0
+	            "desert": -5
 	        }
 	    },
 	    "40": {
 	        "_id": "59b3d655bb644f0c119e5f51",
-	        "name": "AGM-114 Hellfire Missile",
+	        "name": "Recondo's Adventures",
 	        "__v": 0,
 	        "value": 10,
 	         "bonuses": {
-	            "snow": 0,
+	            "snow": -3,
 	            "rain": 0,
-	            "extreme": 0,
-	            "desert": 0
+	            "extreme": 3,
+	            "desert": 3
 	        }
 	    },
 	    "41": {
 	        "_id": "59b3d655bb644f0c119e5f3f",
-	        "name": "AAV7 Amphibious Assault",
+	        "name": "Red Shadows Attack",
 	        "__v": 0,
 	        "value": 8,
 	         "bonuses": {
@@ -496,11 +496,11 @@
 	},
 	"users": {
 		"_model" : "User",
-		"scottb": {
+		"zartan": {
 	        "_id": "59b3d92a026d930c39bd9ed8",
-	        "email": "scottb@test.com",
+	        "email": "zartan@gofunz.com",
 	        "password": "password",
-	        "name": "Scott B",
+	        "name": "Zartan, LLC",
 	        "roles" : ["user"],
 	        "__v": 0,
 	        "results": {
@@ -526,7 +526,7 @@
 	    	"_id": "59bd040511a3892ac5ba27b8",
 	        "email": "destrosdepot@destro.com",
 	        "password": "password",
-	        "name": "Destro (W4-0)",
+	        "name": "Destro",
 	        "roles" : ["user"],
 	        "__v": 0,
 	        "results": {
@@ -548,11 +548,11 @@
 	            "losses": 0
 	        }
 	    },
-	    "martinblank": {
+	    "quickkick": {
 	        "_id": "59b3d92a026d930c39bd9ed7",
-	        "email": "martinblank@grossepoinths.edu",
+	        "email": "quickkickstudio@test.test",
 	        "password": "password",
-	        "name": "Martin Blank",
+	        "name": "Quick Kick",
 	        "roles" : ["user"],
 	        "achievements": ["Storm Shadow Assassin of the Year"],
 	        "__v": 0,
@@ -577,7 +577,7 @@
 	    	"_id": "59be7d0b2f7a32313c80d72b",
 	        "email": "lifeisabeach@eighties.com",
 	        "password": "password",
-	        "name": "Beachhead (All Tie)",
+	        "name": "Beachhead",
 	        "roles" : ["user"],
 	        "__v": 0,
 	        "results": {
@@ -589,7 +589,7 @@
 	    	"_id": "59be88927ba0ef31664ef284",
 	        "email": "retreat@eighties.com",
 	        "password": "password",
-	        "name": "Cobra Commander (W3-L2-W2-L1-W1-L1 6-4)",
+	        "name": "Cobra Commander",
 	        "roles" : ["user"],
 	        "__v": 0,
 	        "results": {
@@ -602,7 +602,7 @@
 	        "email": "iheartladyjaye@eighties.com",
 	        "password": "password",
 	        "roles" : ["user"],
-	        "name": "Flint (L3, W4)",
+	        "name": "Flint",
 	        "__v": 0,
 	        "results": {
 	            "wins": 63,
@@ -613,7 +613,7 @@
 	    	"_id": "59b404ff258d2b0e4d7012b0",
 	     	"email": "siteadmin@test.test",
 	        "name": "Admin",
-	        "password": "password",
+	        "password": "superPassword!",
 	        "roles" : ["admin", "user"],
 	        "__v": 0,
 	        "results": {
@@ -688,8 +688,8 @@
 				"->actions.28"
 			]
 		},
-		"blankDeck": {
-			"user": "->users.martinblank",
+		"qkDeck": {
+			"user": "->users.quickkick",
 			"actions": [
 				"->actions.6",
 				"->actions.12",
@@ -703,8 +703,8 @@
 				"->actions.15"
 			]
 		},
-		"scottDeck": {
-			"user": "->users.scottb",
+		"zartanDeck": {
+			"user": "->users.zartan",
 			"actions": [
 				"->actions.19",
 				"->actions.13",
