@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "karma": "karma start",
     "start": "node ./src/app.js",
     "test": "mocha --recursive -R spec --ui bdd",
     "test:watch": "mocha --watch ./test ./"
