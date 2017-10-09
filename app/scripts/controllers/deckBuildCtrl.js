@@ -15,9 +15,11 @@ angular.module('ijwApp')
             var mission = {};
 
             // user does not need to be visible to scope
-            var user = {
-                _id: dataService.getUserId()
-            };
+            var user = {};
+
+            (function() {
+                user._id = dataService.getUserId();
+            }());
 
             // get actions from dataService
             (function() {

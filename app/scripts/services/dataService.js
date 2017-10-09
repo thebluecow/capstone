@@ -19,7 +19,12 @@ angular.module('ijwApp')
                 }
             };
 
-            var _id = AuthService.getUserId();
+            var _id = null;
+
+            (function() {
+                _id = AuthService.getUserId();
+            }());
+
             var user = {};
 
             /* BEGIN VARIABLES EXCLUSIVE TO MAP AND WEATHER APIS */

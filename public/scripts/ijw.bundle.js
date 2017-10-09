@@ -3607,30 +3607,31 @@ angular.module('ijwApp').controller('loginCtrl',
 "use strict";
 
 
+
 var angular = __webpack_require__(0);
 
-angular.module('ijwApp').controller('logoutCtrl',
-  ['$scope', '$location', 'AuthService',
-  function ($scope, $location, AuthService) {
+angular.module('ijwApp').controller('logoutCtrl', ['$scope', '$location', 'AuthService',
+    function($scope, $location, AuthService) {
 
-    $scope.logout = function () {
+        $scope.logout = function() {
 
-    	// initial values
-      $scope.error = false;
+            // initial values
+            $scope.error = false;
 
-      // call logout from service
-      AuthService.logout()
-        .then(function () {
-          $location.path('/login');
-        })
-        .catch(function() {
-        	$scope.error = true;
-          	$scope.errorMessage = "There's an error on logout";
-        });
+            // call logout from service
+            AuthService.logout()
+                .then(function() {
+                    $location.path('/login');
+                })
+                .catch(function() {
+                    $scope.error = true;
+                    $scope.errorMessage = "There's an error on logout";
+                });
 
-    };
+        };
 
-}]);
+    }
+]);
 
 /***/ }),
 /* 9 */
@@ -3738,9 +3739,11 @@ angular.module('ijwApp')
             var mission = {};
 
             // user does not need to be visible to scope
-            var user = {
-                _id: dataService.getUserId()
-            };
+            var user = {};
+
+            (function() {
+                user._id = dataService.getUserId();
+            }());
 
             // get actions from dataService
             (function() {
@@ -3834,9 +3837,9 @@ var angular = __webpack_require__(0);
 angular.module('ijwApp')
     .controller('headerCtrl', function($scope, $log, $location) {
 
-        $scope.isActive = function (viewLocation) { 
-	      return viewLocation === $location.path();
-	    };
+        $scope.isActive = function(viewLocation) {
+            return viewLocation === $location.path();
+        };
 
     })
 
@@ -3957,7 +3960,7 @@ angular.module('ijwApp')
                 var results = {};
                 // later we can add a variable on the page
                 var mode = 'vs';
-                if (opponent.length > 0 && (vm.userDeck != null || vm.userDeck === undefined)) {
+                if (opponent.length > 0 && (vm.userDeck !== null || vm.userDeck === undefined)) {
                     var player1 = {};
                     player1.user = vm.userDeck.user;
                     player1.actions = vm.userDeck.actions;
@@ -4328,7 +4331,7 @@ angular.module('ijwApp')
                 point++;
 
                 // make a marker for each feature and add to the map
-                new mapboxgl.Marker(el, /*{ offset: [-50 / 2, -50 / 2] }*/)
+                new mapboxgl.Marker(el /*, { offset: [-50 / 2, -50 / 2] }*/)
                 .setLngLat(marker.geometry.coordinates)
                 .addTo(map);
               });
@@ -4921,7 +4924,7 @@ angular.module('ijwApp').factory('AuthService', ['$rootScope', '$q', '$timeout',
               _id = response.data.user;
               deferred.resolve();
             } else {
-              $log.error(data);
+              $log.error(response.data);
               user = false;
               _id = null;
               deferred.reject();
@@ -4947,7 +4950,7 @@ angular.module('ijwApp').factory('AuthService', ['$rootScope', '$q', '$timeout',
             user = false;
             deferred.resolve();
         }, function(data) {
-          console.log('error', data);
+          $log.error(data);
           user = false;
           deferred.reject();
         });
@@ -5046,7 +5049,12 @@ angular.module('ijwApp')
                 }
             };
 
-            var _id = AuthService.getUserId();
+            var _id = null;
+
+            (function() {
+                _id = AuthService.getUserId();
+            }());
+
             var user = {};
 
             /* BEGIN VARIABLES EXCLUSIVE TO MAP AND WEATHER APIS */
