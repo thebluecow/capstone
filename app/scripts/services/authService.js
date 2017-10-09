@@ -60,7 +60,7 @@ angular.module('ijwApp').factory('AuthService', ['$rootScope', '$q', '$timeout',
               _id = response.data.user;
               deferred.resolve();
             } else {
-              $log.error(data);
+              $log.error(response.data);
               user = false;
               _id = null;
               deferred.reject();
@@ -86,7 +86,7 @@ angular.module('ijwApp').factory('AuthService', ['$rootScope', '$q', '$timeout',
             user = false;
             deferred.resolve();
         }, function(data) {
-          console.log('error', data);
+          $log.error(data);
           user = false;
           deferred.reject();
         });

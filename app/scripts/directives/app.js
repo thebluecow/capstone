@@ -102,7 +102,7 @@ angular.module('ijwApp')
                 point++;
 
                 // make a marker for each feature and add to the map
-                new mapboxgl.Marker(el, /*{ offset: [-50 / 2, -50 / 2] }*/)
+                new mapboxgl.Marker(el /*, { offset: [-50 / 2, -50 / 2] }*/)
                 .setLngLat(marker.geometry.coordinates)
                 .addTo(map);
               });

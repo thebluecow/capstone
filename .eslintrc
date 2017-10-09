@@ -17,11 +17,16 @@
     "no-extra-semi": "warn",
     "eqeqeq": "warn",
     'quotes': [0, 'single'],
+    'no-alert': "warn",
+    'no-caller': "error",
+    'no-empty-function': "warn",
     'semi': [0, 'always'],
     'no-unused-vars': 0,         
-    "angular/controller-name": [1, "/[A-Z].*Controller$/"],
+    "angular/controller-name": [1, "/[A-Za-z].*Ctrl$/"],
     "angular/directive-name": [2, "cus"],
     "angular/empty-controller": 2,
-    "angular/filter-name": [2,"flr"]
+    "angular/filter-name": [2,"flr"],
+    'callback-return': "warn",
+    'global-require': "warn"
   }
 }

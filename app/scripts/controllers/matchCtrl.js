@@ -110,7 +110,7 @@ angular.module('ijwApp')
                 var results = {};
                 // later we can add a variable on the page
                 var mode = 'vs';
-                if (opponent.length > 0 && (vm.userDeck != null || vm.userDeck === undefined)) {
+                if (opponent.length > 0 && (vm.userDeck !== null || vm.userDeck === undefined)) {
                     var player1 = {};
                     player1.user = vm.userDeck.user;
                     player1.actions = vm.userDeck.actions;

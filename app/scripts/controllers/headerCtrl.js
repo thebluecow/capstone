@@ -7,8 +7,8 @@ var angular = require('angular');
 angular.module('ijwApp')
     .controller('headerCtrl', function($scope, $log, $location) {
 
-        $scope.isActive = function (viewLocation) { 
-	      return viewLocation === $location.path();
-	    };
+        $scope.isActive = function(viewLocation) {
+            return viewLocation === $location.path();
+        };
 
     })
