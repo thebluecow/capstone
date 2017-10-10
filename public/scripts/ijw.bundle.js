@@ -4002,6 +4002,12 @@ angular.module('ijwApp')
             var mission = {};
             var weather = {};
 
+            var userId = null;
+
+            (function() {
+                dataService.getUserId();
+            }());
+
             // get mission from dataService
             (function() {
                 mission = dataService.getMission();
@@ -4026,7 +4032,6 @@ angular.module('ijwApp')
 
             // routes user based on if deck is already created
             vm.playGame = function() {
-                var userId = dataService.getUserId();
                 dataService.getUserDecks(userId)
                     .then(function(deck) {
                         if (deck.data.length > 0) {
