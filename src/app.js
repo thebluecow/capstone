@@ -67,18 +67,17 @@ db.once('open', function() {
 
     // adding drop database here to ensure unique index on email
     // is properly created
-    db.dropDatabase(function(err, result) {
+    /*db.dropDatabase(function(err, result) {
         console.log('db dropped');
     });
 
-    // once the connection has been established, seed the database
-    seeder.seed(data, {
+    /*seeder.seed(data, {
         dropDatabase: true
     }).then(function(db) {
         console.log('the database has been seeded with data.');
     }).catch(function(err) {
         console.error(err);
-    });
+    });*/
 });
 
 // catch 404 and forward to error handler
