@@ -261,7 +261,8 @@ router.post('/decks/user/:userId', (req, res, next) => {
 // GET /decks/user/:userId
 // route to get a specific user's decks
 router.get('/decks/user/:userId', (req, res, next) => {
-    Deck.find({
+    if (req.params.userId !== null) {
+        Deck.find({
             'user': req.params.userId
         })
         .populate([{
@@ -279,6 +280,10 @@ router.get('/decks/user/:userId', (req, res, next) => {
             res.status(200);
             res.json(decks);
         });
+    } else {
+        res.status(200);
+        res.json([]);
+    }
 });
 
 // DELETE /deck

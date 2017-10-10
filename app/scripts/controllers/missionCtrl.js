@@ -41,6 +41,10 @@ angular.module('ijwApp')
 
             // routes user based on if deck is already created
             vm.playGame = function() {
+                if (userId === null || userId === undefined) {
+                    dataService.go('/deck');
+                }
+                
                 dataService.getUserDecks(userId)
                     .then(function(deck) {
                         if (deck.data.length > 0) {
