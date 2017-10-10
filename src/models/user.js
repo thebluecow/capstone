@@ -9,6 +9,7 @@ var UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        lowercase: true,
         unique: true,
     },
     name: {
@@ -61,7 +62,7 @@ UserSchema.path('email').validate(function(email) {
 
 // authenticate input against database documents
 UserSchema.statics.authenticate = function(email, password, callback) {
-  User.findOne({ email: email })
+  User.findOne({ email: email.toLowerCase() })
       .exec(function (error, user) {
         if (error) {
           return callback(error);

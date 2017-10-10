@@ -14,7 +14,7 @@ angular.module('ijwApp')
             var userId = null;
 
             (function() {
-                dataService.getUserId();
+                userId = dataService.getUserId();
             }());
 
             // get mission from dataService

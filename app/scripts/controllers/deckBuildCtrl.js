@@ -4,7 +4,7 @@
 var angular = require('angular');
 
 angular.module('ijwApp')
-    .controller('deckBuildCtrl', function($scope, $log, $interval, dataService, config) {
+    .controller('deckBuildCtrl', function($scope, $log, $q, $interval, dataService, config) {
 
         ! function(vm) {
 
@@ -15,10 +15,10 @@ angular.module('ijwApp')
             var mission = {};
 
             // user does not need to be visible to scope
-            var user = {};
+            vm.user = {};
 
             (function() {
-                user._id = dataService.getUserId();
+                vm.user._id = dataService.getUserId();
             }());
 
             // get actions from dataService
@@ -69,11 +69,11 @@ angular.module('ijwApp')
                 if (vm.deck.length < MAX_MOVES) {
                     vm.error = 'Action list must contain ' + MAX_MOVES + ' actions to submit.';
                     return $log.error('Array less than appropriate');
-                } else if (user === null) {
+                } else if (vm.user === null) {
                     return $log.error('User is null');
                 } else {
                     newDeck.user = {
-                        '_id': user._id
+                        '_id': vm.user._id
                     };
                     newDeck.actions = [];
                     for (var i = 0; i < vm.deck.length; i++) {
@@ -85,7 +85,7 @@ angular.module('ijwApp')
                 }
 
                 // after modifying/creating the deck, route to the /match screen
-                dataService.updateOrCreateDeck(newDeck, user._id)
+                dataService.updateOrCreateDeck(newDeck, vm.user._id)
                     .then(result => {
                         dataService.go('/match');
                     }, reason => {
