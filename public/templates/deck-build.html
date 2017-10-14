@@ -14,7 +14,8 @@
 		                	<!-- <div class="card action-item" ng-click="vm.open()"> -->
 		                    <div class="card-block">
 		                        <div class="card-text">
-		                        	<i ng-class="{ 'fa fa-check-square-o left' : vm.deck.indexOf(action) !== -1, 'fa fa-square-o left' : vm.deck.indexOf(action) === -1 }" ng-click="vm.addToDeck(action)" aria-hidden="true"></i>
+		                        	<i ng-if="vm.deck.indexOf(action) === -1" ng-class="{ 'fa fa-check-square-o left action-item' : vm.deck.indexOf(action) !== -1, 'fa fa-square-o left action-item' : vm.deck.indexOf(action) === -1 }" ng-click="vm.addToDeck(action)" aria-hidden="true"></i>
+		                        	<i ng-if="vm.deck.indexOf(action) !== -1" ng-class="{ 'fa fa-check-square-o left action-item' : vm.deck.indexOf(action) !== -1, 'fa fa-square-o left action-item' : vm.deck.indexOf(action) === -1 }" ng-click="vm.remove(vm.deck.indexOf(action))" aria-hidden="true"></i>
 		                        	<i class="fa fa-file-text-o right" ng-click="vm.open(action)" aria-hidden="true"></i>
 		                            {{action.name}}
 		                        </div>
@@ -35,8 +36,8 @@
 		            <div class="col">
 		                <div class="bs-component">
 		                    <ul class="list-group">
-		                        <li class="list-group-item" ng-repeat="item in vm.deck track by $index" ng-click="vm.remove($index)" ng-class="{ 'alert-danger' : $odd }">
-		                            <span class="badge">{{$index + 1}}</span> {{item.name}}
+		                        <li class="list-group-item" ng-repeat="item in vm.deck track by $index" ng-class="{ 'alert-danger' : $odd }">
+		                            <i class="fa fa-trash-o action-item" aria-hidden="true" ng-click="vm.remove($index)"></i><span class="badge">{{$index + 1}}</span> {{item.name}}
 		                        </li>
 		                    </ul>
 		                    <button class="btn btn-primary" ng-click="vm.updateOrCreateDeck()">Submit</button>
@@ -56,6 +57,6 @@
 		{{item.description}}
 	</div>
 	<div class="modal-footer">
-	<button class="btn btn-primary" ng-click="cancel()">Close</button>
+	<button class="btn btn-primary" ng-click="close()">Close</button>
 	</div>
 </script>

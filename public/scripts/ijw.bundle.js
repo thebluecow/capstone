@@ -3820,24 +3820,17 @@ angular.module('ijwApp')
 
             vm.open = function (action) {
 
+                $log.info(action);
+
                 $uibModal.open({
                     templateUrl: 'modalContent.html', // loads the template
-                    /*controllerAs: '$ctrl',*/
                     backdrop: true, // setting backdrop allows us to close the modal window on clicking outside the modal window
                     windowClass: 'modal', // windowClass - additional CSS class(es) to be added to a modal window template
                     controller: function ($scope, $uibModalInstance, item) {
                         $scope.item = item;
-                        $scope.cancel = function () {
+                        $scope.close = function () {
                             $uibModalInstance.dismiss('cancel'); 
                         };
-                        /*$scope.submit = function () {
-                            $log.log('Submiting user info.'); // kinda console logs this statement
-                            $log.log(user); 
-                            $modalInstance.dismiss('cancel'); // dismiss(reason) - a method that can be used to dismiss a modal, passing a reason
-                        }
-                        $scope.cancel = function () {
-                            $modalInstance.dismiss('cancel'); 
-                        };*/
                     },
                     resolve: {
                         item: function () {
