@@ -3,8 +3,9 @@
 var angular = require('angular');
 var angularUtils = require('angular-utils-pagination');
 var xeditable = require('angular-xeditable');
+/*var ui = require('angular-ui-bootstrap');*/
 
-angular.module('ijwApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'xeditable'])
+angular.module('ijwApp', ['ngRoute', 'angularUtils.directives.dirPagination', 'xeditable', 'ui.bootstrap'])
 .constant('config', {
 	'appName': 'ijw',
 	'appVersion': '1.0',

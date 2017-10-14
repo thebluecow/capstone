@@ -4,7 +4,7 @@
 var angular = require('angular');
 
 angular.module('ijwApp')
-    .controller('deckBuildCtrl', function($scope, $log, $q, $interval, dataService, config) {
+    .controller('deckBuildCtrl', function($scope, $log, $q, $interval, $uibModal, dataService, config) {
 
         ! function(vm) {
 
@@ -23,7 +23,7 @@ angular.module('ijwApp')
 
             // get actions from dataService
             (function() {
-                dataService.getActions(['_id', 'name'])
+                dataService.getActions(['_id', 'name', 'description'])
                     .then(function(result) {
                         vm.actions = (result !== 'null') ? result.data : {};
                     }, function(reason) {
@@ -92,6 +92,35 @@ angular.module('ijwApp')
                         $log.error(reason);
                     });
             };
+
+            vm.open = function (action) {
+
+                $uibModal.open({
+                    templateUrl: 'modalContent.html', // loads the template
+                    /*controllerAs: '$ctrl',*/
+                    backdrop: true, // setting backdrop allows us to close the modal window on clicking outside the modal window
+                    windowClass: 'modal', // windowClass - additional CSS class(es) to be added to a modal window template
+                    controller: function ($scope, $uibModalInstance, item) {
+                        $scope.item = item;
+                        $scope.cancel = function () {
+                            $uibModalInstance.dismiss('cancel'); 
+                        };
+                        /*$scope.submit = function () {
+                            $log.log('Submiting user info.'); // kinda console logs this statement
+                            $log.log(user); 
+                            $modalInstance.dismiss('cancel'); // dismiss(reason) - a method that can be used to dismiss a modal, passing a reason
+                        }
+                        $scope.cancel = function () {
+                            $modalInstance.dismiss('cancel'); 
+                        };*/
+                    },
+                    resolve: {
+                        item: function () {
+                            return action;
+                        }
+                    }
+                });//end of modal.open
+            }; // end of scope.open function
 
             return vm;
 

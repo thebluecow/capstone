@@ -66,6 +66,10 @@ a:hover {
   /*background: #CCC;*/
 }
 
+.right {
+	float: right;
+}
+
 /* Classes for match */
 
 table.center, .table-header {
