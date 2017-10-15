@@ -40,7 +40,7 @@
     </div>
     <div class="modal-body" id="modal-body">
         <h3 ng-if="user.champion" class="significant">{{user.champion}}</h3>
-        <h4>Email: {{user.email}}</h4>
+        <h4>Email: <a href="mailto:{{user.email}}?subject=You're%20being%20challenged!">{{user.email}}</a></h4>
         <div>
             <h4>Results:</h4>
             <h5 class="user-results">Wins: {{user.results.wins}}</h5>
