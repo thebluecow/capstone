@@ -19,7 +19,7 @@ a:hover {
 	top: 10px;
 }
 
-.icon {
+.icon, .left {
 	float: left;
 }
 
@@ -66,12 +66,24 @@ a:hover {
   /*background: #CCC;*/
 }
 
-.action-item {
+.pointer {
 	cursor: pointer;
 }
 
 .right {
 	float: right;
+}
+
+span.deck-item {
+	padding-left: 14px;
+}
+
+span.deck-item-offset {
+	padding-left: 30px;
+}
+
+span.pad-item {
+	margin-left: 5px;
 }
 
 /* Classes for match */

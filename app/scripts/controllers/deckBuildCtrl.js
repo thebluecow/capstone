@@ -23,7 +23,7 @@ angular.module('ijwApp')
 
             // get actions from dataService
             (function() {
-                dataService.getActions(['_id', 'name', 'description'])
+                dataService.getActions(['_id', 'name', 'description', 'bonuses'])
                     .then(function(result) {
                         vm.actions = (result !== 'null') ? result.data : {};
                     }, function(reason) {
@@ -59,6 +59,20 @@ angular.module('ijwApp')
             vm.clear = function() {
                 vm.deck = [];
                 vm.error = null;
+            }
+
+            vm.move = function(index, direction) {
+                var action = angular.copy(vm.deck[index]); 
+                var newIndex = index + direction;
+
+                if (newIndex < (MAX_MOVES - 1)) {
+                    vm.deck.splice(index, 1);
+                    vm.deck.splice(newIndex, 0, action);
+                    vm.error = null;
+                } else {
+                    vm.error = 'Something went wrong. Please try again.';
+                }
+
             }
 
             // update the deck if it already exists or create a new one
