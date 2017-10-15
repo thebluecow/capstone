@@ -5,6 +5,7 @@
             <thead>
                 <tr>
                     <th>Rank</th>
+                    <th></th>
                     <th ng-click="vm.sort('name')">Name</th>
                     <th ng-click="vm.sort('results.wins')">Wins</th>
                     <th ng-click="vm.sort('results.losses')">Losses</th>
@@ -17,6 +18,7 @@
                 <tr ng-init="vm.sortKey='results.wins'; vm.reverse='true'" dir-paginate="user in vm.users | orderBy:vm.sortKey:vm.reverse| filter: {name: '!Admin'}|itemsPerPage:10">
                     <!-- ng-class="{'deck-row-border':$first}" -->
                     <th scope="row">{{$index + 1}}</th>
+                    <td><i class="fa fa-user pointer" aria-hidden="true" ng-click="vm.open(user)"></i></td>
                     <td>{{ user.name }}</td>
                     <td>{{ user.results.wins }}</td>
                     <td>{{ user.results.losses }}</td>
@@ -25,8 +27,35 @@
                 </tr>
             </tbody>
         </table>
-        <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+        <dir-pagination-controls class="center" max-size="10" direction-links="true" boundary-links="true" template-url="templates/dirPagination.tpl.html"></dir-pagination-controls>
 <div ng-controller="logoutCtrl">
   <a ng-click='logout()' class="btn btn-primary">Logout</a>
 </div>
 </div>
+
+<!-- modal for action descriptions -->
+<script type="text/ng-template" id="modalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">{{user.name}}</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <h3 ng-if="user.champion" class="significant">{{user.champion}}</h3>
+        <h4>Email: {{user.email}}</h4>
+        <div>
+            <h4>Results:</h4>
+            <h5 class="user-results">Wins: {{user.results.wins}}</h5>
+            <h5 class="user-results">Losses: {{user.results.losses}}</h5>
+            <h5 class="user-results">Draws: {{user.results.draws}}</h5>
+        </div>
+        <div ng-if="user.achievements.length > 0">
+            <h4>Achievements:</h4>
+            <ul ng-repeat="achievement in user.achievements">
+                <li class="bonus-list">{{achievement}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="close()">Challenge</button>
+    <button class="btn btn-primary" ng-click="close()">Close</button>
+    </div>
+</script>

@@ -6,7 +6,7 @@ body {
 	/*font-family: 'old_school_adventuresregular';*/
 }
 
-.h2 {
+.h2, .bonus-description {
 	margin-top: 20px;
 }
 
@@ -86,9 +86,13 @@ span.pad-item {
 	margin-left: 5px;
 }
 
+.bonus-list {
+	list-style: none;
+}
+
 /* Classes for match */
 
-table.center, .table-header {
+table.center, .table-header, dir-pagination-controls.center {
     width:70%; 
     margin-left:15%; 
     margin-right:15%;
@@ -98,7 +102,7 @@ table.center, .table-header {
 	margin-top: 20px;
 }
 
-.error {
+.error, .significant {
 	color: red;
 	text-decoration: bold;
 }
@@ -114,6 +118,10 @@ div.card {
 
 .deck-row-selected {
 	color: red;
+}
+
+.user-results {
+	padding-left: 10px;
 }
 
 /* Classes for Mission */

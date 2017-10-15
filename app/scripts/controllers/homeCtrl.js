@@ -4,7 +4,7 @@
 var angular = require('angular');
 
 angular.module('ijwApp')
-    .controller('homeCtrl', function($scope, $log, $q, dataService) {
+    .controller('homeCtrl', function($scope, $log, $q, $uibModal, dataService) {
 
         ! function(vm) {
 
@@ -31,6 +31,28 @@ angular.module('ijwApp')
                 }
                 return float;
             }
+
+            vm.open = function (user) {
+
+                $log.info(user);
+
+                $uibModal.open({
+                    templateUrl: 'modalContent.html', // loads the template
+                    backdrop: true, // setting backdrop allows us to close the modal window on clicking outside the modal window
+                    windowClass: 'modal', // windowClass - additional CSS class(es) to be added to a modal window template
+                    controller: function ($scope, $uibModalInstance, user) {
+                        $scope.user = user;
+                        $scope.close = function () {
+                            $uibModalInstance.dismiss('cancel'); 
+                        };
+                    },
+                    resolve: {
+                        user: function () {
+                            return user;
+                        }
+                    }
+                });//end of modal.open
+            }; // end of scope.open function
 
             return vm;
 

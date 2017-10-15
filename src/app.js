@@ -23,9 +23,9 @@ var Match = require('./models/match');
 
 var app = express();
 // set mongodb database name
-//const DB_NAME = 'ijw';
+const DB_NAME = 'ijw';
 // for mongolab
-const DB_NAME = 'heroku_jwcchr6g';
+//const DB_NAME = 'heroku_jwcchr6g';
 var port = process.env.PORT || 3000;
 
 require('./config/passport.js')(passport);
@@ -53,8 +53,8 @@ app.use('/api/', actionRouter);
 app.use('/user/', actionRouter);
 
 // connect to local mongodb
-//mongoose.connect('mongodb://localhost:27017/' + DB_NAME);
-mongoose.connect('mongodb://heroku_jwcchr6g:6m9ntuiniclhjp72ts0ldtkv2q@ds113505.mlab.com:13505/' + DB_NAME);
+mongoose.connect('mongodb://localhost:27017/' + DB_NAME);
+//mongoose.connect('mongodb://heroku_jwcchr6g:6m9ntuiniclhjp72ts0ldtkv2q@ds113505.mlab.com:13505/' + DB_NAME);
 
 var db = mongoose.connection;
 
@@ -67,7 +67,7 @@ db.once('open', function() {
 
     // adding drop database here to ensure unique index on email
     // is properly created
-    /*db.dropDatabase(function(err, result) {
+    db.dropDatabase(function(err, result) {
         console.log('db dropped');
     });
 
@@ -77,7 +77,7 @@ db.once('open', function() {
         console.log('the database has been seeded with data.');
     }).catch(function(err) {
         console.error(err);
-    });*/
+    });
 });
 
 // catch 404 and forward to error handler

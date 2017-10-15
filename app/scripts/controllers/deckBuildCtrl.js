@@ -23,9 +23,27 @@ angular.module('ijwApp')
 
             // get actions from dataService
             (function() {
+                var actions = [];
                 dataService.getActions(['_id', 'name', 'description', 'bonuses'])
                     .then(function(result) {
-                        vm.actions = (result !== 'null') ? result.data : {};
+                        var actions = [];
+                        actions = (result !== 'null') ? result.data : {};
+
+                        // for building out modal description, hide actual bonus values
+                        actions.map( action => {
+                            var x = {};
+                            for (var bonus in action.bonuses) {
+                                if (action.bonuses.hasOwnProperty(bonus)) {
+                                    if (action.bonuses[bonus] !== 0) { 
+                                        action.bonuses[bonus] = '+';
+                                    } else {
+                                        delete action.bonuses[bonus];
+                                    }
+                                }
+                            }
+                        });
+                        vm.actions = actions;
+
                     }, function(reason) {
                         $log.error(reason);
                     });
@@ -109,21 +127,51 @@ angular.module('ijwApp')
 
             vm.open = function (action) {
 
-                $log.info(action);
-
                 $uibModal.open({
                     templateUrl: 'modalContent.html', // loads the template
                     backdrop: true, // setting backdrop allows us to close the modal window on clicking outside the modal window
                     windowClass: 'modal', // windowClass - additional CSS class(es) to be added to a modal window template
-                    controller: function ($scope, $uibModalInstance, item) {
+                    controller: function ($scope, $uibModalInstance, item, description) {
                         $scope.item = item;
                         $scope.close = function () {
                             $uibModalInstance.dismiss('cancel'); 
                         };
+                        $scope.description = description;
                     },
                     resolve: {
                         item: function () {
                             return action;
+                        },
+                        description: function() {
+                            var bonusDescription = [];
+                            for (var prop in action.bonuses) {
+                                if (action.bonuses.hasOwnProperty(prop)) {
+                                    if (prop === 'city') {
+                                        bonusDescription.push('Are you in a city? Oh dear. Oh yay!');
+                                    }
+
+                                    else if (prop === 'desert') {
+                                        bonusDescription.push('The desert is so full of extremes. And sand. Lots and lots of sand...');
+                                    }
+
+                                    else if (prop === 'extreme') {
+                                        bonusDescription.push('Extreme weather (hurricanes, tornados) might come into play');
+                                    }
+
+                                    else if (prop === 'rain') {
+                                        bonusDescription.push('Is it raining hard? Could be good/bad. Who knows?');
+                                    }
+
+                                    else if (prop === 'jungle') {
+                                        bonusDescription.push('Only Recondo and snakes love the jungle. Maybe...');
+                                    }
+
+                                    else if (prop === 'snow') {
+                                        bonusDescription.push('Snow (heavy snow, blizzard, heavy sleet) can do things...');
+                                    }
+                                }
+                            }
+                            return bonusDescription;
                         }
                     }
                 });//end of modal.open
