@@ -61,7 +61,10 @@
 	</div>
 	<div class="modal-body" id="modal-body">
 		{{item.description}}
-		<div class="bonus-description" ng-if="description">
+		<div class="bonus-description" ng-if="description.length === 0">
+			This is one of those rare occurrences where there are no rewards or penalties. How did that happen? Did {{item.name}} slip through the cracks? Perhaps. Or perhaps we decided there had to be at least one or two actions that were neutral. We <i>definitely</i> need to change that!
+		</div>
+		<div class="bonus-description" ng-if="description.length > 0">
 			<p>We certainly can't tell you what the rewards and penalties are (what would be the fun of that?) but we can give you a few hints:
 			<ul class="bonus-list">
 				<li ng-repeat="bonus in description">{{bonus}}</li>

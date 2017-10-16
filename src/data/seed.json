@@ -4,6 +4,7 @@
 		"1": {
 	        "_id": "59b3d655bb644f0c119e5f5f",
 	        "name": "¯\\_(ツ)_/¯? Hire Zartan",
+			"description": "Zartan is the ultimate mercenary and is calculating as they come. His unique ability to adapt to almost all situations makes him a valuable ally...for the right price.",
 	        "__v": 0,
 	        "value": 3,
 	         "bonuses": {
@@ -16,6 +17,7 @@
 	    "2": {
 	        "_id": "59b3d655bb644f0c119e5f4a",
 	        "name": "Weather Dominator Strike!",
+			"description": "Want to attack your enemy with hail? What about high winds? G.I. Joe can fight many enemies, but how do you fight against Mother Nature?",
 	        "__v": 0,
 	        "value": 18,
 	         "bonuses": {
@@ -28,6 +30,7 @@
 	    "3": {
 	        "_id": "59b3d655bb644f0c119e5f5b",
 	        "name": "Vance Wingfield Plots Overthrow",
+			"description": "The leader of Strike First is a unique personality. He distrusts government and believes that the nations will ultimately war. With him and his band of committed recruits, he believes that from chaos must come order.",
 	        "__v": 0,
 	        "value": 16,
 	         "bonuses": {
@@ -40,6 +43,7 @@
 	    "4": {
 	        "_id": "59b3d655bb644f0c119e5f4d",
 	        "name": "Give 'em HAL!",
+			"description": "The Heavy Artillary Laser is big, bad, and ready to cause extreme damage. Grand Slam takes aim in a weapon that is fairly resistent to adverse conditions. Just don't go to the extreme.",
 	        "__v": 0,
 	        "value": 20,
 	         "bonuses": {
@@ -52,6 +56,7 @@
 	    "5": {
 	        "_id": "59b3d655bb644f0c119e5f53",
 	        "name": "S.N.A.K.E. in the Grass",
+			"description": "Yhe European versions were much more colorful, but nothing inspired more slow moving target practice than these multi-weaponed suit of battle armor. Woe to the Cobra soldier piloting this walking coffin. Still. If I were in the snow, hunting down radioactive crystals, I'd want this on my side.",
 	        "__v": 0,
 	        "value": 17,
 	         "bonuses": {
@@ -63,31 +68,34 @@
 	    },
 	    "6": {
 	        "_id": "59b3d655bb644f0c119e5f38",
-	        "name": "Snake Eye's Uzi",
+	        "name": "Our Trouble Bubble Burst",
+			"description": "The Cobra flight pod, a.k.a. the Trouble Bubble, is one of the most iconic vehicles from the ARAH cartoon. Would I want to pilot one of these in a storm? Yikes. Maybe they're better suited for ideal conditions.",
 	        "__v": 0,
 	        "value": 6,
 	         "bonuses": {
-	            "snow": 1,
+	            "snow": -1,
 	            "rain": -2,
 	            "extreme": 0,
-	            "desert": 0
+	            "desert": 1
 	        }
 	    },
 	    "7": {
 	        "_id": "59b3d655bb644f0c119e5f55",
 	        "name": "Smurfy Snake Eye's",
+			"description": "Snake Eyes in blue is one of the greatest figures ever released. We honor Smurfy Snake Eyes here. The blue is faded. Doh! Extreme sunlight is no fun.",
 	        "__v": 0,
 	        "value": 4,
 	         "bonuses": {
 	            "snow": 0,
 	            "rain": 0,
 	            "extreme": -3,
-	            "desert": 0
+	            "desert": -1
 	        }
 	    },
 	    "8": {
 	        "_id": "59b3d655bb644f0c119e5f39",
-	        "name": "Sidekick! Timber Joins",
+	        "name": "Freedom Takes Flight",
+			"description": "Freedom is the ultimate sidekick as he's saved Spirit, one of the greatest Joes of all, on multiple occassions. Maybe you prefer Junkyard, Polly, or Timber. We don't disagree. They're all great. We have the freedom to choose, and as such we choose Freedom.",
 	        "__v": 0,
 	        "value": 13,
 	         "bonuses": {
@@ -100,6 +108,7 @@
 	    "9": {
 	        "_id": "59b3d655bb644f0c119e5f60",
 	        "name": "Safety of the Pit",
+			"description": "When times are dark and you don't think things could be much worse, sometimes you just need to regroup at HQ to get your bearings. Head for the Pit. It's not a retreat, it's an exit strategy.",
 	        "__v": 0,
 	        "value": 19,
 	         "bonuses": {
@@ -112,6 +121,7 @@
 	    "10": {
 	        "_id": "59b3d655bb644f0c119e5f57",
 	        "name": "Red Rocket Franchise",
+			"description": "No one should trust the fast food chain with a giant warhead on its roof. If you bought into this franchise, odds are your bellies were full of grief instead of delicious burgers. Still. No matter how bad things get, a good milkshake tastes delicious in almost any situation.",
 	        "__v": 0,
 	        "value": 5,
 	         "bonuses": {
@@ -124,6 +134,7 @@
 	    "11": {
 	        "_id": "59b3d655bb644f0c119e5f3b",
 	        "name": "Mindbender's Monocle",
+			"description": "Some would argue a muscled, shirtless scientist couldn't exist outside of Dolph Lundgren's house, but Mindbender warped our minds into believing anything was possible, even a suspender-wearing scientist with 4% body fat. The monocle? Made this mustachioed muscle-man full of deep thoughts and, most importantly, vision.",
 	        "__v": 0,
 	        "value": 15,
 	         "bonuses": {
@@ -136,6 +147,7 @@
 	    "12": {
 	        "_id": "59b3d655bb644f0c119e5f4e",
 	        "name": "Dial-Tone's Beret",
+			"description": "Perhaps you remember the movie Cloak and Dagger? Dabney Coleman may have made the beret kid cool, but it was Dial-Tone who made it legendary. Think New Jack City is the same without the Kangol beret. There is no Nino Brown, young hustler, if not for Dial-Tone.",
 	        "__v": 0,
 	        "value": 1,
 	         "bonuses": {
@@ -148,6 +160,7 @@
 	    "13": {
 	        "_id": "59b3d655bb644f0c119e5f5a",
 	        "name": "Oktober Guard Intervenes",
+			"description": "The Joes first met their Russian counterparts in the comics as adversaries, but soon the two joined forces to thwart Cobra's plans. In the deep snows, this group is up to the task.",
 	        "__v": 0,
 	        "value": 17,
 	         "bonuses": {
@@ -160,6 +173,7 @@
 	    "14": {
 	        "_id": "59b3d655bb644f0c119e5f47",
 	        "name": "Ripper's Purple Shirt",
+			"description": "This Dreadnok destroys in cold slithering rage, but his Funskool-themed purple shirt takes home the prize for fashion week. Will it win you your battle? Maybe. It won't lose you your street cred, though.",
 	        "__v": 0,
 	        "value": 12,
 	         "bonuses": {
@@ -172,6 +186,7 @@
 	    "15": {
 	        "_id": "59b3d655bb644f0c119e5f48",
 	        "name": "S.H.A.R.C. Attack!",
+			"description": "The Submersible High-Speed Attack and Reconnaissance Craft is well suited for the ocean or weekend trips to the city. Is it raining? I would trust this craft. We can't attest to its capability in extreme conditions, however.",
 	        "__v": 0,
 	        "value": 11,
 	         "bonuses": {
@@ -184,6 +199,7 @@
 	    "16": {
 	        "_id": "59b3d655bb644f0c119e5f4f",
 	        "name": "Glenda's Laser rifle",
+			"description": "There are many laser rifles out there, but Glenda's rests comfortably on the shoulder of an iconic figure that fans have grown to love. Of all the Scarlett-based molds, Glenda is a personal favorite, so she makes the game. You're welcome.",
 	        "__v": 0,
 	        "value": 10,
 	         "bonuses": {
@@ -196,6 +212,7 @@
 	    "17": {
 	        "_id": "59b3d655bb644f0c119e5f49",
 	        "name": "Ninja-Ku, Do You?",
+			"description": "Please do not go to sleep warm and cozy in your bed tonight and think that you're safe. Not from Ninja-Ku you're not. What was that sound? If you heard it, it wasn't this silent killer. Don't look in that closet...",
 	        "__v": 0,
 	        "value": 13,
 	         "bonuses": {
@@ -208,6 +225,7 @@
 	    "18": {
 	        "_id": "59b3d655bb644f0c119e5f3a",
 	        "name": "Gymkata!",
+			"description": "In the remote country of Parmistan, a gymnast turned martial arts hero saves the world from the evil clutches of Commander Zamir. Doesn't sound familiar? That's because Jonathan Cabot saved us from a secret Cobra plot to steal U.S. satellites. Gymkata! shows no weaknesses. It is undefeated.",
 	        "__v": 0,
 	        "value": 2,
 	         "bonuses": {
@@ -220,6 +238,7 @@
 	    "19": {
 	        "_id": "59b3d655bb644f0c119e5f45",
 	        "name": "Shimik's Receding Hairline",
+			"description": "It's an undocumented and entirely made up fact that Shimik owns a lifetime supply of Rogaine. What is not untrue is that Shimik is one of the Argen-7 and worth every ounce of respect your tiny heart can muster.",
 	        "__v": 0,
 	        "value": 9,
 	         "bonuses": {
@@ -232,6 +251,7 @@
 	    "20": {
 	        "_id": "59b3d655bb644f0c119e5f43",
 	        "name": "We're in A.W.E.",
+			"description": "If we were in the desert, we would want Crankcase and the A.W.E. Striker to be nearby. Is that too much of a hint? We're awed by its ability to handle extreme conditions.",
 	        "__v": 0,
 	        "value": 18,
 	         "bonuses": {
@@ -243,19 +263,21 @@
 	    },
 	    "21": {
 	        "_id": "59b3d655bb644f0c119e5f42",
-	        "name": "Barrel Roll, Target Sighted",
+	        "name": "Firefly, Saboteur",
+			"description": "Firefly is the answer when Cobra Commander questions the need for sabotage. Long before the Beastie Boys made sabotage a household word, Firefly made it thought to fear.",
 	        "__v": 0,
 	        "value": 3,
 	         "bonuses": {
 	            "snow": -2,
-	            "rain": 0,
+	            "rain": 2,
 	            "extreme": 2,
-	            "desert": 0
+	            "desert": 2
 	        }
 	    },
 	    "22": {
 	        "_id": "59b3d655bb644f0c119e5f3e",
 	        "name": "Monkeywrench in the Works",
+			"description": "He wasn't an original member of the Dreadnoks but he made quite the impression at his audition. Perhaps he'll never get the recognition and respect of Buzzer, Torch, and Ripper, he still was worth our respect. He carried around a giant harpoon gun for some reason. Only Moby Dick was safe.",
 	        "__v": 0,
 	        "value": 21,
 	         "bonuses": {
@@ -268,18 +290,20 @@
 	    "23": {
 	        "_id": "59b3d655bb644f0c119e5f5c",
 	        "name": "Kwinn on the Scene",
+			"description": "If you hire Kwinn, expect the mercenary to keep his word and finish the job. He keeps with some of the worst company imaginable, and inhospitable locales can be a specialty.",
 	        "__v": 0,
 	        "value": 9,
 	         "bonuses": {
-	            "snow": 5,
-	            "rain": -3,
-	            "extreme": 5,
-	            "desert": -3
+	            "snow": 2,
+	            "rain": 0,
+	            "extreme": 0,
+	            "desert": 0
 	        }
 	    },
 	    "24": {
 	        "_id": "59b3d655bb644f0c119e5f4c",
 	        "name": "Thunder Machine Time!",
+			"description": "Perhaps Thrasher isn't your thing. We understand. He was whiny and never truly fit in with the Dreadnok culture of awesome. Still, that's no reason to deny the sheer greatness of the Thunder Machine. We suspect in a blizzard visibility would be compromised, and there are enough pieces missing that driving in the sand would be...interesting.",
 	        "__v": 0,
 	        "value": 14,
 	         "bonuses": {
@@ -292,6 +316,7 @@
 	    "25": {
 	        "_id": "59b3d655bb644f0c119e5f5d",
 	        "name": "Hard Master Trains",
+			"description": "G.I. Joe has an unlimited supply of ninja-themed characters, and in one way or another, the Hard Master influenced them. As leader of the Arashikage Clan, he trained Storm Shadow and Snake Eyes. Enough said.",
 	        "__v": 0,
 	        "value": 16,
 	         "bonuses": {
@@ -317,18 +342,20 @@
 	    "27": {
 	        "_id": "59b3d655bb644f0c119e5f3c",
 	        "name": "Good in the Clutch",
+			"description": "Clutch earned his bona fides as an original team member and one of the original '82 releases. He drove the V.A.M.P., has a rockin' beard, and always comes through in the...no, we won't say it.",
 	        "__v": 0,
 	        "value": 2,
 	         "bonuses": {
-	            "snow": 2,
-	            "rain": -2,
-	            "extreme": 2,
+	            "snow": 0,
+	            "rain": 0,
+	            "extreme": 0,
 	            "desert": 0
 	        }
 	    },
 	    "28": {
 	        "_id": "59b3d655bb644f0c119e5f46",
 	        "name": "A Study in Scarlett",
+			"description": "Scarlett made Cobra learn to hate the color red. An original team member and undeniably one of the greatest Joes, every fan with a daughter now has her action figure in the toybox.",
 	        "__v": 0,
 	        "value": 1,
 	         "bonuses": {
@@ -341,6 +368,7 @@
 	    "29": {
 	        "_id": "59b3d655bb644f0c119e5f59",
 	        "name": "Excalibur Found",
+			"description": "King Arthur may have made this weapon famous, but G.I. Joe permanently planted this sword in every child's imagination. The once and future king? Yo Joe, my friend.",
 	        "__v": 0,
 	        "value": 15,
 	         "bonuses": {
@@ -366,6 +394,7 @@
 	    "31": {
 	        "_id": "59b3d655bb644f0c119e5f40",
 	        "name": "Cobra Island Getaway",
+			"description": "You deserve a vacation far away from the maddening crowd. This little pocket of isolation might be short on amenities but it's long on scenery. You'll never find Cobra Island through a Disney timeshare, but one there, you'll never want to leave. Or get to. Pick your own verb, but bring a good survival knife.",
 	        "__v": 0,
 	        "value": 14,
 	         "bonuses": {
@@ -378,6 +407,7 @@
 	    "32": {
 	        "_id": "59b3d655bb644f0c119e5f56",
 	        "name": "Cobra!",
+			"description": "The  most famous battlecry of Cobra Commander's next to Retreat!, this morale booster will get your troops motivated just long enough to become target practice.",
 	        "__v": 0,
 	        "value": 7,
 	         "bonuses": {
@@ -390,6 +420,7 @@
 	    "33": {
 	        "_id": "59b3d655bb644f0c119e5f52",
 	        "name": "Iceberg Takes Aim",
+			"description": "Clifton L. Nash is the perfect Joe to have around in the snow and when maniacal doctors make Cobra war leaders out of pilfered DNA. Should he be on your team in the Sahara? That's your roll call, friend.",
 	        "__v": 0,
 	        "value": 4,
 	         "bonuses": {
@@ -402,6 +433,7 @@
 	    "34": {
 	        "_id": "59b3d655bb644f0c119e5f50",
 	        "name": "Bivouac Break",
+			"description": "Occassionally you need a break. Fighting Cobra can be exhausting, and when those laser rifles need a serious recharging, it's time to build a fire, stay out of the wind, and warm up with some hot cocoa.",
 	        "__v": 0,
 	        "value": 11,
 	         "bonuses": {
@@ -414,6 +446,7 @@
 	    "35": {
 	        "_id": "59b3d655bb644f0c119e5f54",
 	        "name": "Stalker Takes Charge",
+			"description": "As an original member of the G.I. Joe team, Stalker has just about seen it all. He was a leader in the comics and cartoon, a figure to admire, and later had a kayak. What does all that mean? It means he can change with the times and kick Cobra's tail across product lines and decades. Yo Joe!",
 	        "__v": 0,
 	        "value": 12,
 	         "bonuses": {
@@ -426,6 +459,7 @@
 	    "36": {
 	        "_id": "59b3d655bb644f0c119e5f5e",
 	        "name": "Baron Ironblood's Evil Genius",
+			"description": "He leads the Red Shadows with an evil genius that is both ruthless and endearing...if you're the type of person that sides with the house in Vegas. Go root for the Yankees, Ironblood lover.",
 	        "__v": 0,
 	        "value": 19,
 	         "bonuses": {
@@ -438,6 +472,7 @@
 	    "37": {
 	        "_id": "59b3d655bb644f0c119e5f58",
 	        "name": "Alpine's Yodel",
+			"description": "You could bring down a mountain with a yodel like Alpine's. He climbs mountains with an expert's skill, but it's his golden pipes that saves the day.",
 	        "__v": 0,
 	        "value": 8,
 	         "bonuses": {
@@ -450,6 +485,7 @@
 	    "38": {
 	        "_id": "59b3d655bb644f0c119e5f41",
 	        "name": "Shipwreck Has a Plan",
+			"description": "Perhaps the most improvisational of Joe characters, Shipwreck can navigate his way through just about any situation. We don't know if we'd trust him in a blizzard, but any man that can sail the desert sands is okay by us.",
 	        "__v": 0,
 	        "value": 20,
 	         "bonuses": {
@@ -462,6 +498,7 @@
 	    "39": {
 	        "_id": "59b3d655bb644f0c119e5f4b",
 	        "name": "Torpedo's Wetsuit",
+			"description": "If you're heading out for a dip in the ocean or to keep yourself dry through that deluge, perhaps this is your Joe inspired couture. In the desert, maybe something a little less form fitting?",
 	        "__v": 0,
 	        "value": 6,
 	         "bonuses": {
@@ -474,6 +511,7 @@
 	    "40": {
 	        "_id": "59b3d655bb644f0c119e5f51",
 	        "name": "Recondo's Adventures",
+			"description": "The greatest of G.I. Joes, Recondo invites you to take his world famous tour through the jungle. Antarctica? He may be the greatest of Joes, but he won't enjoy a trip with the penguins.",
 	        "__v": 0,
 	        "value": 10,
 	         "bonuses": {
@@ -486,6 +524,7 @@
 	    "41": {
 	        "_id": "59b3d655bb644f0c119e5f3f",
 	        "name": "Red Shadows Attack",
+			"description": "Baron Ironblood leads this band of merry mischief makers. Bent on world domination, the Red Shadows may be the force that ultimately takes down the Action Force. If the Black Major knocks on your door...hide.",
 	        "__v": 0,
 	        "value": 8,
 	         "bonuses": {
@@ -770,5 +809,3 @@
 		}
 	}
 }
-		
-	
